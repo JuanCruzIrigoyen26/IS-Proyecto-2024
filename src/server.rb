@@ -22,7 +22,7 @@ class App < Sinatra::Application
   end
 
   set :views, File.join(File.dirname(__FILE__), 'views')
-  set :styles, File.join(File.dirname(__FILE__), 'styles')
+  set :public_folder, File.join(File.dirname(__FILE__), 'styles')
 
   configure :development do
     register Sinatra::Reloader

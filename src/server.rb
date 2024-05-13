@@ -21,6 +21,8 @@ class App < Sinatra::Application
     set :logger, logger
   end
 
+  set :views, File.join(File.dirname(__FILE__), 'views')
+  set :styles, File.join(File.dirname(__FILE__), 'styles')
 
   configure :development do
     register Sinatra::Reloader
@@ -29,15 +31,15 @@ class App < Sinatra::Application
     end
   end
 
-  get '/game' do
-    logger.info 'USANDO LOGGER INFO EN GAME PATH'
-    'Game'
+  get '/login' do
+    erb :login
   end
-
-
 
   get '/' do
-    'Welcome'
+    redirect '/login'
+  end
+
+  get '/signup' do
+    erb :signup
   end
 end
-

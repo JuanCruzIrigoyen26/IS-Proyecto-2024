@@ -4,7 +4,8 @@ class CreateTrivia < ActiveRecord::Migration[7.0]
       t.integer :number
       t.string :title
       t.text :description
-    
+      t.string :test_letter
+
       t.timestamps
     end
     add_column :trivias, :mode, :enum, default: 'beginner', limit: [:beginner, :casual, :professional]

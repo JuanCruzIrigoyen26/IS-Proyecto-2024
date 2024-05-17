@@ -53,7 +53,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_212120) do
     t.string "nickname"
     t.string "password"
     t.integer "progress", default: 0
-    t.boolean "theme_light", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

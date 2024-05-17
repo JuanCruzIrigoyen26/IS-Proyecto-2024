@@ -56,8 +56,6 @@ class App < Sinatra::Application
     account = Account.find_by(nickname: nickname, password: password)
 
     if account
-      session[:logged_in] = true
-      session[:account_id] = account.id
 
       redirect '/home'
     else
@@ -73,28 +71,15 @@ class App < Sinatra::Application
     name = params[:name]
     nickname = params[:nickname]
 
-    valid_email_format = /^[a-zA-Z0-9_.+-]+@(gmail|outlook|hotmail|live)\.[a-z.]+$/
-    valid_password_format = /(?=(?:.*[A-Z].*)+)(?=(?:.*[a-z].*)+)(?=(?:.*\d.*)+)(?!(?:.*\s.*)+)^(?=.{8,}$).*/
-    valid_name_format = /(?=(?:^\D*$)+)/
-    valid_nickname_format = /(?=(?:^\S*$)+)/
+    account = Account.new(email: email, password: password, name: name, nickname: nickname, progress: 0)
 
-    unless email =~ valid_email_format && password =~ valid_password_format && name =~ valid_name_format && nickname =~ valid_nickname_format
+    if account.save
+      redirect '/login'
+    else
       redirect '/signup?error=Invalid-input-format'
     end
-
-    if Account.exists?(email: email)
-      redirect '/signup?error=Email-already-exists'
-    elsif Account.exists?(nickname: nickname)
-      redirect '/signup?error=Nickname-already-exists'
-    else
-      account = Account.new(email: email, password: password, name: name, nickname: nickname, progress: 0)
-      if account.save
-        redirect '/login'
-      else
-        redirect '/signup?error=Account-creation-failed'
-      end
-    end
   end
+
 
 
 

@@ -6,7 +6,6 @@ class CreateAccount < ActiveRecord::Migration[7.0]
         t.string :nickname
         t.string :password
         t.integer :progress, default: 0
-        t.boolean :theme_light, default: true
 
         t.timestamps
       end

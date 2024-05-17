@@ -71,6 +71,15 @@ class App < Sinatra::Application
     name = params[:name]
     nickname = params[:nickname]
 
+
+    if Account.exists?(email: email)
+      redirect '/signup?error=Email-already-exists'
+    end
+
+    if Account.exists?(nickname: nickname)
+      redirect '/signup?error=Nickname-already-exists'
+    end
+
     account = Account.new(email: email, password: password, name: name, nickname: nickname, progress: 0)
 
     if account.save
@@ -79,6 +88,8 @@ class App < Sinatra::Application
       redirect '/signup?error=Invalid-input-format'
     end
   end
+
+
 
 
 

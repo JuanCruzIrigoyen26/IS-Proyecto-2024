@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio - KnowAboutEsports</title>
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imagenes/favicon.ico">
-    <link rel="stylesheet" type ="text/css" href="<%=url('home.css')%>">
+    <title>Trivia Medio - KnowAboutEsports</title>
+    
 </head>
 <body>
     <header>
@@ -15,7 +14,7 @@
         </div>
         <nav>
             <ul class="left-nav">
-                <li><a href="/home2">Home</a></li>
+                <li><a href="/home">Home</a></li>
                 <li><a href="/perfil">Perfil</a></li>
             </ul>
             <ul class="right-nav">
@@ -25,16 +24,22 @@
     </header>
     <main>
         <section class="wrapper">
-            <h2>Seleccione el juego que desee:</h2>
-            <div class="tarjeta">
-                <div class="imagen">
-                    <img src="assets/imagenes/csgo.jpeg" alt="Imagen de CSGO">
-                    <h2>CSGO</h2>
-                </div>
-                <div class="footer">
-                    <h2>Progreso:</h2>
-                    <button>Jugar</button>
-                </div>
+            <h2>Bienvenido a la trivia de nivel MEDIO</h2>
+            <div class="pregunta">
+                <h2>Pregunta:</h2>
+                <p></p>
+            </div>
+            <div class="respuesta">
+                <button class="resp">A)</button>
+            </div>
+            <div class="respuesta">
+                <button class="resp">B)</button>
+            </div>
+            <div class="respuesta">
+                <button class="resp">C)</button>
+            </div>
+            <div class="siguiente">
+                <button class="sig">Siguiente</button>
             </div>
         </section>
     </main>

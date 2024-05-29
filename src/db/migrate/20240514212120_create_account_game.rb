@@ -7,7 +7,6 @@ class CreateAccountGame < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    # Agregar un nuevo campo enum llamado account_knowledge
     add_column :account_games, :account_knowledge, :enum, default: 'basic', limit: [:basic, :medium, :advance]
   end
 end

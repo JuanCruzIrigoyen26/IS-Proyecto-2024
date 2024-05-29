@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Motiva, sans;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: rgb(3, 89, 146);
+    color: #fff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+header .logo img {
+    margin-right: 10px;
+}
+
+header h1 {
+    font-size: 20px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    margin-right: 20px;
+}
+
+nav ul.left-nav {
+    margin-right: auto;
+}
+
+nav ul.right-nav {
+    margin-left: auto;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    flex-direction: column;
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centra el contenido de texto */
+}
+
+.wrapper h2 {
+    margin-bottom: 20px; /* Ajusta el espacio debajo del h2 */
+    margin-top: 0; /* Asegúrate de que no haya margen superior */
+    position: relative;
+    top: -20px; /* Ajusta esta cantidad según sea necesario */
+    font-size: 30px;
+    color: #000;
+}
+
+.pregunta h2 {
+    text-align: left;
+    font-size: 20px;
+    color: #000;
+}
+
+.respuesta {
+    margin: 10px 0;
+}
+
+.respuesta .resp {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.respuesta .resp:hover {
+    background-color: #0056b3;
+}
+
+.siguiente {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.siguiente .sig {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.siguiente .sig:hover {
+    background-color: #218838;
+}

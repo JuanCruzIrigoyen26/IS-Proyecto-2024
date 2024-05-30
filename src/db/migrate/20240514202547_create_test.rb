@@ -1,6 +1,6 @@
 class CreateTest < ActiveRecord::Migration[7.0]
   def change
-    create_table :tests do |t|
+    create_table :test do |t|
       t.string :letter, limit: 1, unique: true
       t.string :description
       t.integer :cant_questions, default: 0

@@ -1,6 +1,4 @@
-class trivia < ActiveRecord::Base
-
-    enum mode: { beginner: 'beginner', casual: 'casual', professional: 'professional' }
+class Trivia < ActiveRecord::Base
 
     validates :number, presence: true
     validates :title, presence: true

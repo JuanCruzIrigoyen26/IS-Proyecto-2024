@@ -1,4 +1,4 @@
-class answer < ActiveRecord::Base
+class Answer < ActiveRecord::Base
 
     validates :number, presence: true
     validates :description, presence: true

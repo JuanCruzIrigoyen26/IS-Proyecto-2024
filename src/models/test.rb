@@ -1,4 +1,4 @@
-class test < ActiveRecord::Base
+class Test < ActiveRecord::Base
     validates :letter, presence: true
     validates :description, presence: true
     validates :cant_questions, presence: true

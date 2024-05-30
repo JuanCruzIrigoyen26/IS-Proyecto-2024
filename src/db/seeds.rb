@@ -74,7 +74,7 @@ answer_b15 = Answer.create(number: 3, description: "Cuando se elimina a un enemi
 
 
 #Test C
-test_c = Test.create(number: "C", description: "Conceptos de Profesional", cant_questions: 5, game_number: game_1.number)
+test_c = Test.create(letter: "C", description: "Conceptos de Profesional", cant_questions: 5, game_number: game_1.number)
 
 trivia_c1 = Trivia.create(number: 1, title: "Entryfragger", description: "El Entryfragger es el rol que lleva el jugador con mejor punteria y conocimiento de angulos del equipo. Este mismo se encarga de ser el iniciador de la entrada a un site, tomando riesgos grandes para obtener una frag o simplemente información que facilite la próxima decisión que tome su equipo. Por lo tanto, si quieres llevar a cabo este rol en tu equipo deberas tener un gran conocimiento en el mapeado, buena punteria y movimiento fluido para obtener buenos resultados.", test_letter: test_c.letter, mode: "professional")
 trivia_c2 = Trivia.create(number: 2, title: "Lurker", description: "El Lurker es el encargado de obtener información para su equipo, ya sea usando el sonido del juego para determinar donde se encuentran los enemigos o infiltrandose en zonas spoteadas por contrincantes para así ofrecer información detallada. En su mayoría, los Lurkers juegan de manera individual, es decir sin estar junto al equipo por el hecho de que se mueven sigilosamente. Para jugar este rol es recomendado tener un buen Mindgame (Buen pensamiento sobre que acciones pueden tomar los contrincantes, por ejemplo hacer una rotación) ya que con ello podrás tomar decisiones de manera individual o para darles una call a tu equipo.", test_letter: test_c.letter, mode: "professional")
@@ -105,5 +105,5 @@ answer_c14 = Answer.create(number: 2, description: "Cuando lanzas una granada sa
 answer_c15 = Answer.create(number: 3, description: "Cuando lanzas un arma saltando", correct: false, question_number: question_c5.number, test_letter: test_c.letter)
 
 #Test F
-test_f = Test.create(number: "F", description: "Examen Final de Conceptos Competitivos", cant_questions: 15, game_number:game_1.number)
+test_f = Test.create(letter: "F", description: "Examen Final de Conceptos Competitivos", cant_questions: 15, game_number:game_1.number)
 #Por determinar

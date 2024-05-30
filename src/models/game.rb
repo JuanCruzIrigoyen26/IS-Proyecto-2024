@@ -1,4 +1,4 @@
-class game < ActiveRecord::Base
+class Game < ActiveRecord::Base
     
     validates :number, presence: true
     validates :name, presence: true

@@ -1,6 +1,6 @@
 class CreateAnswer < ActiveRecord::Migration[7.0]
   def change
-    create_table :answers do |t|
+    create_table :answer do |t|
       t.integer :number
       t.boolean :correct, default: false
       t.text :description

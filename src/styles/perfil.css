@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: Motiva, sans;
+    font-family: Motiva, sans-serif;
     background-color: #f4f4f4;
     color: #333;
 }
@@ -78,32 +78,35 @@ main {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Centra el contenido de texto */
+    position: relative;
 }
 
 .wrapper h2 {
-    margin-bottom: 20px; /* Ajusta el espacio debajo del h2 */
-    margin-top: 0; /* Asegúrate de que no haya margen superior */
+    margin: 0;
     position: relative;
-    top: -20px; /* Ajusta esta cantidad según sea necesario */
-    font-size: 30px;
+    top: 20px;
+    left: 20px;
+    font-size: 40px;
     color: #000;
 }
 
-.pregunta h2 {
-    text-align: left;
+.nomUsuario {
+    position: absolute;
+    top: 70px; /* Coincide con la parte superior del h2 */
+    left: 160px; /* Ajusta este valor según sea necesario para centrar horizontalmente */
+}
+
+.nomUsuario h2 {
+    margin: 0 0 10px 0;
     font-size: 20px;
     color: #000;
 }
 
-.respuesta {
-    margin: 10px 0;
-}
-
-.respuesta .resp1 {
+.cambiarNU {
     display: block;
-    width: 100%;
-    padding: 10px;
+    margin-top: 25px;
+    margin-left: 20px;
+    padding: 4px 8px;
     background-color: #0056b3;
     color: white;
     border: none;
@@ -111,54 +114,27 @@ main {
     cursor: pointer;
 }
 
-.respuesta .resp1:hover {
+.cambiarNU:hover {
     background-color: #007bff;
 }
 
-.respuesta .resp2 {
+.configuraciones {
+    margin-bottom: 20px;
+}
+
+.modo {
     display: block;
-    width: 100%;
-    padding: 10px;
+    margin-top: 25px;
+    padding: 4px 8px;
     background-color: #0056b3;
     color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    margin-left: 20px;
+    margin-top: 150px;
 }
 
-.respuesta .resp2:hover {
+.modo:hover {
     background-color: #007bff;
-}
-
-.respuesta .resp3 {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.respuesta .resp3:hover {
-    background-color: #007bff;
-}
-
-.siguiente {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.siguiente .sig {
-    padding: 10px 20px;
-    background-color: #218838;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.siguiente .sig:hover {
-    background-color: #28a745;
 }

@@ -82,83 +82,124 @@ main {
 }
 
 .wrapper h2 {
-    margin-bottom: 20px; /* Ajusta el espacio debajo del h2 */
-    margin-top: 0; /* Asegúrate de que no haya margen superior */
+    margin-bottom: 20px; 
+    margin-top: 0; 
     position: relative;
-    top: -20px; /* Ajusta esta cantidad según sea necesario */
+    top: -20px; 
     font-size: 30px;
     color: #000;
 }
 
-.pregunta h2 {
-    text-align: left;
-    font-size: 20px;
-    color: #000;
-}
-
-.respuesta {
+.concep {
     margin: 10px 0;
 }
 
-.respuesta .resp1 {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.respuesta .resp1:hover {
-    background-color: #007bff;
-}
-
-.respuesta .resp2 {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.respuesta .resp2:hover {
-    background-color: #007bff;
-}
-
-.respuesta .resp3 {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.respuesta .resp3:hover {
-    background-color: #007bff;
-}
-
-.siguiente {
+.concep h2 {
+    margin-top: 50px;
     text-align: center;
-    margin-top: 20px;
+    font-size: 20px;
 }
 
-.siguiente .sig {
+.concep .con1 {
+    display: block;
+    width: 20%;
+    padding: 10px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.concep .con1:hover {
+    background-color: #007bff;
+}
+
+.concep .con2 {
+    display: block;
+    width: 20%;
+    padding: 10px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.concep .con2:hover {
+    background-color: #007bff;
+}
+
+.concep .con3 {
+    display: block;
+    width: 20%;
+    padding: 10px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.concep .con3:hover {
+    background-color: #007bff;
+}
+
+.concep .con4 {
+    display: block;
+    width: 20%;
+    padding: 10px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.concep .con4:hover {
+    background-color: #007bff;
+}
+
+.concep .con5 {
+        display: block;
+        width: 20%; 
+        padding: 10px;
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        margin-left: auto; /* Para centrar el botón horizontalmente */
+        margin-right: auto; /* Para centrar el botón horizontalmente */
+}
+
+.concep .con5:hover {
+    background-color: #007bff;
+}
+
+.concep .sig {
     padding: 10px 20px;
     background-color: #218838;
     color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    margin-top: 25px;
 }
 
-.siguiente .sig:hover {
+.concep .sig:hover {
     background-color: #28a745;
 }

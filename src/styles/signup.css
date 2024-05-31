@@ -1,70 +1,77 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('https://venturebeat.com/wp-content/uploads/2018/02/esports.jpg?fit=3500%2C2317&strip=all');
+    background-size: cover;
+    color: #fff;
+}
+
+nav {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px 0;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+header {
+    text-align: center;
+    margin-top: 50px;
 }
 
 .container {
     max-width: 400px;
-    margin: 100px auto;
+    margin: 0 auto;
     padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
-    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .form-group {
     margin-bottom: 20px;
 }
 
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input[type="email"],
-input[type="text"],
-input[type="password"] {
+.form-group input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 5px;
+    background-color: #f0f0f0;
+    color: #333;
 }
 
 button[type="submit"] {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
-    color: #fff;
     border: none;
     border-radius: 5px;
+    background-color: #007bff; /* Celeste */
+    color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-
-nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin-right: 10px;
+    background-color: #0056b3; /* Azul */
 }
 
 footer {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 50px;
 }

@@ -26,20 +26,38 @@
     <main>
         <h2>Seleccione una Dificultad para <%= selected_game.capitalize %></h2>
         <div class="difficulty-buttons">
-            <form action="/trivia/A" method="get">
+            <form action="/trivia/A/1" method="get">
                 <button type="submit" class="difficulty-button">Principiante</button>
             </form>
-            <form action="/trivia/B" method="get">
+            <form action="/trivia/B/1" method="get">
                 <button type="submit" class="difficulty-button">Casual</button>
             </form>
-            <form action="/trivia/C" method="get">
+            <form action="/trivia/C/1" method="get">
                 <button type="submit" class="difficulty-button">Profesional</button>
             </form>
-            <form action="/trivia/examen-final" method="get">
+            <form action="/trivia/F/1" method="get">
                 <button type="submit" class="difficulty-button">Examen Final</button>
             </form>
         </div>
     </main>
+        <script>
+        function selectDifficulty(difficulty) {
+        var test_letter;
+        if (difficulty === 'A') {
+            test_letter = 'test_a';
+        } else if (difficulty === 'B') {
+            test_letter = 'test_b';
+        } else if (difficulty === 'C') {
+         test_letter = 'test_c';
+        } else if (difficulty === 'F') {
+            test_letter = 'test_f';
+        }
+
+        var form = document.getElementById('triviaForm');
+        form.action = '/trivia/' + test_letter + '/1';
+        form.submit();
+        }       
+    </script>
 </body>
 </html>
 

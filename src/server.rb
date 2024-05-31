@@ -35,8 +35,7 @@ class App < Sinatra::Application
   set :session_secret, 'super secret'
 
   set :views, File.join(File.dirname(__FILE__), 'views')
-  set :styles, File.join(File.dirname(__FILE__), 'styles')
-  set :public_folder, File.join(File.dirname(__FILE__), 'assets')
+  set :public_folder, File.join(File.dirname(__FILE__), 'styles')
   
   configure :development do
     register Sinatra::Reloader
@@ -52,7 +51,11 @@ class App < Sinatra::Application
   end
 
   get '/' do
-    redirect '/login'
+    if session[:email]
+      redirect '/home'
+    else 
+      redirect '/login'
+    end
   end
 
   get '/signup' do
@@ -108,10 +111,20 @@ class App < Sinatra::Application
   end
 
   post '/home' do
-    selected_game = params[:game]
-    session[:selected_game] = selected_game
-    redirect "/difficult/#{selected_game}"
+    if session[:logged_in] == true
+      # Obtener el juego seleccionado desde los parámetros del formulario
+      selected_game = params[:game]
+      # Guardar el juego seleccionado en la sesión
+      session[:selected_game] = selected_game
+      # Redirigir al usuario a la página de selección de dificultad
+      redirect "/difficult/#{selected_game}"
+    else
+      redirect "/login"
+    end
   end
+  
+  
+  
 
   get '/difficult/:game' do
     selected_game = params[:game]
@@ -119,60 +132,53 @@ class App < Sinatra::Application
   end
 
   post '/difficult' do
-    difficulty = params[:difficult]
-    redirect "/trivia/#{difficulty}"
+    difficulty = params[:difficulty]
+    selected_game = session[:selected_game]
+    redirect "/trivia/#{difficulty}/#{selected_game}"
   end
   
 
- get '/trivia/:test_letter/:lesson_number' do
+
+  post '/submit_answer' do
+    test_letter = params[:test_letter]
+    question_number = params[:question_number].to_i
+    selected_option = params[:selected_option]
+  
+    # Encuentra la respuesta seleccionada
+    selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
+  
+    # Verifica si la respuesta es correcta
+    correct = selected_answer.correct
+  
+    # Encuentra la trivia correspondiente para mostrar la descripción
+    trivia = Trivia.find_by(number: question_number, test_letter: test_letter)
+  
+    # Renderiza la vista de resultado
+    erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter }
+  end
+  
+  get '/trivia/:test_letter/:question_number' do
     if session[:logged_in] == true
-
       test_letter = params[:test_letter]
-      lesson_number = params[:lesson_number]
-
-      @test = Test.find_by(letter: test_letter)
-      @trivia = Trivia.find_by(test_letter: test_letter, number: lesson_number)
-
-
-      # Se obtiene la letra del test que se corresponde con la leccion
-      related_test_letter = @trivia.test_letter
-
-      # Se obtienen todas las preguntas y las lecciones que estan relacionadas con el test
-      @questions = Question.where(test_letter: related_test_letter)
-      @trivias = Trivia.where(test_letter: related_test_letter)
-
-      # Se obtiene la ultima leccion
-      last_lesson_in_group = @trivias.last.number
-
-      # Se verifica si la leccion actual es la ultima
-      @current_is_last = @trivia.number == last_lesson_in_group
-
-      # Se obtiene la (supuesta) proxima leccion
-      next_lesson = @trivia.number + 1
-
-      # Se almacena la url a donde debera ser redirigido el usuario dependiendo de la situacion
-      @next_step = @current_is_last ? "/test/#{related_test_letter}/#{@questions.minimum(:number)}" : "/trivia/#{related_test_letter}/#{next_lesson}"
-
-      account = Account.find(session[:account_id])
-      trivia = Trivia.find_by(test_letter: test_letter, number: lesson_number)
-
-      if trivia
-        accounts_lesson = AccountLesson.find_by(lesson_id: trivia.id, account_id: account.id)
-
-        if accounts_lesson
-          # Actualizar el valor de lesson_completed
-          accounts_lesson.update(lesson_completed: true)
-        end
+      question_number = params[:question_number].to_i
+  
+      @question = Question.find_by(number: question_number, test_letter: test_letter)
+  
+      if @question
+        @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
+        @difficulty = params[:test_letter] # Aquí asignamos el valor de dificultad
+  
+        erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty }
+      else
+        redirect "/difficult/:game"
       end
-
-      erb :trivia
     else
-      redirect "/"
+      redirect "/home"
     end
   end
   
-  
-  
+
+
   get 'logout' do
     redirect '/'
   end
@@ -181,4 +187,6 @@ class App < Sinatra::Application
     session.clear
     redirect '/'
   end
+
+
 end

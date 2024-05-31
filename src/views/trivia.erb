@@ -25,32 +25,26 @@
     </header>
     <main>
         <h2>Trivia <%= @difficulty.capitalize %></h2>
-        <form action="/submit_trivia" method="post">
-            <% @questions.each do |question| %>
-                <div class="question-box">
-                    <div class="question">
-                        <b><%= question.description %></b>
-                    </div>
-                    <!-- Formulario para enviar la respuesta de esta pregunta -->
-                    <form action="/submit_answer" method="post">
-                        <input name="question_number" value="<%= question.number %>" hidden>
-                        <input name="test_letter" value="<%= question.test_letter %>" hidden>
-                        <!-- Opciones de respuesta -->
-                        <% question.answers.each do |answer| %>
-                            <label class="option-button">
-                                <input type="radio" name="selected_option" value="<%= answer.number %>" hidden>
-                                <b><%= answer.description %></b>
-                            </label>
-                        <% end %>
-                        <!-- Botón de envío -->
-                        <div class="answer-button" id="answerButton">
-                            <button type="submit"><b>Responder</b></button>
-                        </div>
-                    </form>
+        <form action="/submit_answer" method="post">
+            <div class="question-box">
+                <div class="question">
+                    <b><%= @question.description %></b>
                 </div>
-            <% end %>
+                <input name="question_number" value="<%= @question.number %>" hidden>
+                <input name="test_letter" value="<%= @question.test_letter %>" hidden>
+                <!-- Opciones de respuesta -->
+                <% @answers.each do |answer| %>
+                    <label class="option-button">
+                        <input type="radio" name="selected_option" value="<%= answer.number %>">
+                        <b><%= answer.description %></b>
+                    </label>
+                <% end %>
+                <!-- Botón de envío -->
+                <div class="answer-button" id="answerButton">
+                    <button type="submit"><b>Responder</b></button>
+                </div>
+            </div>
         </form>
     </main>
 </body>
 </html>
-

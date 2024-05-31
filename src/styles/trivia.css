@@ -90,3 +90,30 @@ button {
 button:hover {
     background-color: #555;
 }
+
+/* Estilo del contenedor de opciones */
+.option-button {
+    display: block;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Estilo del botón de radio oculto */
+.option-button input[type="radio"] {
+    display: none;
+}
+
+/* Estilo cuando se selecciona una opción */
+.option-button.selected {
+    background-color: #e0f7fa;
+    border-color: #00bcd4;
+}
+
+/* Efecto de hover para el botón de opción */
+.option-button:hover {
+    background-color: #f1f1f1;
+}

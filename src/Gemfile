@@ -12,5 +12,10 @@ end
 gem 'sinatra-activerecord'
 gem 'sqlite3'
 gem 'rake'
-#gem 'rspec'
-#gem 'rack-test'
+
+
+
+group :test, :development do
+  gem 'rspec'
+  gem 'rack-test'
+end

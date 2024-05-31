@@ -16,8 +16,6 @@ require_relative 'models/account_test'
 require_relative 'models/account_game'
 require_relative 'models/account_answer'
 
-
-
 class App < Sinatra::Application
   def initialize(app = nil)
     super()
@@ -36,7 +34,7 @@ class App < Sinatra::Application
 
   set :views, File.join(File.dirname(__FILE__), 'views')
   set :public_folder, File.join(File.dirname(__FILE__), 'styles')
-  
+
   configure :development do
     register Sinatra::Reloader
     after_reload do
@@ -44,6 +42,15 @@ class App < Sinatra::Application
     end
   end
 
+  before do
+    @current_user = session[:account_id] && Account.find_by(id: session[:account_id])
+  end
+
+  helpers do
+    def logged_in?
+      !!@current_user
+    end
+  end
 
   get '/login' do
     error_message = params[:error]
@@ -51,9 +58,9 @@ class App < Sinatra::Application
   end
 
   get '/' do
-    if session[:email]
+    if logged_in?
       redirect '/home'
-    else 
+    else
       redirect '/login'
     end
   end
@@ -63,13 +70,12 @@ class App < Sinatra::Application
   end
 
   get '/home' do
-    if session[:email]
+    if logged_in?
       erb :home
     else
       redirect '/login'
     end
   end
-  
 
   post '/login' do
     nickname = params[:nickname]
@@ -78,6 +84,8 @@ class App < Sinatra::Application
 
     if account
       session[:email] = account.email
+      session[:account_id] = account.id
+      session[:logged_in] = true
       redirect '/home'
     else
       redirect '/login?error=Invalid-username-or-password'
@@ -111,7 +119,7 @@ class App < Sinatra::Application
   end
 
   post '/home' do
-    if session[:logged_in] == true
+    if logged_in?
       # Obtener el juego seleccionado desde los parámetros del formulario
       selected_game = params[:game]
       # Guardar el juego seleccionado en la sesión
@@ -122,64 +130,70 @@ class App < Sinatra::Application
       redirect "/login"
     end
   end
-  
-  
-  
 
   get '/difficult/:game' do
-    selected_game = params[:game]
-    erb :difficult, locals: { selected_game: selected_game }
+    if logged_in?
+      selected_game = params[:game]
+      erb :difficult, locals: { selected_game: selected_game }
+    else
+      redirect "/login"
+    end
   end
 
   post '/difficult' do
-    difficulty = params[:difficulty]
-    selected_game = session[:selected_game]
-    redirect "/trivia/#{difficulty}/#{selected_game}"
+    if logged_in?
+      difficulty = params[:difficulty]
+      selected_game = session[:selected_game]
+      redirect "/trivia/#{difficulty}/#{selected_game}"
+    else
+      redirect "/login"
+    end
   end
-  
-
 
   post '/submit_answer' do
-    test_letter = params[:test_letter]
-    question_number = params[:question_number].to_i
-    selected_option = params[:selected_option]
-  
-    # Encuentra la respuesta seleccionada
-    selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
-  
-    # Verifica si la respuesta es correcta
-    correct = selected_answer.correct
-  
-    # Encuentra la trivia correspondiente para mostrar la descripción
-    trivia = Trivia.find_by(number: question_number, test_letter: test_letter)
-  
-    # Renderiza la vista de resultado
-    erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter }
-  end
-  
-  get '/trivia/:test_letter/:question_number' do
-    if session[:logged_in] == true
+    if logged_in?
       test_letter = params[:test_letter]
       question_number = params[:question_number].to_i
-  
+      selected_option = params[:selected_option]
+
+      # Encuentra la respuesta seleccionada
+      selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
+
+      # Verifica si la respuesta es correcta
+      correct = selected_answer.correct
+
+      # Encuentra la trivia correspondiente para mostrar la descripción
+      trivia = Trivia.find_by(number: question_number, test_letter: test_letter)
+
+      # Renderiza la vista de resultado
+      erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter }
+    else
+      redirect "/login"
+    end
+  end
+
+  get '/trivia/:test_letter/:question_number' do
+    if logged_in?
+      test_letter = params[:test_letter]
+      question_number = params[:question_number].to_i
+
       @question = Question.find_by(number: question_number, test_letter: test_letter)
-  
+
       if @question
         @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
         @difficulty = params[:test_letter] # Aquí asignamos el valor de dificultad
-  
+
         erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty }
       else
-        redirect "/difficult/:game"
+        redirect "/difficult/#{session[:selected_game]}"
       end
     else
-      redirect "/home"
+      redirect "/login"
     end
   end
-  
 
-
-  get 'logout' do
+  get '/logout' do
+    session.clear
     redirect '/'
   end
 
@@ -187,6 +201,4 @@ class App < Sinatra::Application
     session.clear
     redirect '/'
   end
-
-
 end

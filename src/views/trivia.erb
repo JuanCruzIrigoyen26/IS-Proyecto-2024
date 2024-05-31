@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trivia - KnowAboutEsports</title>
-    <link rel="shortcut icon" type="image/x-icon" href="../assets/imagenes/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="<%=url('favicon.png')%>">
     <link rel="stylesheet" type="text/css" href="<%= url('trivia.css') %>"/>
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="../assets/imagenes/favicon.ico" width="50" height="50" alt="Logotipo de KnowAboutEsports" title="Logotipo hecho por el equipo de KnowAboutEsports">
+            <img src="<%=url('favicon.png')%>" width="50" height="50" alt="Logotipo de KnowAboutEsports" title="Logotipo hecho por el equipo de KnowAboutEsports">
             <h1><a href="/home">KnowAboutEsports</a></h1>
         </div>
         <nav>
@@ -24,27 +24,29 @@
         </nav>
     </header>
     <main>
-        <h2>Trivia <%= @difficulty.capitalize %></h2>
-        <form action="/submit_answer" method="post">
-            <div class="question-box">
-                <div class="question">
-                    <b><%= @question.description %></b>
+        <section class="wrapper">
+            <h2>Trivia <%= @difficulty.capitalize %></h2>
+            <form action="/submit_answer" method="post">
+                <div class="question-box">
+                    <div class="question">
+                        <b><%= @question.description %></b>
+                    </div>
+                    <input name="question_number" value="<%= @question.number %>" hidden>
+                    <input name="test_letter" value="<%= @question.test_letter %>" hidden>
+                    <!-- Opciones de respuesta -->
+                    <% @answers.each do |answer| %>
+                        <label class="option-button">
+                            <input type="radio" name="selected_option" value="<%= answer.number %>">
+                            <b><%= answer.description %></b>
+                        </label>
+                    <% end %>
+                    <!-- Botón de envío -->
+                    <div class="answer-button" id="answerButton">
+                        <button type="submit"><b>Responder</b></button>
+                    </div>
                 </div>
-                <input name="question_number" value="<%= @question.number %>" hidden>
-                <input name="test_letter" value="<%= @question.test_letter %>" hidden>
-                <!-- Opciones de respuesta -->
-                <% @answers.each do |answer| %>
-                    <label class="option-button">
-                        <input type="radio" name="selected_option" value="<%= answer.number %>">
-                        <b><%= answer.description %></b>
-                    </label>
-                <% end %>
-                <!-- Botón de envío -->
-                <div class="answer-button" id="answerButton">
-                    <button type="submit"><b>Responder</b></button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </section>    
     </main>
 </body>
 </html>

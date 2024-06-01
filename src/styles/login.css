@@ -7,14 +7,23 @@ body {
     color: black;
 }
 
-.container-box {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
+header, .container, footer {
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 2px 20px; /* Reducido el padding para que sean más bajos */
+    background-color: rgba(255, 255, 255, 0.267);
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+header {
+    margin-top: -140px;
+}
+
+.container {
+    margin-top: 20px;
 }
 
 nav {
@@ -40,15 +49,24 @@ nav ul li a {
     font-size: 16px;
 }
 
-header {
-    text-align: center;
-    margin-top: 50px;
+footer, p, h1, h2, h3, h4, h5, h6 {
+    background-color: rgba(255, 255, 255, 0.267);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 10px;
 }
 
-.container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    margin-right: 10px;
+}
+
+footer {
+    font-size: 15px;
 }
 
 .form-group {
@@ -56,7 +74,7 @@ header {
 }
 
 .form-group input {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -69,16 +87,16 @@ button[type="submit"] {
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff; /* Celeste */
+    background-color: #007bff;
     color: #fff;
     cursor: pointer;
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3; /* Azul */
+    background-color: #0056b3;
 }
 
 footer {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 20px;
 }

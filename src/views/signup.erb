@@ -7,40 +7,32 @@
     <link rel="stylesheet" type ="text/css" href="<%=url('signup.css')%>">
 </head>
 <body>
+    <div class="logo">
+        <img src="<%=url('favicon.png')%>" width="150" height="150" alt="Logotipo de KnowAboutEsports" title="Logotipo hecho por el equipo de KnowAboutEsports">
+    </div>
+    <header>
+        <h1>Registrate en la mejor plataforma para aprender sobre Esports</h1>
+    </header>
 
-<nav>
-    <ul>
-        <li><a href="/">Inicio</a></li>
-        <li><a href="/contact">Contacto</a></li>
-    </ul>
-</nav>
-
-<header>
-    <h1>Registrarse en KnowAboutEsports</h1>
-</header>
-
-<div class="container">
-    <form action="/signup" method="post">
-        <div class="form-group">
-            <input type="email" id="email" name="email" required placeholder="Correo Electronico">
-        </div>
-        <div class="form-group">
-            <input type="text" id="name" name="name" required placeholder="Nombre">
-        </div>
-        <div class="form-group"> 
-            <input type="text" id="nickname" name="nickname" required placeholder="Nombre de Usuario"> 
-        </div>
-        <div class="form-group">
-            <input type="password" id="password" name="password" required placeholder="Contraseña">
-        </div>
-        <button type="submit">Registrarse</button>
-    </form>
-</div>
-
-
-<footer>
-    <p>&copy; 2024 KnowAboutEsports. Todos los derechos reservados.</p>
-</footer>
-
+    <div class="container">
+        <form action="/signup" method="post">
+            <div class="form-group">
+                <input type="email" id="email" name="email" required placeholder="Correo Electronico">
+            </div>
+            <div class="form-group">
+                <input type="text" id="name" name="name" required placeholder="Nombre">
+            </div>
+            <div class="form-group"> 
+                <input type="text" id="nickname" name="nickname" required placeholder="Nombre de Usuario"> 
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" name="password" required placeholder="Contraseña">
+            </div>
+            <button type="submit">Registrarse</button>
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2024 KnowAboutEsports. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>

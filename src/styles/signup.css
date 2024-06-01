@@ -4,44 +4,41 @@ body {
     font-family: Arial, sans-serif;
     background-image: url('https://venturebeat.com/wp-content/uploads/2018/02/esports.jpg?fit=3500%2C2317&strip=all');
     background-size: cover;
-    color: #fff;
+    color: black;
 }
 
-nav {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 10px 0;
-}
-
-nav ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+header, footer {
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 1px 20px;
+    background-color: rgba(255, 255, 255, 0.267);
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
     text-align: center;
-}
-
-nav ul li {
-    display: inline;
-    margin-right: 20px;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-header {
-    text-align: center;
-    margin-top: 50px;
 }
 
 .container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 20px 20px;
+    background-color: rgba(255, 255, 255, 0.267);
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+header {
+    margin-top: -140px;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+footer {
+    font-size: 15px;
 }
 
 .form-group {
@@ -49,7 +46,7 @@ header {
 }
 
 .form-group input {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -62,16 +59,23 @@ button[type="submit"] {
     padding: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff; /* Celeste */
+    background-color: #007bff;
     color: #fff;
     cursor: pointer;
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3; /* Azul */
+    background-color: #0056b3;
 }
 
 footer {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 20px;
+}
+
+footer, p, h1, h2, h3, h4, h5, h6 {
+    background-color: rgba(255, 255, 255, 0.267);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 10px;
 }

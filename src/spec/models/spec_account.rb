@@ -1,4 +1,16 @@
+require_relative '../../models/init'
 require_relative '../../models/account'
+require_relative '../../models/test'
+require_relative '../../models/trivia'
+require_relative '../../models/question'
+require_relative '../../models/answer'
+require_relative '../../models/game'
+require_relative '../../models/account_test'
+require_relative '../../models/account_trivias'
+require_relative '../../models/account_game'
+require_relative '../../models/account_answer'
+
+
 
 describe Account do
   describe 'Valid' do

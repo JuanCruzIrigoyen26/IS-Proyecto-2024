@@ -24,7 +24,12 @@
         </nav>
     </header>
     <main>
-        <h2>Seleccione una Dificultad para <%= selected_game.capitalize %></h2>
+        <h2>Seleccione el tipo de cuestionario para <%= selected_game.upcase  %></h2>
+         <% if params[:completed_trivia] %>
+            <div class="completion-message">
+                <p>¡Has completado la trivia de dificultad <%= params[:completed_trivia] %>!</p>
+            </div>
+        <% end %>
         <div class="difficulty-buttons">
             <form action="/trivia/A/1" method="get">
                 <button type="submit" class="difficulty-button">Principiante</button>
@@ -35,7 +40,12 @@
             <form action="/trivia/C/1" method="get">
                 <button type="submit" class="difficulty-button">Profesional</button>
             </form>
-            <form action="/trivia/F/1" method="get">
+            <% if error == 'complete_all_trivias' %>
+            <div class="error-message">
+                <p>Debe completar todas las trivias antes de acceder al examen final.</p>
+            </div>
+            <% end %>
+            <form action="/final_exam/F/1" method="get">
                 <button type="submit" class="difficulty-button">Examen Final</button>
             </form>
         </div>

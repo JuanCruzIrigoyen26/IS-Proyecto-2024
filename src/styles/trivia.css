@@ -1,18 +1,73 @@
 @import url('common.css');
 
-/* Estilos para el contenedor principal */
-main {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family:  system-ui;
-  width: 100%;
-  flex-grow: 1;
+body {
+  font-family: 'Motiva', sans;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
 }
 
-/* Estilos para el contenedor de la trivia */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px; /* Ajusta el padding para dar más espacio a la izquierda */
+  background-color: rgb(3, 89, 146); /* Ajusta el color según tu diseño */
+}
+
+header .logo {
+  display: flex;
+  align-items: center; /* Esto alinea la imagen y el texto verticalmente */
+  margin-right: auto; /* Asegura que la logo esté a la izquierda */
+}
+
+header .logo img {
+  margin-right: 5px; /* Ajusta el margen según sea necesario */
+}
+
+header .logo h1 {
+  margin: 0;
+}
+
+header nav {
+  display: flex;
+}
+
+header ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+header ul.left-nav, header ul.right-nav {
+  display: flex;
+}
+
+header ul.left-nav li, header ul.right-nav li {
+  margin: 0 10px;
+}
+
+header a {
+  text-decoration: none;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+header a:hover {
+  background-color: #007BFF;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  flex-direction: column;
+}
+
 .wrapper {
   width: 80%;
   max-width: 800px;
@@ -23,9 +78,15 @@ main {
   text-align: center;
 }
 
+h2 {
+  color: #333;
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
 /* Estilos para las preguntas */
 .question {
-  background-color: white;
+  background-color: #f5f5f5;
   margin: 20px 0;
   padding: 20px;
   border-radius: 8px;
@@ -37,40 +98,61 @@ main {
   margin: 0 0 20px;
 }
 
+.question b {
+  color: #333;
+  font-size: 25px;
+  margin-bottom: 30px;
+}
+
 /* Estilos para el botón de respuesta */
 .answer-button {
-  width: 100%; /* Ancho al 100% del contenedor */
+  width: 100%;
   height: 50px;
-  background-color: #28a745; /* Verde */
+  background-color: #218838;
   border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: #333;
   font-size: 16px;
-  margin: 10px 0; /* Margen superior e inferior de 10px */
+  margin: 10px 0;
   cursor: pointer;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   outline: none;
   transition: transform 0.2s;
+  border: 1px solid #ccc;
 }
 
 .answer-button:hover {
-  background-color: #218838; /* Verde más oscuro al pasar el mouse */
+  transform: scale(1.05);
+  background-color: #28a745;
+}
+
+.answer-button button{
+  font-size: 16px;
+  background-color: #218838;
+  border: none;
+  font-family: 'Motiva', sans;
+  color: white;
+}
+
+.answer-button button:hover {
+  transform: scale(1.05);
+  background-color: #28a745;
 }
 
 /* Estilos para las opciones de respuesta */
 .option-button {
-  width: 100%; /* Ancho al 100% del contenedor */
+  width: 100%;
   height: 50px;
-  background-color: rgb(92, 92, 210);
+  background-color: rgb(3, 89, 146);
   border-radius: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   font-size: 16px;
-  margin: 10px 0; /* Margen superior e inferior de 10px */
+  margin: 10px 0;
   cursor: pointer;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   outline: none;
@@ -79,6 +161,7 @@ main {
 
 .option-button:hover {
   transform: scale(1.05);
+  background-color: #007BFF;
 }
 
 /* Asegurar que todo el botón se pinte de celeste cuando se seleccione */

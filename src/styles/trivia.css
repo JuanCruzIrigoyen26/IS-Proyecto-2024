@@ -129,12 +129,15 @@ h2 {
 }
 
 .answer-button button{
-  font-size: 16px;
+  font-size: 16px; 
+  padding: 13px 330px;
   background-color: #218838;
   border: none;
   font-family: 'Motiva', sans;
   color: white;
+  border-radius: 5px;
 }
+
 
 .answer-button button:hover {
   transform: scale(1.05);

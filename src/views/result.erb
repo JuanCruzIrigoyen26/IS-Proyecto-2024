@@ -24,20 +24,22 @@
         </nav>
     </header>
     <main>
-        <% if correct %>
-            <h1>¡Correcto!</h1>
-        <% else %>
-            <h1>Incorrecto</h1>
-        <% end %>
-        <p><%= description %></p>
-        <% if trivia_completed %>
-            <p>¡Has completado la trivia!</p>
-            <a href="/difficult/<%= session[:selected_game] %>?completed_trivia=<%= test_letter %>">Continuar</a>
-        <% else %>
-            <form action="/trivia/<%= test_letter %>/<%= question_number + 1 %>" method="get">
-                <button type="submit">Siguiente</button>
-            </form>
-        <% end %>
+        <section class="wrapper">
+            <% if correct %>
+                <h1>¡Correcto!</h1>
+            <% else %>
+                <h1>Incorrecto</h1>
+            <% end %>
+            <p><%= description %></p>
+            <% if trivia_completed %>
+                <p>¡Has completado la trivia!</p>
+                <a href="/difficult/<%= session[:selected_game] %>?completed_trivia=<%= test_letter %>">Continuar</a>
+            <% else %>
+                <form action="/trivia/<%= test_letter %>/<%= question_number + 1 %>" method="get">
+                    <button type="submit">Siguiente</button>
+                </form>
+            <% end %>
+        </section>
     </main>
 </body>
 </html>

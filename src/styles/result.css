@@ -1,34 +1,95 @@
 @import url('common.css');
 
 body {
-    font-family:  system-ui;
-    background-color: #f4f4f4;
+    font-family: 'Motiva', sans;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+  }
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: rgb(3, 89, 146);
+  }
+  
+  header .logo {
+    display: flex;
+    align-items: center; /* Esto alinea la imagen y el texto verticalmente */
+    margin-right: auto; /* Asegura que la logo esté a la izquierda */
+  }
+  
+  header .logo img {
+    margin-right: 5px; /* Ajusta el margen según sea necesario */
+  }
+  
+  header .logo h1 {
+    margin: 0;
+  }
+  
+  header nav {
+    display: flex;
+  }
+  
+  header ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  header ul.left-nav, header ul.right-nav {
+    display: flex;
+  }
+  
+  header ul.left-nav li, header ul.right-nav li {
+    margin: 0 10px;
+  }
+  
+  header a {
+    text-decoration: none;
     color: #333;
-    text-align: center;
-    padding: 20px;
-}
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  header a:hover {
+    background-color: #007BFF;
+  }
 
 main {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    max-width: 600px;
-    margin: 40px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    flex-direction: column;
 }
 
+.wrapper {
+    width: 80%;
+    max-width: 800px;
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+  }
+
 h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
+    font-size: 40px;
+    margin-bottom: 50px;
 }
 
 p {
-    font-size: 1.2em;
-    margin-bottom: 20px;
+    font-size: 25px;
+    margin-bottom: 50px;
 }
 
 button {
-    background-color: #28a745;
+    background-color: #218838;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -38,5 +99,6 @@ button {
 }
 
 button:hover {
-    background-color: #218838;
+    transform: scale(1.05);
+    background-color: #28a745;
 }

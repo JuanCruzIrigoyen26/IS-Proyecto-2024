@@ -17,7 +17,6 @@ class Account < ActiveRecord::Base
   after_commit :update_progress
 
   def update_progress
-
     total_levels = Test.distinct.count(:letter)
     total_progress = 100
     level_progress = total_levels != 0 ? total_progress / total_levels : 0
@@ -36,4 +35,3 @@ class Account < ActiveRecord::Base
     update_column(:progress, updated_progress)
   end
 end
-

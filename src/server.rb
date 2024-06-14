@@ -125,12 +125,32 @@ class App < Sinatra::Application
   post '/home' do
     if logged_in?
       selected_game = params[:game]
+      account_id = session[:account_id]
       session[:selected_game] = selected_game
-      redirect "/difficult/#{selected_game}"
+
+      if Account.exists?(id: account_id)
+        if Game.exists?(id: selected_game)
+          account_game = AccountGame.find_or_initialize_by(account_id: account_id, game_id: selected_game)
+          if account_game.save
+            redirect "/difficult/#{selected_game}"
+          else
+            status 400
+            body "Unable to save AccountGame."
+          end
+        else
+          status 400
+          body "Game ID does not exist."
+        end
+      else
+        status 400
+        body "Account ID does not exist."
+      end
     else
       redirect "/login"
     end
   end
+
+
 
   get '/difficult/:game' do
     if session[:logged_in]

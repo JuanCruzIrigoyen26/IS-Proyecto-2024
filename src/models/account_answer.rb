@@ -1,4 +1,5 @@
 class AccountAnswer < ActiveRecord::Base
+  self.table_name = 'account_answers'
     belongs_to :account
     belongs_to :question
     belongs_to :answer

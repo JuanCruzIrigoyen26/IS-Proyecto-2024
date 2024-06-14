@@ -1,20 +1,86 @@
 @import url('common.css');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: system-ui;
     margin: 0;
     padding: 0;
     background-color: #f5f5f5;
 }
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* Ajusta el padding para dar más espacio a la izquierda */
+    background-color: rgb(3, 89, 146); /* Ajusta el color según tu diseño */
+}
+
+header .logo {
+    display: flex;
+    align-items: center; /* Esto alinea la imagen y el texto verticalmente */
+    margin-right: auto; /* Asegura que la logo esté a la izquierda */
+}
+
+header .logo img {
+    margin-right: 5px; /* Ajusta el margen según sea necesario */
+}
+
+header .logo h1 {
+    margin: 0;
+}
+
+header nav {
+    display: flex;
+}
+
+header ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+header ul.left-nav, header ul.right-nav {
+    display: flex;
+}
+
+header ul.left-nav li, header ul.right-nav li {
+    margin: 0 10px;
+}
+
+header a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+header a:hover {
+    background-color: #007BFF;
+}
+
 main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    flex-direction: column;
+}
+
+.wrapper {
+    width: 80%;
+    max-width: 800px;
+    background-color: #fff;
     padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
-main h2 {
+h2 {
     color: #333;
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .difficulty-buttons {
@@ -26,7 +92,7 @@ main h2 {
 .difficulty-button {
     margin: 10px 0;
     padding: 15px 30px;
-    background-color: #007BFF;
+    background-color: #0056b3;
     color: white;
     border: none;
     border-radius: 5px;
@@ -36,5 +102,6 @@ main h2 {
 }
 
 .difficulty-button:hover {
-    background-color: #0056b3;
+    transform: scale(1.05);
+    background-color: #007BFF;
 }

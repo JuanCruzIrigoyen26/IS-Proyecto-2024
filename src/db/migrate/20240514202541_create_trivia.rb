@@ -1,6 +1,6 @@
 class CreateTrivia < ActiveRecord::Migration[7.0]
   def change
-    create_table :trivia do |t|
+    create_table :trivias do |t|
       t.integer :number
       t.string :title
       t.text :description

@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultado de la Trivia - KnowAboutEsports</title>
-    <link rel="shortcut icon" type="image/x-icon" href="<%=url('favicon.png')%>">
+    <link rel="shortcut icon" type="image/x-icon" href="<%= url('favicon.png') %>">
     <link rel="stylesheet" type="text/css" href="<%= url('result.css') %>"/>
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="<%=url('favicon.png')%>" width="50" height="50" alt="Logotipo de KnowAboutEsports" title="Logotipo hecho por el equipo de KnowAboutEsports">
+            <img src="<%= url('favicon.png') %>" width="50" height="50" alt="Logotipo de KnowAboutEsports" title="Logotipo hecho por el equipo de KnowAboutEsports">
             <h1><a href="/home">KnowAboutEsports</a></h1>
         </div>
         <nav>
@@ -24,15 +24,22 @@
         </nav>
     </header>
     <main>
-        <% if correct %>
-            <h1>¡Correcto!</h1>
-        <% else %>
-            <h1>Incorrecto</h1>
-        <% end %>
-        <p><%= description %></p>
-        <form action="/trivia/<%= test_letter %>/<%= question_number + 1 %>" method="get">
-            <button type="submit">Siguiente</button>
-        </form>
+        <section class="wrapper">
+            <% if correct %>
+                <h1>¡Correcto!</h1>
+            <% else %>
+                <h1>Incorrecto</h1>
+            <% end %>
+            <p><%= description %></p>
+            <% if trivia_completed %>
+                <p>¡Has completado la trivia!</p>
+                <a href="/difficult/<%= session[:selected_game] %>?completed_trivia=<%= test_letter %>">Continuar</a>
+            <% else %>
+                <form action="/trivia/<%= test_letter %>/<%= question_number + 1 %>" method="get">
+                    <button type="submit">Siguiente</button>
+                </form>
+            <% end %>
+        </section>
     </main>
 </body>
 </html>

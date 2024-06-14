@@ -5,13 +5,18 @@ AccountGame = Class.new(ActiveRecord::Base)
 
 
 # Game 1
-
-game_1 = Game.create(number: 1, name: "Counter Strike 2", genre: "FPS")
-
-
-#Test A
-test_a = Test.create(letter: "A", description: "Conceptos de Principiante", cant_questions: 5, game_number: game_1.number)
-
+game_1 = Game.find_or_create_by!(number: 1) do |game|
+    game.name = "Counter Strike 2"
+    game.genre = "FPS"
+  end
+  
+  # Crear un test
+  test_a = Test.find_or_create_by!(letter: "A") do |test|
+    test.description = "Conceptos de Principiante"
+    test.cant_questions = 5
+    test.game_number = game_1.number
+  end
+  
 trivia_a1 = Trivia.create(number: 1, title: "CT", description: "CT se los llama al equipo de los Antiterroristas de CS2, los cuales se encargan de defender puntos de plantación de bomba y neutralizar al equipo contrario, los terroristas o TT.", test_letter: test_a.letter, mode: "beginner")
 trivia_a2 = Trivia.create(number: 2, title: "Dropear", description: "En una partida un jugador Dropea cuando su economia (Cantidad de dinero) es buena y la de un compañero es mala, le pasas un arma para contribuir en la economia del equipo y generar mejores resultados en la ronda.", test_letter: test_a.letter, mode: "beginner")
 trivia_a3 = Trivia.create(number: 3, title: "Fake", description: "Fake es generar una accion para engañar al contrincante, así obtener un resultado favorable en la partida. Un Fake puede aplicarse de diversas maneras en CS2. Por ejemplo: Hacer creer al enemigo que los TTs van a A y en realidad van a B, defusear por un momento la bomba para engañar al terrorista con el sonido del juego, hacer una entrada falsa con granadas para rotar al otro punto de plantado, etc.", test_letter: test_a.letter, mode: "beginner")
@@ -106,4 +111,31 @@ answer_c15 = Answer.create(number: 3, description: "Cuando lanzas un arma saltan
 
 #Test F
 test_f = Test.create(letter: "F", description: "Examen Final de Conceptos Competitivos", cant_questions: 15, game_number:game_1.number)
-#Por determinar
+
+trivia_f1 = Trivia.create(number: 1, title: "", description: "", test_letter: test_f.letter, mode: "FinalExam")
+trivia_f2 = Trivia.create(number: 2, title: "", description: "", test_letter: test_f.letter, mode: "FinalExam")
+trivia_f3 = Trivia.create(number: 3, title: "", description: "", test_letter: test_f.letter, mode: "FinalExam")
+trivia_f4 = Trivia.create(number: 4, title: "", description: "", test_letter: test_f.letter, mode: "FinalExam")
+trivia_f5 = Trivia.create(number: 5, title: "", description: "", test_letter: test_f.letter, mode: "FinalExam")
+
+question_f1 = Question.create(number: 1, description: "¿Donde debemos plantar la bomba?", test_letter: test_f.letter)
+question_f2 = Question.create(number: 2, description: "", test_letter: test_f.letter)
+question_f3 = Question.create(number: 3, description: "", test_letter: test_f.letter)
+question_f4 = Question.create(number: 4, description: "", test_letter: test_f.letter)
+question_f5 = Question.create(number: 5, description: "", test_letter: test_f.letter)
+
+answer_f1 = Answer.create(number: 1, description: "En el site", correct: true, question_number: question_f1.number, test_letter: test_f.letter)
+answer_f2 = Answer.create(number: 2, description: "En cualquier parte del mapa", correct: false, question_number: question_f1.number, test_letter: test_f.letter)
+answer_f3 = Answer.create(number: 3, description: "En un lugar escondido", correct: false, question_number: question_f1.number, test_letter: test_f.letter)
+answer_f4 = Answer.create(number: 1, description: "", correct: false, question_number: question_f2.number, test_letter: test_f.letter)
+answer_f5 = Answer.create(number: 2, description: "", correct: false, question_number: question_f2.number, test_letter: test_f.letter)
+answer_f6 = Answer.create(number: 3, description: "", correct: true, question_number: question_f2.number, test_letter: test_f.letter)
+answer_f7 = Answer.create(number: 1, description: "", correct: true, question_number: question_f3.number, test_letter: test_f.letter)
+answer_f8 = Answer.create(number: 2, description: "", correct: false, question_number: question_f3.number, test_letter: test_f.letter)
+answer_f9 = Answer.create(number: 3, description: "", correct: false, question_number: question_f3.number, test_letter: test_f.letter)
+answer_f10 = Answer.create(number: 1, description: "", correct: false, question_number: question_f4.number, test_letter: test_f.letter)
+answer_f11 = Answer.create(number: 2, description: "", correct: false, question_number: question_f4.number, test_letter: test_f.letter)
+answer_f12 = Answer.create(number: 3, description: "", correct: true, question_number: question_f4.number, test_letter: test_f.letter)
+answer_f13 = Answer.create(number: 1, description: "", correct: false, question_number: question_f5.number, test_letter: test_f.letter)
+answer_f14 = Answer.create(number: 2, description: "", correct: true, question_number: question_f5.number, test_letter: test_f.letter)
+answer_f15 = Answer.create(number: 3, description: "", correct: false, question_number: question_f5.number, test_letter: test_f.letter)

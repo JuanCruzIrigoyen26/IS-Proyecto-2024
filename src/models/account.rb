@@ -28,9 +28,9 @@ class Account < ActiveRecord::Base
     completed_tests_progress = completed_tests * test_progress
 
     total_trivias = Trivia.distinct.count(:test_letter)
-    completed_trivias = account_trivias.where(trivia_completed: true).count
-    trivia_progress = total_trivias != 0 ? level_progress / (2 * total_trivias) : 0
-    completed_trivias_progress = completed_trivias * trivia_progress
+    completed_trivias = account_trivias.where(trivias_completed: true).count
+    trivias_progress = total_trivias != 0 ? level_progress / (2 * total_trivias) : 0
+    completed_trivias_progress = completed_trivias * trivias_progress
 
     updated_progress = completed_tests_progress + completed_trivias_progress
     update_column(:progress, updated_progress)

@@ -280,51 +280,78 @@ class App < Sinatra::Application
   end
 
 
-  post '/submit_trivia_answer' do
-    if session[:logged_in]
-      account_id = session[:account_id]
-      question_number = params[:question_number].to_i
-      test_letter = params[:test_letter]
-      selected_option = params[:selected_option]
-  
-      @question = Question.find_by(number: question_number, test_letter: test_letter)
-  
-      if @question
-        if selected_option
-          selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
+post '/submit_trivia_answer' do
+  if session[:logged_in]
+    account_id = session[:account_id]
+    question_number = params[:question_number].to_i
+    test_letter = params[:test_letter]
+    selected_option = params[:selected_option]
+
+    @question = Question.find_by(number: question_number, test_letter: test_letter)
+
+    if @question
+      if selected_option
+        selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
+
+        if selected_answer
           correct = selected_answer.correct
-  
+
           # Buscar si ya existe una entrada en AccountAnswer para esta pregunta y cuenta
           account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
-          account_answer.update(answer_id: selected_option)
-  
+          account_answer.update(answer_id: selected_answer.id, correct: correct)
+
           trivia = Trivia.find_by(number: question_number, test_letter: test_letter)
-  
-          next_question_number = question_number + 1
-          if question_number == 5
-            AccountTrivia.find_or_create_by(account_id: account_id, test_letter: test_letter) do |account_trivia|
-              account_trivia.trivia_completed = true
-              account_trivia.correct_questions = AccountAnswer.joins(:answer).where(account_id: account_id, answers: { correct: true }).count
+
+          # Encontrar el ID del test usando test_letter
+          test = Test.find_by(letter: test_letter)
+          if test
+            test_id = test.id
+
+            next_question_number = question_number + 1
+            if question_number == 5
+              
+                account_test = AccountTest.find_or_create_by(account_id: account_id, test_id: test_id)
+                
+                account_test.update(
+                  test_completed: true,
+                  correct_answers: correct_answers_count
+                )
+
+                # Contar las respuestas correctas
+                correct_answers_count = AccountAnswer.where(account_id: account_id, correct: true).count
+
+
+                erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter, trivia_completed: true }
+            else
+              erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter, trivia_completed: false }
             end
-  
-            erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter, trivia_completed: true }
           else
-            erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter, trivia_completed: false }
+            erb :trivia, locals: { question: @question, answers: Answer.where(question_number: @question.number, test_letter: test_letter).shuffle, difficulty: test_letter, error: 'Test no encontrado.' }
           end
         else
-          # Si no se seleccionó ninguna opción
+          # Si no se encuentra la respuesta seleccionada
           @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
           @difficulty = test_letter
-  
-          erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'Debes seleccionar una opción antes de continuar.' }
+
+          erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'La opción seleccionada no es válida. Por favor, selecciona otra opción.' }
         end
       else
-        redirect "/difficult/#{session[:selected_game]}"
+        # Si no se seleccionó ninguna opción
+        @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
+        @difficulty = test_letter
+
+        erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'Debes seleccionar una opción antes de continuar.' }
       end
     else
-      redirect "/home"
+      redirect "/difficult/#{session[:selected_game]}"
     end
+  else
+    redirect "/home"
   end
+end
+
+  
+  
   
   post '/submit_final_answer' do
     selected_option = params[:selected_option]

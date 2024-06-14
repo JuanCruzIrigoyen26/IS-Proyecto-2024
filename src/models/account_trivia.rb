@@ -1,9 +1,10 @@
  class AccountTrivia < ActiveRecord::Base
+    self.table_name = 'account_trivias'
+    
     validates :trivia_completed, inclusion: { in: [true, false] }
-    validates :correct_questions, presence: true
 
     belongs_to :account
-    belongs_to :trivia
+    belongs_to :trivias
 
     after_commit :update_progress_account
 

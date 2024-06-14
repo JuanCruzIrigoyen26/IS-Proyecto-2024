@@ -65,6 +65,10 @@ class App < Sinatra::Application
     end
   end
 
+  get '/perfil' do
+    erb :perfil
+  end
+
   get '/signup' do
     erb :signup
   end
@@ -132,16 +136,16 @@ class App < Sinatra::Application
     if session[:logged_in]
       account_id = session[:account_id]
       @selected_game = params[:game]
-  
+
       completed_trivias = AccountTrivia.where(account_id: account_id).pluck(:test_letter)
       all_trivias_completed = ['A', 'B', 'C'].all? { |letter| completed_trivias.include?(letter) }
-  
+
       erb :difficult, locals: { selected_game: @selected_game, all_trivias_completed: all_trivias_completed, error: params[:error] }
     else
       redirect '/home'
     end
   end
-  
+
   post '/submit_answer' do
     if logged_in?
       test_letter = params[:test_letter]
@@ -186,9 +190,9 @@ class App < Sinatra::Application
       redirect '/home'
     end
   end
-  
 
-  
+
+
 
   post '/submit_final_exam_answer' do
     if session[:logged_in]
@@ -196,24 +200,24 @@ class App < Sinatra::Application
       question_number = params[:question_number].to_i
       test_letter = params[:test_letter]
       selected_option = params[:selected_option]
-  
+
       @question = Question.find_by(number: question_number, test_letter: test_letter)
-  
+
       if @question
         if selected_option
           selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
           correct = selected_answer.correct
-  
+
           AccountAnswer.create(
             account_id: account_id,
             answer_id: selected_option,
             question_id: @question.id,
             correct: correct
           )
-  
+
           next_question_number = question_number + 1
           next_question = Question.find_by(number: next_question_number, test_letter: test_letter)
-  
+
           if next_question
             erb :result, locals: {
               correct: correct,
@@ -228,14 +232,14 @@ class App < Sinatra::Application
               test_letter: test_letter,
               test_completed: true
             )
-  
+
             redirect "/final_exam_complete"
           end
         else
           # Si no se seleccionó ninguna opción
           @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
           @difficulty = test_letter
-  
+
           erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'Debes seleccionar una opción antes de continuar.' }
         end
       else
@@ -245,8 +249,8 @@ class App < Sinatra::Application
       redirect "/home"
     end
   end
-  
-  
+
+
 
 
   get '/difficult/:game' do
@@ -309,9 +313,9 @@ post '/submit_trivia_answer' do
 
             next_question_number = question_number + 1
             if question_number == 5
-              
+
                 account_test = AccountTest.find_or_create_by(account_id: account_id, test_id: test_id)
-                
+
                 account_test.update(
                   test_completed: true,
                   correct_answers: correct_answers_count
@@ -350,33 +354,33 @@ post '/submit_trivia_answer' do
   end
 end
 
-  
-  
-  
+
+
+
   post '/submit_final_answer' do
     selected_option = params[:selected_option]
     if selected_option
       selected_answer = Answer.find_by(number: selected_option)
       correct = selected_answer.correct
-  
+
       question_number = params[:question_number].to_i
       test_letter = params[:test_letter]
-  
+
       if correct
         message = "¡Respuesta correcta!"
       else
         message = "Respuesta incorrecta."
       end
-    
+
       AccountAnswer.create(account_id: session[:account_id], answer_id: selected_answer.id)
-  
+
       next_question_number = question_number + 1
       redirect "/final_exam/#{test_letter}/#{next_question_number}?message=#{message}"
     else
       redirect back
     end
   end
-  
+
 
   get '/logout' do
     session.clear

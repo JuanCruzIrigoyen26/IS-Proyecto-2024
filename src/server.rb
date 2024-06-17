@@ -52,6 +52,12 @@ class App < Sinatra::Application
     end
   end
 
+  GAME_URL_MAPPING = {
+  'Counter Strike 2' => 'csgo',
+
+  }
+
+
   get '/login' do
     error_message = params[:error]
     erb :login, locals: { error_message: error_message }
@@ -74,12 +80,14 @@ class App < Sinatra::Application
   end
 
   get '/home' do
-    if logged_in?
+    if session[:logged_in]
+      @games = Game.all
       erb :home
     else
       redirect '/login'
     end
   end
+  
 
   post '/login' do
     nickname = params[:nickname]
@@ -123,23 +131,34 @@ class App < Sinatra::Application
   end
 
   post '/home' do
-    if logged_in?
-      selected_game = params[:game]
+    if session[:logged_in]
+      selected_game_name = params[:game]
       account_id = session[:account_id]
-      session[:selected_game] = selected_game
-
+  
+      unless account_id
+        status 400
+        body "Account ID is missing in session."
+        return
+      end
+  
+      selected_game = Game.find_by(name: selected_game_name)
+  
+      if selected_game.nil?
+        status 400
+        body "Game not found."
+        return
+      end
+  
+      session[:selected_game] = selected_game.name
+  
       if Account.exists?(id: account_id)
-        if Game.exists?(id: selected_game)
-          account_game = AccountGame.find_or_initialize_by(account_id: account_id, game_id: selected_game)
-          if account_game.save
-            redirect "/difficult/#{selected_game}"
-          else
-            status 400
-            body "Unable to save AccountGame."
-          end
+        account_game = AccountGame.find_or_create_by(account_id: account_id, game: selected_game)
+        if account_game.save
+          game_url_name = GAME_URL_MAPPING[selected_game.name] || selected_game.name
+          redirect "/difficult/#{game_url_name}"
         else
           status 400
-          body "Game ID does not exist."
+          body "Unable to save AccountGame."
         end
       else
         status 400
@@ -150,55 +169,22 @@ class App < Sinatra::Application
     end
   end
 
-
-
-  get '/difficult/:game' do
-    if session[:logged_in]
-      account_id = session[:account_id]
-      @selected_game = params[:game]
-
-      completed_trivias = AccountTrivia.where(account_id: account_id).pluck(:test_letter)
-      all_trivias_completed = ['A', 'B', 'C'].all? { |letter| completed_trivias.include?(letter) }
-
-      erb :difficult, locals: { selected_game: @selected_game, all_trivias_completed: all_trivias_completed, error: params[:error] }
-    else
-      redirect '/home'
-    end
-  end
-
-  post '/submit_answer' do
-    if logged_in?
-      test_letter = params[:test_letter]
-      question_number = params[:question_number].to_i
-      selected_option = params[:selected_option]
-
-      selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
-
-      correct = selected_answer.correct
-
-      trivia = Trivia.find_by(number: question_number, test_letter: test_letter)
-
-      erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter }
-    else
-      redirect "/login"
-    end
-  end
-
+  
   get '/final_exam/:test_letter/:question_number' do
     if session[:logged_in]
       account_id = session[:account_id]
-      completed_trivias = AccountTrivia.where(account_id: account_id).pluck(:test_letter)
-      all_trivias_completed = ['A', 'B', 'C'].all? { |letter| completed_trivias.include?(letter) }
-
-      if all_trivias_completed
+    
+      completed_tests_count = AccountTest.where(account_id: account_id, test_completed: true).count
+  
+      if completed_tests_count >= 3
         test_letter = params[:test_letter]
         question_number = params[:question_number].to_i
         @question = Question.find_by(number: question_number, test_letter: test_letter)
-
+  
         if @question
           @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
           @difficulty = test_letter
-
+  
           erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty }
         else
           redirect "/difficult/#{session[:selected_game]}"
@@ -210,9 +196,7 @@ class App < Sinatra::Application
       redirect '/home'
     end
   end
-
-
-
+  
 
   post '/submit_final_exam_answer' do
     if session[:logged_in]
@@ -220,24 +204,24 @@ class App < Sinatra::Application
       question_number = params[:question_number].to_i
       test_letter = params[:test_letter]
       selected_option = params[:selected_option]
-
+  
       @question = Question.find_by(number: question_number, test_letter: test_letter)
-
+  
       if @question
         if selected_option
           selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
           correct = selected_answer.correct
-
-          AccountAnswer.create(
+  
+          AccountAnswer.find_or_create_by(
             account_id: account_id,
-            answer_id: selected_option,
+            answer_id: selected_answer.id,
             question_id: @question.id,
             correct: correct
           )
-
+  
           next_question_number = question_number + 1
           next_question = Question.find_by(number: next_question_number, test_letter: test_letter)
-
+  
           if next_question
             erb :result, locals: {
               correct: correct,
@@ -246,20 +230,22 @@ class App < Sinatra::Application
               question_number: question_number
             }
           else
-            # Marcar el examen final como completado
+            # Obtener o crear el Test asociado
+            @test = Test.find_by(letter: test_letter)
+  
+            # Crear el registro de AccountTest
             AccountTest.create(
               account_id: account_id,
-              test_letter: test_letter,
+              test: @test,
               test_completed: true
             )
-
-            redirect "/final_exam_complete"
+  
+            redirect "/result_exam"
           end
         else
-          # Si no se seleccionó ninguna opción
           @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
           @difficulty = test_letter
-
+  
           erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'Debes seleccionar una opción antes de continuar.' }
         end
       else
@@ -271,19 +257,18 @@ class App < Sinatra::Application
   end
 
 
-
-
   get '/difficult/:game' do
     if session[:logged_in]
       @selected_game = params[:game]
-      @completed_trivias = AccountTrivia.where(account_id: session[:account_id]).pluck(:test_letter)
-      erb :difficult, locals: { selected_game: @selected_game, completed_trivias: @completed_trivias }
+      @completed_trivias = AccountTest.where(account_id: session[:account_id]).pluck(:test_letter)
+
+      erb :difficult, locals: { selected_game: @selected_game, completed_trivias: @completed_trivias,  error: params[:error] }
     else
       redirect "/home"
     end
   end
 
-  get '/trivia/:test_letter/:question_number' do
+  get '/:game/:test_letter/:question_number' do
     if logged_in?
       test_letter = params[:test_letter]
       question_number = params[:question_number].to_i
@@ -292,7 +277,7 @@ class App < Sinatra::Application
 
       if @question
         @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
-        @difficulty = params[:test_letter] # Aquí asignamos el valor de dificultad
+        @difficulty = params[:test_letter] 
 
         erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty }
       else
@@ -303,101 +288,83 @@ class App < Sinatra::Application
     end
   end
 
+  post '/submit_trivia_answer' do
+    if session[:logged_in]
+      account_id = session[:account_id]
+      question_number = params[:question_number].to_i
+      test_letter = params[:test_letter]
+      selected_option = params[:selected_option]
+  
+      @question = Question.find_by(number: question_number, test_letter: test_letter)
+      @test = Test.find_by(letter: test_letter)
 
-post '/submit_trivia_answer' do
-  if session[:logged_in]
-    account_id = session[:account_id]
-    question_number = params[:question_number].to_i
-    test_letter = params[:test_letter]
-    selected_option = params[:selected_option]
-
-    @question = Question.find_by(number: question_number, test_letter: test_letter)
-
-    if @question
-      if selected_option
-        selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
-
-        if selected_answer
-          correct = selected_answer.correct
-
-          # Buscar si ya existe una entrada en AccountAnswer para esta pregunta y cuenta
-          account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
-          account_answer.update(answer_id: selected_answer.id, correct: correct)
-
-          trivia = Trivia.find_by(number: question_number, test_letter: test_letter)
-
-          # Encontrar el ID del test usando test_letter
-          test = Test.find_by(letter: test_letter)
-          if test
-            test_id = test.id
+     if @question
+        if selected_option
+          selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
+  
+          if selected_answer
+            correct = selected_answer.correct
+  
+            account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
+            account_answer.update(answer_id: selected_answer.id, correct: correct)
+  
+            trivia = Trivia.find_by(number: question_number, test_letter: test_letter)
 
             next_question_number = question_number + 1
             if question_number == 5
 
-                account_test = AccountTest.find_or_create_by(account_id: account_id, test_id: test_id)
+            account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
 
-                account_test.update(
-                  test_completed: true,
-                  correct_answers: correct_answers_count
-                )
+            #current_trivia = AccountTrivia.find_or_create_by(account_id: account_id, trivias_id: trivias, trivias_completed: true )
 
-                # Contar las respuestas correctas
-                correct_answers_count = AccountAnswer.where(account_id: account_id, correct: true).count
+            correct_answers_count = AccountAnswer.where(account_id: account_id,correct: true).count
 
+            account_test.update(correct_answers: correct_answers_count)
+            account_test.update(test_completed: true)
 
-                erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter, trivia_completed: true }
+            erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter, trivia_completed: true }
             else
-              erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter, trivia_completed: false }
+            erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter, trivia_completed: false }
             end
           else
-            erb :trivia, locals: { question: @question, answers: Answer.where(question_number: @question.number, test_letter: test_letter).shuffle, difficulty: test_letter, error: 'Test no encontrado.' }
+            @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
+            @difficulty = test_letter
+  
+            erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'La opción seleccionada no es válida. Por favor, selecciona otra opción.' }
           end
         else
-          # Si no se encuentra la respuesta seleccionada
           @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
           @difficulty = test_letter
-
-          erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'La opción seleccionada no es válida. Por favor, selecciona otra opción.' }
+  
+          erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'Debes seleccionar una opción antes de continuar.' }
         end
       else
-        # Si no se seleccionó ninguna opción
-        @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
-        @difficulty = test_letter
-
-        erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'Debes seleccionar una opción antes de continuar.' }
+        redirect "/difficult/#{session[:selected_game]}"
       end
     else
-      redirect "/difficult/#{session[:selected_game]}"
+      redirect "/home"
     end
-  else
-    redirect "/home"
   end
-end
 
-
-
-
-  post '/submit_final_answer' do
-    selected_option = params[:selected_option]
-    if selected_option
-      selected_answer = Answer.find_by(number: selected_option)
-      correct = selected_answer.correct
-
-      question_number = params[:question_number].to_i
+  get '/result_exam' do
+    if session[:logged_in]
+      account_id = session[:account_id]
       test_letter = params[:test_letter]
+      
+      # Obtener el número total de preguntas en el examen
+      total_questions = 5  # Por ejemplo, suponiendo que hay 10 preguntas en el examen
+      
+      # Calcular el número de respuestas correctas del usuario
+      correct_answers_count = AccountAnswer.where(account_id: account_id, correct: true).count
 
-      if correct
-        message = "¡Respuesta correcta!"
-      else
-        message = "Respuesta incorrecta."
-      end
-
-      AccountAnswer.create(account_id: session[:account_id], answer_id: selected_answer.id)
-
-      next_question_number = question_number + 1
-      redirect "/final_exam/#{test_letter}/#{next_question_number}?message=#{message}"
+      #CUENTA TODAS LAS TRIVIAS NO SOLO EL TEST
+      
+      # Calcular el porcentaje de respuestas correctas
+      correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
+      
+      erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage }
     else
-      redirect back
+      redirect '/home'
     end
   end
 

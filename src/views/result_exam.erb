@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultado de la Trivia - KnowAboutEsports</title>
+    <title>Resultado del Examen - KnowAboutEsports</title>
     <link rel="shortcut icon" type="image/x-icon" href="<%= url('favicon.png') %>">
     <link rel="stylesheet" type="text/css" href="<%= url('result.css') %>"/>
+    <style>
+        .result-image {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -25,22 +31,20 @@
     </header>
     <main>
         <section class="wrapper">
-            <% if correct %>
-                <h1>¡Correcto!</h1>
+            <% if correct_answers_percentage >= 70 %>
+                <h1>¡Felicidades!</h1>
+                <p>Has aprobado el examen con <%= correct_answers_percentage %>%. Excelente trabajo.</p>
+                <img src="<%= url('aprobado.jpg') %>" class="result-image" alt="Imagen de aprobación">
             <% else %>
-                <h1>Incorrecto</h1>
+                <h1>Lo sentimos, no has aprobado.</h1>
+                <p>Obtuviste <%= correct_answers_percentage %>%. Puedes intentarlo nuevamente.</p>
+                <img src="<%= url('desaprobado.jpg') %>" class="result-image" alt="Imagen de no aprobación">
             <% end %>
-            <p><%= description %></p>
-            <% if trivia_completed %>
-                <p>¡Has completado la trivia!</p>
-                <form action="/difficult/<%= session[:selected_game] %>" method="get">
-                <button type="submit">Continuar</button>
-            <% else %>
-                <form action="/trivia/<%= test_letter %>/<%= question_number + 1 %>" method="get">
-                    <button type="submit">Siguiente</button>
-                </form>
-            <% end %>
+            <form action="/difficult/<%= session[:selected_game] %>" method="get">
+                <button type="submit">Volver a la selección de dificultad</button>
+            </form>
         </section>
     </main>
 </body>
 </html>
+

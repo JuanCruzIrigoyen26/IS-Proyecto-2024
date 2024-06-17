@@ -8,6 +8,7 @@ AccountGame = Class.new(ActiveRecord::Base)
 game_1 = Game.find_or_create_by!(number: 1) do |game|
     game.name = "Counter Strike 2"
     game.genre = "FPS"
+    game.image_path = 'csgo.jpeg'
   end
   
   # Crear un test

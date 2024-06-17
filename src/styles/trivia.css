@@ -104,7 +104,6 @@ h2 {
   margin-bottom: 30px;
 }
 
-/* Estilos para el botón de respuesta */
 .answer-button {
   width: 100%;
   height: 50px;
@@ -144,7 +143,7 @@ h2 {
   background-color: #28a745;
 }
 
-/* Estilos para las opciones de respuesta */
+
 .option-button {
   width: 100%;
   height: 50px;
@@ -168,9 +167,16 @@ h2 {
   background-color: #007BFF;
 }
 
-/* Asegurar que todo el botón se pinte de celeste cuando se seleccione */
+
 .option-button input[type="radio"]:checked {
   background-color: #cceeff;  /* Celeste */
   border-color: #007BFF;
   color: #007BFF;
+}
+
+.option-button img{
+  width: 95px;
+  height: 25px;
+  object-fit: cover;
+  margin: 0 10px;
 }

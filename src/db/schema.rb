@@ -78,6 +78,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_212120) do
     t.integer "number"
     t.string "name"
     t.string "genre"
+    t.string "image_path"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["number"], name: "index_games_on_number", unique: true

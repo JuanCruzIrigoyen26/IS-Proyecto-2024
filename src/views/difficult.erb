@@ -25,7 +25,12 @@
     </header>
     <main>
         <section class="wrapper">
-            <h2>Seleccione una Dificultad para <%= selected_game.upcase %></h2>
+            <h2>Seleccione una dificultad para <%= session[:selected_game] %></h2>
+            <% if params[:completed_trivia] %>
+            <div class="completion-message">
+                <p>¡Has completado la trivia de dificultad <%= params[:completed_trivia] %>!</p>
+            </div>
+            <% end %>
             <div class="difficulty-buttons">
                 <form action="/trivia/A/1" method="get">
                     <button type="submit" class="difficulty-button">Principiante</button>
@@ -36,13 +41,19 @@
                 <form action="/trivia/C/1" method="get">
                     <button type="submit" class="difficulty-button">Profesional</button>
                 </form>
-                <form action="/trivia/F/1" method="get">
+                <form action="/final_exam/F/1" method="get">
+                <h2>¿Crees que sabes lo suficiente? Demuestralo aquí! </h2>    
+                <% if error == 'complete_all_trivias' %>
+                <div class="error-message">
+                <p>Debe completar todas las trivias antes de acceder al examen final.</p>
+                 </div>
+            <% end %>
                     <button type="submit" class="difficulty-button">Examen Final</button>
                 </form>
             </div>
         </section>
     </main>
-        <script>
+    <script>
         function selectDifficulty(difficulty) {
         var test_letter;
         if (difficulty === 'A') {
@@ -58,7 +69,7 @@
         var form = document.getElementById('triviaForm');
         form.action = '/trivia/' + test_letter + '/1';
         form.submit();
-        }       
+        }
     </script>
 </body>
 </html>

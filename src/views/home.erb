@@ -1,46 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio - KnowAboutEsports</title>
-    <link rel="shortcut icon" type="image/x-icon" href="<%=url('favicon.png')%>">
-    <link rel="stylesheet" type ="text/css" href="<%=url('home.css')%>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - KnowAboutEsports</title>
+  <link rel="shortcut icon" type="image/x-icon" href="<%= url('favicon.png') %>">
+  <link rel="stylesheet" type="text/css" href="<%= url('home.css') %>">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="<%=url('favicon.png')%>" width="50" height="50" alt="Logotipo de KnowAboutEsports" title="Logotipo hecho por el equipo de KnowAboutEsports">
-            <h1><a href="/home">KnowAboutEsports</a></h1>
+  <header>
+    <div class="logo">
+      <img src="<%= url('favicon.png') %>" width="50" height="50" alt="Logotipo de KnowAboutEsports" title="Logotipo hecho por el equipo de KnowAboutEsports">
+      <h1><a href="/home">KnowAboutEsports</a></h1>
+    </div>
+    <nav>
+      <ul class="left-nav">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/perfil">Perfil</a></li>
+      </ul>
+      <ul class="right-nav">
+        <li><a href="/logout">Cerrar Sesión</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="wrapper">
+      <h2>Seleccione el juego que desee:</h2>
+      <% @games.each do |game| %>
+        <div class="tarjeta">
+          <div class="imagen">
+            <img src="<%= url(game.image_path) %>" alt="Imagen de <%= game.name %>">
+            <h2><%= game.name %></h2>
+          </div>
+          <div class="footer">
+            <h2>Progreso:</h2>
+            <form action="/home" method="post">
+              <input type="hidden" name="game" value="<%= game.name %>">
+              <button type="submit">Jugar</button>
+            </form>
+          </div>
         </div>
-        <nav>
-            <ul class="left-nav">
-                <li><a href="/home">Home</a></li>
-                <li><a href="/perfil">Perfil</a></li>
-            </ul>
-            <ul class="right-nav">
-                <li><a href="/logout">Cerrar Sesión</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="wrapper">
-            <h2>Seleccione el juego que desee:</h2>
-            <div class="tarjeta">
-                <div class="imagen">
-                    <img src="<%=url('csgo.jpeg')%>" alt="Imagen de CSGO">
-                    <h2>CSGO</h2>
-                </div>
-                <div class="footer">
-                    <h2>Progreso:</h2>
-                    <!-- Form to select the game and redirect -->
-                    <form action="/home" method="post">
-                        <input type="hidden" name="game" value="csgo">
-                        <button type="submit">Jugar</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
+      <% end %>
+    </section>
+  </main>
 </body>
 </html>

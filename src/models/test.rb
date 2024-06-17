@@ -1,5 +1,4 @@
 class Test < ActiveRecord::Base
-    self.primary_key = 'letter'
     validates :letter, presence: true
     validates :description, presence: true
     validates :cant_questions, presence: true

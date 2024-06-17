@@ -1,58 +1,54 @@
 header {
-    background-color: rgb(3, 89, 146);
-    color: #fff;
-    padding: 10px 0;
-    font-family:  system-ui;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  header .logo {
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
-    border-radius: 50%;
-  }
-  
-  header .logo img {
-    margin-right: 10px;
-  }
-  
-  header h1 {
-    font-size: 20px;
-  }
-  
-  header h1 a {
-    color: #fff;
-    text-decoration: none;
-  }
-  
-  nav {
-    display: flex;
-    align-items: center;
-  }
-  
-  nav ul {
-    list-style-type: none;
-    display: flex;
-    margin-right: 20px;
-  }
-  
-  nav ul.left-nav {
-    margin-right: auto;
-  }
-  
-  nav ul.right-nav {
-    margin-left: auto;
-  }
-  
-  nav ul li {
-    margin: 0 10px;
-  }
-  
-  nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 16px;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px; /* Ajusta el padding para dar más espacio a la izquierda */
+  background-color: rgb(3, 89, 146); /* Ajusta el color según tu diseño */
+}
+
+header .logo {
+  display: flex;
+  align-items: center; /* Esto alinea la imagen y el texto verticalmente */
+  margin-right: auto; /* Asegura que la logo esté a la izquierda */
+}
+
+header .logo img {
+  margin-right: 5px; /* Ajusta el margen según sea necesario */
+}
+
+header .logo h1 {
+  color: white;
+  font-size: 30px;
+  margin: 0;
+}
+
+header nav {
+  display: flex;
+}
+
+header ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+header ul.left-nav, header ul.right-nav {
+  display: flex;
+}
+
+header ul.left-nav li, header ul.right-nav li {
+  margin: 0 10px;
+}
+
+header a {
+  text-decoration: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+header a:hover {
+  background-color: #007BFF;
+}

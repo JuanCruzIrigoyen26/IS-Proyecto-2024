@@ -7,59 +7,6 @@ body {
   background-color: #f5f5f5;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px; /* Ajusta el padding para dar más espacio a la izquierda */
-  background-color: rgb(3, 89, 146); /* Ajusta el color según tu diseño */
-}
-
-header .logo {
-  display: flex;
-  align-items: center; /* Esto alinea la imagen y el texto verticalmente */
-  margin-right: auto; /* Asegura que la logo esté a la izquierda */
-}
-
-header .logo img {
-  margin-right: 5px; /* Ajusta el margen según sea necesario */
-}
-
-header .logo h1 {
-  margin: 0;
-}
-
-header nav {
-  display: flex;
-}
-
-header ul {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-header ul.left-nav, header ul.right-nav {
-  display: flex;
-}
-
-header ul.left-nav li, header ul.right-nav li {
-  margin: 0 10px;
-}
-
-header a {
-  text-decoration: none;
-  color: #333;
-  padding: 10px 20px;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-header a:hover {
-  background-color: #007BFF;
-}
-
 main {
   display: flex;
   justify-content: center;

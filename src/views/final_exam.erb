@@ -25,7 +25,7 @@
     </header>
     <main>
         <section class="wrapper">
-            <h2>Examen Final <%= @difficulty.capitalize %></h2>
+            <h2>Examen Final</h2>
             <form action="/submit_final_exam_answer" method="post">
                 <div class="question-box">
                     <div class="question">
@@ -41,7 +41,6 @@
                             <img src="<%= url('ak2.png') %>" alt="Imagen derecha" class="option-image">
                         </label>
                     <% end %>
-                    <!-- Botón de envío -->
                     <div class="answer-button" id="answerButton">
                         <button type="submit"><b>Responder</b></button>
                     </div>

@@ -169,18 +169,49 @@ class App < Sinatra::Application
     end
   end
 
+  post '/perfil' do
+    if session[:logged_in]
+      account_id = session[:account_id]
+      new_username = params[:nickname]
+      new_password = params[:password]
+  
+      account = Account.find(account_id)
+  
+      if account
+        if new_username && !new_username.strip.empty?
+          account.update(nickname: new_username) 
+        end
+  
+        if new_password && !new_password.strip.empty?
+          account.update(password: new_password) 
+        end
+  
+        if account.save
+          redirect '/perfil?success=true'
+        else
+          redirect '/perfil?error=update_failed'
+        end
+      else
+        redirect '/perfil?error=account_not_found'
+      end
+    else
+      redirect '/home'
+    end
+  end
+  
   
   get '/final_exam/:test_letter/:question_number' do
     if session[:logged_in]
       account_id = session[:account_id]
     
-      completed_tests_count = AccountTest.where(account_id: account_id, test_completed: true).count
-  
-      if completed_tests_count >= 3
+      completed_trivia_count = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
+      
+      if completed_trivia_count >= 3
         test_letter = params[:test_letter]
         question_number = params[:question_number].to_i
         @question = Question.find_by(number: question_number, test_letter: test_letter)
-  
+
+        
         if @question
           @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
           @difficulty = test_letter
@@ -196,6 +227,26 @@ class App < Sinatra::Application
       redirect '/home'
     end
   end
+
+  post '/start_final_exam' do
+    if session[:logged_in]
+      account_id = session[:account_id]
+      question_number = params[:question_number].to_i
+      test_letter = params[:test_letter] || 'F'
+      selected_option = params[:selected_option]
+
+      @test = Test.find_by(letter: test_letter)
+
+      @test.save 
+      account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
+      account_test.update(correct_answers: 0, test_completed: false)
+      
+      redirect "/final_exam/F/1"
+    else
+      redirect '/home'
+    end
+  end
+  
   
   post '/submit_final_exam_answer' do
     if session[:logged_in]
@@ -205,46 +256,40 @@ class App < Sinatra::Application
       selected_option = params[:selected_option]
   
       @question = Question.find_by(number: question_number, test_letter: test_letter)
+      @test = Test.find_by(letter: test_letter)
+      account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
   
       if @question
         if selected_option
           selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
-          correct = selected_answer.correct
   
-          AccountAnswer.find_or_create_by(
-            account_id: account_id,
-            answer_id: selected_answer.id,
-            question_id: @question.id,
-            correct: correct
-          )
+          if selected_answer
+            correct = selected_answer.correct
   
-          next_question_number = question_number + 1
-          next_question = Question.find_by(number: next_question_number, test_letter: test_letter)
+            account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
+            account_answer.update(answer_id: selected_answer.id, correct: correct)
+          
+            if correct
+              account_test.increment(:correct_answers)
+            end
+            account_test.save
   
-          if next_question
-            erb :result, locals: {
-              correct: correct,
-              description: correct ? '¡Respuesta correcta!' : 'Respuesta incorrecta.',
-              test_letter: test_letter,
-              question_number: question_number,
-              trivia_completed: false,
-              exam_final: true
-            }
+            next_question_number = question_number + 1
+            next_question = Question.find_by(number: next_question_number, test_letter: test_letter)
+  
+            if next_question
+              redirect "/final_exam/#{test_letter}/#{next_question_number}"
+            else
+              account_test.update(test_completed: true)
+  
+              total_questions = Question.where(test_letter: test_letter).count
+              correct_answers_count = account_test.correct_answers
+              correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
+  
+              erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage, correct_answers_count: correct_answers_count, total_questions: total_questions }
+            end
           else
-            @test = Test.find_by(letter: test_letter)
-  
-            AccountTest.create(
-              account_id: account_id,
-              test: @test,
-              test_completed: true
-            )
-  
-            correct_answers_count = AccountAnswer.joins(:question).where(account_id: account_id, 'questions.test_letter': test_letter, correct: true).count
-            total_questions = Question.where(test_letter: test_letter).count
-  
-            correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
-  
-            erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage, correct_answers_count: correct_answers_count, total_questions: total_questions }
+            redirect "/final_exam/#{test_letter}/#{question_number}?error=invalid_option"
           end
         else
           @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
@@ -256,9 +301,10 @@ class App < Sinatra::Application
         redirect "/difficult/#{session[:selected_game]}"
       end
     else
-      redirect "/home"
+      redirect '/home'
     end
   end
+  
     
   
 
@@ -312,15 +358,12 @@ class App < Sinatra::Application
   
             account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
             account_answer.update(answer_id: selected_answer.id, correct: correct)
-  
+
             trivia = Trivia.find_by(number: question_number, test_letter: test_letter)
   
             next_question_number = question_number + 1
             if question_number == 5
-              account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
-              correct_answers_count = AccountAnswer.where(account_id: account_id, correct: true).count
-  
-              account_test.update(correct_answers: correct_answers_count, test_completed: true)
+              account_trivia = AccountTrivia.find_or_create_by(account_id: account_id, trivias_id: trivia.id, trivias_completed: true)
   
               erb :result, locals: {
                 correct: correct,
@@ -374,24 +417,25 @@ class App < Sinatra::Application
     if session[:logged_in]
       account_id = session[:account_id]
       test_letter = params[:test_letter]
-      
-      # Obtener el número total de preguntas en el examen
-      total_questions = 5  # Por ejemplo, suponiendo que hay 10 preguntas en el examen
-      
-      # Calcular el número de respuestas correctas del usuario
-      correct_answers_count = AccountAnswer.where(account_id: account_id, correct: true).count
+  
+      @test = Test.find_by(letter: test_letter)
+      correct_answers = AccountTest.find_by(account_id: account_id, test_id: @test.id)
+  
+      if correct_answers
+        total_questions = 5
+        correct_answers_count = correct_answers.correct_answers 
+        correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
 
-      #CUENTA TODAS LAS TRIVIAS NO SOLO EL TEST
-      
-      # Calcular el porcentaje de respuestas correctas
-      correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
-      
-      erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage }
+        erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage }
+
+      else
+        redirect "/difficult/#{session[:selected_game]}"
+      end
     else
       redirect '/home'
     end
   end
-
+  
 
   get '/logout' do
     session.clear

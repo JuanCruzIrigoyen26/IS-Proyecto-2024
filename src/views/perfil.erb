@@ -29,11 +29,51 @@
             <img src="<%= url('profile.png') %>" alt="Imagen de Usuario">
             <div class="usuario">
                 <h2>Nombre de usuario</h2>
-                <button class="cambiarNU">Cambiar nickname</button>
+                <button class="cambiarNU" onclick="openModal('nicknameModal')">Cambiar nickname</button>
                 <h2>Contraseña</h2>
-                <button class="cambiarCon">Cambiar contraseña</button>
+                <button class="cambiarCon" onclick="openModal('passwordModal')">Cambiar contraseña</button>
             </div>
         </section>
     </main>
+
+    <div id="nicknameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('nicknameModal')">&times;</span>
+            <h2>Cambiar Nickname</h2>
+            <form action="/perfil" method="post">
+                <label for="new_nickname">Nuevo Nickname:</label>
+                <input type="text" id="new_nickname" name="nickname" required>
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('passwordModal')">&times;</span>
+            <h2>Cambiar Contraseña</h2>
+            <form action="/perfil" method="post">
+                <label for="new_password">Nueva Contraseña:</label>
+                <input type="password" id="new_password" name="password" required>
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
  class AccountTrivia < ActiveRecord::Base
     self.table_name = 'account_trivias'
     
-    validates :trivia_completed, inclusion: { in: [true, false] }
+    validates :trivias_completed, inclusion: { in: [true, false] }
 
     belongs_to :account
     belongs_to :trivias

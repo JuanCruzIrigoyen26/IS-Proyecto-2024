@@ -50,3 +50,8 @@ button:hover {
     background-color: #28a745;
 }
 
+.wrapper img{
+    width: 680px;
+    height: 380px;
+  
+  }

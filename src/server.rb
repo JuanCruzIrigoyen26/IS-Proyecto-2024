@@ -197,7 +197,6 @@ class App < Sinatra::Application
     end
   end
   
-
   post '/submit_final_exam_answer' do
     if session[:logged_in]
       account_id = session[:account_id]
@@ -227,20 +226,25 @@ class App < Sinatra::Application
               correct: correct,
               description: correct ? '¡Respuesta correcta!' : 'Respuesta incorrecta.',
               test_letter: test_letter,
-              question_number: question_number
+              question_number: question_number,
+              trivia_completed: false,
+              exam_final: true
             }
           else
-            # Obtener o crear el Test asociado
             @test = Test.find_by(letter: test_letter)
   
-            # Crear el registro de AccountTest
             AccountTest.create(
               account_id: account_id,
               test: @test,
               test_completed: true
             )
   
-            redirect "/result_exam"
+            correct_answers_count = AccountAnswer.joins(:question).where(account_id: account_id, 'questions.test_letter': test_letter, correct: true).count
+            total_questions = Question.where(test_letter: test_letter).count
+  
+            correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
+  
+            erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage, correct_answers_count: correct_answers_count, total_questions: total_questions }
           end
         else
           @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
@@ -255,7 +259,8 @@ class App < Sinatra::Application
       redirect "/home"
     end
   end
-
+    
+  
 
   get '/difficult/:game' do
     if session[:logged_in]
@@ -297,8 +302,8 @@ class App < Sinatra::Application
   
       @question = Question.find_by(number: question_number, test_letter: test_letter)
       @test = Test.find_by(letter: test_letter)
-
-     if @question
+  
+      if @question
         if selected_option
           selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
   
@@ -309,34 +314,53 @@ class App < Sinatra::Application
             account_answer.update(answer_id: selected_answer.id, correct: correct)
   
             trivia = Trivia.find_by(number: question_number, test_letter: test_letter)
-
+  
             next_question_number = question_number + 1
             if question_number == 5
-
-            account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
-
-            #current_trivia = AccountTrivia.find_or_create_by(account_id: account_id, trivias_id: trivias, trivias_completed: true )
-
-            correct_answers_count = AccountAnswer.where(account_id: account_id,correct: true).count
-
-            account_test.update(correct_answers: correct_answers_count)
-            account_test.update(test_completed: true)
-
-            erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter, trivia_completed: true }
+              account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
+              correct_answers_count = AccountAnswer.where(account_id: account_id, correct: true).count
+  
+              account_test.update(correct_answers: correct_answers_count, test_completed: true)
+  
+              erb :result, locals: {
+                correct: correct,
+                description: trivia.description,
+                question_number: question_number,
+                test_letter: test_letter,
+                trivia_completed: true,
+                exam_final: false
+              }
             else
-            erb :result, locals: { correct: correct, description: trivia.description, question_number: question_number, test_letter: test_letter, trivia_completed: false }
+              erb :result, locals: {
+                correct: correct,
+                description: trivia.description,
+                question_number: question_number,
+                test_letter: test_letter,
+                trivia_completed: false,
+                exam_final: false
+              }
             end
           else
             @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
             @difficulty = test_letter
   
-            erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'La opción seleccionada no es válida. Por favor, selecciona otra opción.' }
+            erb :trivia, locals: {
+              question: @question,
+              answers: @answers,
+              difficulty: @difficulty,
+              error: 'La opción seleccionada no es válida. Por favor, selecciona otra opción.'
+            }
           end
         else
           @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
           @difficulty = test_letter
   
-          erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'Debes seleccionar una opción antes de continuar.' }
+          erb :trivia, locals: {
+            question: @question,
+            answers: @answers,
+            difficulty: @difficulty,
+            error: 'Debes seleccionar una opción antes de continuar.'
+          }
         end
       else
         redirect "/difficult/#{session[:selected_game]}"
@@ -345,7 +369,7 @@ class App < Sinatra::Application
       redirect "/home"
     end
   end
-
+    
   get '/result_exam' do
     if session[:logged_in]
       account_id = session[:account_id]

@@ -32,11 +32,19 @@
             <% end %>
             <p><%= description %></p>
             <% if trivia_completed %>
-                <p>¡Has completado la trivia!</p>
-                <form action="/difficult/<%= session[:selected_game] %>" method="get">
-                <button type="submit">Continuar</button>
+                <% if exam_final %>
+                    <p>¡Has completado el examen final!</p>
+                    <form action="/result_exam" method="get">
+                        <button type="submit">Ver Resultados</button>
+                    </form>
+                <% else %>
+                    <p>¡Has completado la trivia!</p>
+                    <form action="/difficult/<%= session[:selected_game] %>" method="get">
+                        <button type="submit">Continuar</button>
+                    </form>
+                <% end %>
             <% else %>
-                <form action="/trivia/<%= test_letter %>/<%= question_number + 1 %>" method="get">
+                <form action="/<%= exam_final ? 'final_exam' : 'trivia' %>/<%= test_letter %>/<%= question_number + 1 %>" method="get">
                     <button type="submit">Siguiente</button>
                 </form>
             <% end %>

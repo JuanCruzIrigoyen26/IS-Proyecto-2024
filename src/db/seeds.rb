@@ -8,6 +8,7 @@ AccountGame = Class.new(ActiveRecord::Base)
 game_1 = Game.find_or_create_by!(number: 1) do |game|
     game.name = "Counter Strike 2"
     game.genre = "FPS"
+    game.image_path = 'csgo.jpeg'
   end
   
   # Crear un test
@@ -40,10 +41,10 @@ answer_a8 = Answer.create(number: 2, description: "Cuando un jugador se asoma de
 answer_a9 = Answer.create(number: 3, description: "Cuando todo el equipo se queda en un lugar", correct: false, question_number: question_a3.number, test_letter: test_a.letter)
 answer_a10 = Answer.create(number: 1, description: "Eliminar a un enemigo", correct: true, question_number: question_a4.number, test_letter: test_a.letter)
 answer_a11 = Answer.create(number: 2, description: "Disparar la mayoría de las balas con un click", correct: false, question_number: question_a4.number, test_letter: test_a.letter)
-answer_a12 = Answer.create(number: 3, description: "Eliminar a un compañeor de equipo", correct: false, question_number: question_a4.number, test_letter: test_a.letter)
+answer_a12 = Answer.create(number: 3, description: "Eliminar a un compañero de equipo", correct: false, question_number: question_a4.number, test_letter: test_a.letter)
 answer_a13 = Answer.create(number: 1, description: "Obstruir la visión o el paso de un compañero", correct: false, question_number: question_a5.number, test_letter: test_a.letter)
 answer_a14 = Answer.create(number: 2, description: "Disparar agachado", correct: false, question_number: question_a5.number, test_letter: test_a.letter)
-answer_a15 = Answer.create(number: 3, description: "Asomarse a un angulo/lugar", correct: true, question_number: question_a5.number, test_letter: test_a.letter)
+answer_a15 = Answer.create(number: 3, description: "Asomarse a un ángulo/lugar", correct: true, question_number: question_a5.number, test_letter: test_a.letter)
 
 
 #Test B
@@ -89,7 +90,7 @@ trivia_c5 = Trivia.create(number: 5, title: "Jump Throw", description: "La técn
 
 question_c1 = Question.create(number: 1, description: "¿Que es un Entryfragger?", test_letter: test_c.letter)
 question_c2 = Question.create(number: 2, description: "¿De que se encarga un Lurker?", test_letter: test_c.letter)
-question_c3 = Question.create(number: 3, description: "Que se hace en un Eco?", test_letter: test_c.letter)
+question_c3 = Question.create(number: 3, description: "¿Que se hace en un Eco?", test_letter: test_c.letter)
 question_c4 = Question.create(number: 4, description: "¿Que se compra en un Deco?", test_letter: test_c.letter)
 question_c5 = Question.create(number: 5, description: "¿Cuando se realiza un Jump Throw?", test_letter: test_c.letter)
 

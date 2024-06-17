@@ -199,53 +199,57 @@ class App < Sinatra::Application
     end
   end
   
-  
   get '/final_exam/:test_letter/:question_number' do
     if session[:logged_in]
       account_id = session[:account_id]
-    
+  
       completed_trivia_count = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
-      
+        
       if completed_trivia_count >= 3
         test_letter = params[:test_letter]
         question_number = params[:question_number].to_i
         @question = Question.find_by(number: question_number, test_letter: test_letter)
-
-        
+  
         if @question
           @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
           @difficulty = test_letter
   
           erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty }
         else
-          redirect "/difficult/#{session[:selected_game]}"
+          redirect "/difficult/#{URI.encode(session[:selected_game])}" 
         end
       else
-        redirect "/difficult/#{session[:selected_game]}?error=complete_all_trivias"
+        redirect "/difficult/#{URI.encode(session[:selected_game])}?error=complete_all_trivias"  
       end
     else
       redirect '/home'
     end
   end
+  
 
   post '/start_final_exam' do
     if session[:logged_in]
       account_id = session[:account_id]
-      question_number = params[:question_number].to_i
       test_letter = params[:test_letter] || 'F'
-      selected_option = params[:selected_option]
-
-      @test = Test.find_by(letter: test_letter)
-
-      @test.save 
-      account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
-      account_test.update(correct_answers: 0, test_completed: false)
       
-      redirect "/final_exam/F/1"
+      # Check if there is an error message
+      error_message = 'Debe completar todas las trivias antes de acceder al examen final.' if params[:error] == 'complete_all_trivias'
+  
+      @test = Test.find_by(letter: test_letter)
+  
+      if @test
+        account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
+        account_test.update(correct_answers: 0, test_completed: false)
+        
+        redirect "/final_exam/#{test_letter}/1"
+      else
+        redirect '/home'
+      end
     else
       redirect '/home'
     end
   end
+  
   
   
   post '/submit_final_exam_answer' do
@@ -310,14 +314,22 @@ class App < Sinatra::Application
 
   get '/difficult/:game' do
     if session[:logged_in]
-      @selected_game = params[:game]
-      @completed_trivias = AccountTest.where(account_id: session[:account_id]).pluck(:test_letter)
-
-      erb :difficult, locals: { selected_game: @selected_game, completed_trivias: @completed_trivias,  error: params[:error] }
+      # Determine the selected game and check conditions
+      selected_game = params[:game]
+      @completed_trivias = AccountTrivia.where(account_id: session[:account_id], trivias_completed: true).count
+      
+      # Check if there is an error message to display
+      error_message = nil
+      if params[:error] == 'complete_all_trivias'
+        error_message = 'Debe completar todas las trivias antes de acceder al examen final.'
+      end
+  
+      erb :difficult, locals: { selected_game: selected_game, completed_trivias: @completed_trivias, error_message: error_message }
     else
-      redirect "/home"
+      redirect '/home'
     end
   end
+  
 
   get '/:game/:test_letter/:question_number' do
     if logged_in?

@@ -42,13 +42,13 @@
                     <button type="submit" class="difficulty-button">Profesional</button>
                 </form>
                 <form action="/start_final_exam" method="post">
-                <h2>¿Crees que sabes lo suficiente? Demuestralo aquí! </h2>    
-                <% if error == 'complete_all_trivias' %>
-                <div class="error-message">
-                <p>Debe completar todas las trivias antes de acceder al examen final.</p>
-                 </div>
-            <% end %>
-                    <button type="submit" class="difficulty-button">Examen Final</button>
+                <h2>¿Crees que sabes lo suficiente? ¡Demuéstralo aquí!</h2>    
+                <% if error_message %>
+                    <div class="error-message">
+                    <p><%= error_message %></p>
+                    </div>
+                <% end %>
+                <button type="submit" class="difficulty-button">Examen Final</button>
                 </form>
             </div>
         </section>

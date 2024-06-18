@@ -4,6 +4,10 @@ body {
     background-color: #f4f4f9;
     margin: 0;
     padding: 0;
+    background-image: url('fondo5.jpg');
+    background-size: 34% auto; /* Ajusta el tamaño de la imagen para que ocupe 1/4 del ancho */
+    background-repeat: repeat-x; /* Repite la imagen solo en la dirección horizontal */
+    background-position: top center; /* Centra la imagen en la parte superior */
 }
 header {
     background-color: #4CAF50;

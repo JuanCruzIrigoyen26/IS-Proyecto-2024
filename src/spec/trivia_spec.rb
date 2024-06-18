@@ -1,4 +1,4 @@
-require_relative '../../models/init'
+require File.expand_path('../../models/init', __FILE__)
 
 describe Trivia do
   context "validations" do
@@ -32,5 +32,5 @@ describe Trivia do
       trivia = Trivia.new(mode: nil)
       expect(trivia).not_to be_valid
     end
-
+  end
 end

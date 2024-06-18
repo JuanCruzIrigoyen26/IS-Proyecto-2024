@@ -1,4 +1,5 @@
-require_relative '../../models/init'
+require File.expand_path('../../models/init', __FILE__)
+
 
 describe Game do
   context "validations" do
@@ -22,4 +23,5 @@ describe Game do
       game = Game.new(genre: nil)
       expect(game).not_to be_valid
     end
+  end
 end

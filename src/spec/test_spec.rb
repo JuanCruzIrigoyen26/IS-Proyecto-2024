@@ -1,4 +1,4 @@
-require_relative '../../models/init'
+require File.expand_path('../../models/init', __FILE__)
 
 describe Test do
   context "validations" do
@@ -23,5 +23,4 @@ describe Test do
       expect(test).not_to be_valid
     end
   end
-
 end

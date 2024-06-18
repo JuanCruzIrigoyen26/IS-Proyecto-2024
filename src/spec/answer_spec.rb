@@ -1,4 +1,4 @@
-require_relative '../../models/init'
+require File.expand_path('../../models/init', __FILE__)
 
 describe Answer do
   context "validations" do
@@ -14,7 +14,7 @@ describe Answer do
     end
 
     it "is not valid without a description" do
-      answer = Answer.new(name: nil)
+      answer = Answer.new(description: nil)
       expect(answer).not_to be_valid
     end
 
@@ -27,4 +27,5 @@ describe Answer do
         answer = Answer.new(test_letter: nil)
         expect(answer).not_to be_valid
     end
+  end
 end

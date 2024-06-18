@@ -1,4 +1,4 @@
-require_relative '../../models/init'
+require File.expand_path('../../models/init', __FILE__)
 
 describe Question do
   context "validations" do
@@ -22,4 +22,5 @@ describe Question do
       question = Question.new(test_letter: nil)
       expect(question).not_to be_valid
     end
+  end
 end

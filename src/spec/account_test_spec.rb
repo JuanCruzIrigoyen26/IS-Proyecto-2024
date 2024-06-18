@@ -1,4 +1,4 @@
-require_relative '../../models/init'
+require File.expand_path('../../models/init', __FILE__)
 
 describe AccountTest do
   context "validations" do
@@ -12,4 +12,5 @@ describe AccountTest do
       account_test = AccountTest.new(test_completed: nil)
       expect(account_test).not_to be_valid
     end
+  end
 end

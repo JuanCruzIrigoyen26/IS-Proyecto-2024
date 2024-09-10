@@ -26,22 +26,86 @@
   <main>
     <section class="wrapper">
       <h2>Seleccione el juego que desee:</h2>
-      <% @games.each do |game| %>
-        <div class="tarjeta">
-          <div class="imagen">
-            <img src="<%= url(game.image_path) %>" alt="Imagen de <%= game.name %>">
-            <h2><%= game.name %></h2>
-          </div>
-          <div class="footer">
-            <h2></h2>
-            <form action="/home" method="post">
-              <input type="hidden" name="game" value="<%= game.name %>">
-              <button type="submit">Jugar</button>
-            </form>
-          </div>
+      <div id="game-card" class="tarjeta">
+        <div class="imagen" onclick="openModal()">
+          <img id="game-image" src="<%= url('seleccion.png') %>" alt="Selecciona un videojuego">
+          <h2 id="game-name">Selecciona un videojuego</h2>
         </div>
-      <% end %>
+        <div class="footer" style="display:none;" id="game-footer">
+          <form id="game-form" action="/home" method="post">
+            <input type="hidden" name="game" value="">
+            <button type="submit">Jugar</button>
+          </form>
+        </div>
+      </div>
     </section>
+
+    <!-- Modal -->
+    <div id="gameModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Seleccione otro juego</h2>
+        <ul class="game-list">
+          <% @games.each do |game| %>
+            <li onclick="selectGame('<%= game.name %>', '<%= url(game.image_path) %>')">
+              <%= game.name %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
   </main>
+
+  <script>
+
+    
+  document.addEventListener("DOMContentLoaded", function() {
+  // Cerrar el modal inmediatamente al cargar la página
+  document.getElementById('gameModal').style.display = 'none';
+
+  // Verifica si ya se ha seleccionado un juego previamente en la sesión
+  const gameSelected = sessionStorage.getItem('gameSelected');
+  if (!gameSelected) {
+    // Si no se ha seleccionado ningún juego, no mostrar el modal automáticamente
+    closeModal();
+  }
+  });
+
+  // Abrir el modal cuando se hace clic en la imagen
+  function openModal() {
+    document.getElementById('gameModal').style.display = 'flex';
+  }
+
+  // Cerrar el modal
+  function closeModal() {
+    document.getElementById('gameModal').style.display = 'none';
+  }
+
+  // Seleccionar un nuevo juego y actualizar la tarjeta
+  function selectGame(gameName, gameImagePath) {
+    // Actualiza el nombre y la imagen del juego en la tarjeta
+    document.getElementById('game-name').textContent = gameName;
+    document.getElementById('game-image').src = gameImagePath;
+    document.getElementById('game-image').alt = 'Imagen de ' + gameName;
+
+    // Actualiza el valor del campo oculto en el formulario
+    document.querySelector('input[name="game"]').value = gameName;
+
+    // Muestra el botón de jugar (footer)
+    document.getElementById('game-footer').style.display = 'block';
+
+    // Cierra el modal
+    closeModal();
+  }
+
+  // Cerrar el modal si se hace clic fuera del contenido
+  window.onclick = function(event) {
+    let modal = document.getElementById('gameModal');
+    if (event.target == modal) {
+      closeModal();
+    }
+  }
+  </script>
 </body>
 </html>
+

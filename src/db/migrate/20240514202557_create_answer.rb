@@ -6,6 +6,7 @@ class CreateAnswer < ActiveRecord::Migration[7.0]
       t.text :description
       t.integer :question_number, foreign_key: true
       t.string :test_letter, foreign_key: true
+      t.integer :game_number, foreign_key: true
 
       t.timestamps
     end

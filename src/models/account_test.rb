@@ -4,6 +4,7 @@ class AccountTest < ActiveRecord::Base
 
     belongs_to :account
     belongs_to :test
+    belongs_to :game
 
     after_commit :update_progress_account
 

@@ -3,10 +3,10 @@ class AccountAnswer < ActiveRecord::Base
     belongs_to :account
     belongs_to :question
     belongs_to :answer
+    belongs_to :game
   
     after_commit :update_progress_account
   
-    private
   
     def update_progress_account
       account.update_progress

@@ -10,6 +10,7 @@ class Trivia < ActiveRecord::Base
   has_many :accounts, through: :account_trivias
   has_many :account_trivias
   belongs_to :test, foreign_key: 'test_letter'
+  belongs_to :game, foreign_key: 'game_number'
   
 end
   

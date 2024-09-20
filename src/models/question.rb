@@ -6,6 +6,7 @@ class Question < ActiveRecord::Base
   has_many :answers, foreign_key: 'question_number'
   has_many :account_answers
   belongs_to :test, foreign_key: 'test_letter'
+  belongs_to :game, foreign_key: 'game_number'
 end
 
   

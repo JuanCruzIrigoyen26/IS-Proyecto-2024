@@ -26,7 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_212120) do
   create_table "account_games", force: :cascade do |t|
     t.integer "account_id"
     t.integer "game_id"
-    t.string "account_knowledge", default: "basic"
+    t.integer "account_knowledge", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_account_games_on_account_id"
@@ -70,6 +70,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_212120) do
     t.text "description"
     t.integer "question_number"
     t.string "test_letter"
+    t.integer "game_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -88,6 +89,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_212120) do
     t.integer "number"
     t.text "description"
     t.string "test_letter"
+    t.integer "game_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -107,6 +109,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_212120) do
     t.string "title"
     t.text "description"
     t.string "test_letter"
+    t.integer "game_number"
     t.string "mode", default: "beginner"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

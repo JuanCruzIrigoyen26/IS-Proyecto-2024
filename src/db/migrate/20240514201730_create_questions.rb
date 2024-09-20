@@ -4,6 +4,7 @@ class CreateQuestions < ActiveRecord::Migration[7.0]
       t.integer :number
       t.text :description
       t.string :test_letter
+      t.integer :game_number, foreign_key: true
 
       t.timestamps
     end

@@ -31,6 +31,11 @@
           <img id="game-image" src="<%= url('seleccion.png') %>" alt="Selecciona un videojuego">
           <h2 id="game-name">Selecciona un videojuego</h2>
         </div>
+          <div id="knowledge-bar-container" class="progress" style="display: none;">
+            <div class="track">
+              <div class="bar" id="knowledge-bar"></div>
+            </div>
+          </div>
         <div class="footer" style="display:none;" id="game-footer">
           <form id="game-form" action="/home" method="post">
             <input type="hidden" name="game" value="">
@@ -57,6 +62,27 @@
   </main>
 
   <script>
+
+  function getKnowledgeForGame(gameName) {
+  // Esto debe ser reemplazado por una llamada al backend que retorne el valor real
+  const gameKnowledge = {
+    'Juego1': 8,
+    'Juego2': 5,
+    'Juego3': 3
+  };
+  return gameKnowledge[gameName] || 0;
+}
+
+// Ajustar la barra de progreso
+function adjustProgressBar(gameName) {
+  const knowledgeValue = getKnowledgeForGame(gameName);
+  const bar = document.getElementById('knowledge-bar');
+  bar.style.width = (knowledgeValue * 10) + '%';
+  
+  // Mostrar la barra si no está visible
+  const barContainer = document.getElementById('knowledge-bar-container');
+  barContainer.style.display = 'block';
+}
 
     
   document.addEventListener("DOMContentLoaded", function() {

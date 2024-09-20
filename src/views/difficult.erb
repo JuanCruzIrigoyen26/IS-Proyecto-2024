@@ -32,29 +32,37 @@
             </div>
             <% end %>
             <div class="difficulty-buttons">
-                <form action="/trivia/A/1" method="get">
+                <!-- Ruta para Principiante -->
+                <form action="/<%= selected_game.number %>/A/1" method="get">
                     <button type="submit" class="difficulty-button">Principiante</button>
                 </form>
-                <form action="/trivia/B/1" method="get">
+
+                <!-- Ruta para Casual -->
+                <form action="/<%= selected_game.number %>/B/1" method="get">
                     <button type="submit" class="difficulty-button">Casual</button>
                 </form>
-                <form action="/trivia/C/1" method="get">
+
+                <!-- Ruta para Profesional -->
+                <form action="/<%= selected_game.number %>/C/1" method="get">
                     <button type="submit" class="difficulty-button">Profesional</button>
                 </form>
-                <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3268297370" target="_blank">
-                    <button>
+
+                <!-- Guía teórica dinámica basada en el número del juego -->
+                <a href="<%= selected_game.number == 1 ? 'https://steamcommunity.com/sharedfiles/filedetails/?id=3268297370' : 'https://otro_link_para_street_fighter' %>" target="_blank">
+                    <button type="button">
                         Guía Teórica
                     </button>
                 </a>
-                <form action="/start_final_exam" method="post">
+            </div>
+            <form action="/start_final_exam" method="post">
                 <h2>¿Crees que sabes lo suficiente? ¡Demuéstralo aquí!</h2>    
                 <% if error_message %>
-                    <div class="error-message">
+                <div class="error-message">
                     <p><%= error_message %></p>
-                    </div>
+                </div>
                 <% end %>
                 <button type="submit" class="difficulty-button">Examen Final</button>
-                </form>
+            </form>
             </div>
         </section>
     </main>

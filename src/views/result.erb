@@ -39,12 +39,12 @@
                     </form>
                 <% else %>
                     <p>¡Has completado la trivia!</p>
-                    <form action="/difficult/<%= session[:selected_game] %>" method="get">
+                    <form action="/difficult/<%= GAME_URL_MAPPING[selected_game.name] %>" method="get">
                         <button type="submit">Continuar</button>
                     </form>
                 <% end %>
             <% else %>
-                <form action="/<%= exam_final ? 'final_exam' : 'trivia' %>/<%= test_letter %>/<%= question_number + 1 %>" method="get">
+                <form action="<%= next_question_path %>" method="get">
                     <button type="submit">Siguiente</button>
                 </form>
             <% end %>

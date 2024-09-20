@@ -5,6 +5,7 @@
 
     belongs_to :account
     belongs_to :trivias
+    belongs_to :game
 
     after_commit :update_progress_account
 

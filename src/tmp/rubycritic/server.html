@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ruby Critic - Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- StyleSheets -->
+    <link href="assets/vendor/stylesheets/bootstrap.min.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="assets/vendor/stylesheets/font-awesome.min.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="assets/vendor/stylesheets/prettify.custom_theme.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="assets/stylesheets/application.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <header class="navbar navbar-default navbar-fixed-top">
+      <a href="#menu-toggle" class="btn btn-default hidden-lg visible-sm-* hidden-md visible-xs-* pull-left" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a>
+      <a href="overview.html"><img src="assets/images/logo.png" alt="Ruby Critic Logo" title="Ruby Critic Logo" width="55"><span class="logo">RUBYCRITIC</span></a>
+      
+    </header>
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <aside id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="overview.html" class="project-nav-item overview-nav"><i class="fa fa-dashboard"></i>Overview</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="code_index.html" class="project-nav-item code-index-nav"><i class="fa fa-code"></i>Code</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="smells_index.html" class="project-nav-item smells-index-nav"><i class="fa fa-warning"></i>Smells</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="simple_cov_index.html" class="project-nav-item coverage-index-nav"><i class="fa fa-umbrella"></i>Coverage</a>
+          </li>
+        </ul>
+      </aside>
+      <!-- /#sidebar-wrapper -->
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+  <!--Page Title -->
+  <div class="Page_Title">
+    <div class="file-time">
+      <span class="committed-at">
+        
+          Updated <time class='js-timeago' datetime='2024-06-17 20:53:10 -0300'>2024-06-17 20:53:10 -0300</time>
+        
+      </span>
+    </div>
+    <div>
+      <h3><small>. /</small> server.rb</h3>
+    </div>
+  </div>
+  <!--End Page Title -->
+  <div class="Content_Wrapper">
+    <!-- code detail -->
+    <div class="code-top-detail clearfix row">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-1">
+            <div class="rating f big">
+              F
+            </div>
+          </div>
+          <div class="code-statistics col-md-11">
+            <div class="col-md-3">
+              <div><span class="metric">461</span><small> lines of codes</small></div>
+              <div><span class="metric">2</span><small> methods</small></div>
+            </div>
+            <div class="col-md-3">
+              <div><span class="metric">242.1</span><small> complexity/method</small></div>
+              <div><span class="metric">18</span><small> churn</small></div>
+            </div>
+            <div class="col-md-3">
+              <div><span class="metric">484.22</span><small> complexity</small></div>
+              <div><span class="metric">78</span><small> duplications</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="code-tabs">
+          <ul class="nav nav-pills right-to-left">
+            <li><a href="#" id="toggle-code" class="toggle-button button">code</a></li>
+            <li class="active">
+              <a href="#" id="toggle-smells" class="toggle-button button">
+                15
+                smells
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <code class="prettyprint linenums lang-ruby file-code js-file-code">require &#39;sinatra/base&#39;
+require &#39;bundler/setup&#39;
+require &#39;logger&#39;
+require &#39;sinatra/activerecord&#39;
+
+require &#39;sinatra/reloader&#39; if Sinatra::Base.environment == :development
+
+require_relative &#39;models/account&#39;
+require_relative &#39;models/answer&#39;
+require_relative &#39;models/test&#39;
+require_relative &#39;models/trivia&#39;
+require_relative &#39;models/game&#39;
+require_relative &#39;models/question&#39;
+require_relative &#39;models/account_trivia&#39;
+require_relative &#39;models/account_test&#39;
+require_relative &#39;models/account_game&#39;
+require_relative &#39;models/account_answer&#39;
+
+class App &lt; Sinatra::Application<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Instance-Variable-Assumption.md" target="_blank"><b>InstanceVariableAssumption</b></a>        </span>      </div>      <span>App assumes too much for instance variable '@current_user'</span>          </div>  </li>  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Irresponsible-Module.md" target="_blank"><b>IrresponsibleModule</b></a>        </span>      </div>      <span>App has no descriptive comment</span>          </div>  </li>  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Too-Many-Instance-Variables.md" target="_blank"><b>TooManyInstanceVariables</b></a>        </span>      </div>      <span>App has at least 7 instance variables</span>          </div>  </li></ol>
+  def initialize(app = nil)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Unused-Parameters.md" target="_blank"><b>UnusedParameters</b></a>        </span>      </div>      <span>App#initialize has unused parameter 'app'</span>          </div>  </li></ol>
+    super()
+  end
+
+  configure :production, :development do
+    enable :logging
+
+    logger = Logger.new(STDOUT)
+    logger.level = Logger::DEBUG if development?
+    set :logger, logger
+  end
+
+  enable :sessions
+  set :session_secret, &#39;super secret&#39;
+
+  set :views, File.join(File.dirname(__FILE__), &#39;views&#39;)
+  set :public_folder, File.join(File.dirname(__FILE__), &#39;styles&#39;)
+
+  configure :development do
+    register Sinatra::Reloader
+    after_reload do
+      puts &#39;Reloaded...&#39;
+    end
+  end
+
+  before do
+    @current_user = session[:account_id] &amp;&amp; Account.find_by(id: session[:account_id])
+  end
+
+  helpers do
+    def logged_in?
+      !!@current_user
+    end
+  end
+
+  GAME_URL_MAPPING = {
+  &#39;Counter Strike 2&#39; =&gt; &#39;csgo&#39;,
+
+  }
+
+
+  get &#39;/login&#39; do
+    error_message = params[:error]
+    erb :login, locals: { error_message: error_message }
+  end
+
+  get &#39;/&#39; do
+    if logged_in?
+      redirect &#39;/home&#39;
+    else
+      redirect &#39;/login&#39;
+    end
+  end
+
+  get &#39;/perfil&#39; do
+    erb :perfil
+  end
+
+  get &#39;/signup&#39; do
+    erb :signup
+  end
+
+  get &#39;/home&#39; do
+    if session[:logged_in]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests 'session[:logged_in]' at least 9 times</span>              <span>Locations:</span>                  <a href="server.html#L83" class="js-smell-location">0</a>                  <a href="server.html#L134" class="js-smell-location">1</a>                  <a href="server.html#L173" class="js-smell-location">2</a>                  <a href="server.html#L203" class="js-smell-location">3</a>                  <a href="server.html#L231" class="js-smell-location">4</a>                  <a href="server.html#L256" class="js-smell-location">5</a>                  <a href="server.html#L316" class="js-smell-location">6</a>                  <a href="server.html#L355" class="js-smell-location">7</a>                  <a href="server.html#L429" class="js-smell-location">8</a>                  </div>  </li></ol>
+      @games = Game.all
+      erb :home
+    else
+      redirect &#39;/login&#39;
+    end
+  end
+  
+
+  post &#39;/login&#39; do
+    nickname = params[:nickname]
+    password = params[:password]
+    account = Account.find_by(nickname: nickname, password: password)
+
+    if account
+      session[:email] = account.email
+      session[:account_id] = account.id
+      session[:logged_in] = true
+      redirect &#39;/home&#39;
+    else
+      redirect &#39;/login?error=Invalid-username-or-password&#39;
+    end
+  end
+
+  post &#39;/signup&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>App::post#/signup has a flog score of 34</span>          </div>  </li></ol>
+    email = params[:email]
+    password = params[:password]
+    name = params[:name]
+    nickname = params[:nickname]
+
+    if Account.exists?(email: email)
+      redirect &#39;/signup?error=Email-already-exists&#39;
+    end
+
+    if Account.exists?(nickname: nickname)
+      redirect &#39;/signup?error=Nickname-already-exists&#39;
+    end
+
+    account = Account.new(email: email, password: password, name: name, nickname: nickname, progress: 0)
+
+    if account.save
+      session[:logged_in] = true
+      session[:account_id] = account.id
+      redirect &#39;/login&#39;
+    else
+      puts &quot;Error al guardar la cuenta: #{account.errors.full_messages.join(&quot;, &quot;)}&quot;
+      erb :signup, locals: { error_message: &quot;Error al crear cuenta&quot; }
+    end
+  end
+
+  post &#39;/home&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>App::post#/home has a flog score of 43</span>          </div>  </li></ol>
+    if session[:logged_in]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests 'session[:logged_in]' at least 9 times</span>              <span>Locations:</span>                  <a href="server.html#L83" class="js-smell-location">0</a>                  <a href="server.html#L134" class="js-smell-location">1</a>                  <a href="server.html#L173" class="js-smell-location">2</a>                  <a href="server.html#L203" class="js-smell-location">3</a>                  <a href="server.html#L231" class="js-smell-location">4</a>                  <a href="server.html#L256" class="js-smell-location">5</a>                  <a href="server.html#L316" class="js-smell-location">6</a>                  <a href="server.html#L355" class="js-smell-location">7</a>                  <a href="server.html#L429" class="js-smell-location">8</a>                  </div>  </li></ol>
+      selected_game_name = params[:game]
+      account_id = session[:account_id]
+  
+      unless account_id
+        status 400
+        body &quot;Account ID is missing in session.&quot;
+        return
+      end
+  
+      selected_game = Game.find_by(name: selected_game_name)
+  
+      if selected_game.nil?
+        status 400
+        body &quot;Game not found.&quot;
+        return
+      end
+  
+      session[:selected_game] = selected_game.name
+  
+      if Account.exists?(id: account_id)
+        account_game = AccountGame.find_or_create_by(account_id: account_id, game: selected_game)
+        if account_game.save
+          game_url_name = GAME_URL_MAPPING[selected_game.name] || selected_game.name
+          redirect &quot;/difficult/#{game_url_name}&quot;
+        else
+          status 400
+          body &quot;Unable to save AccountGame.&quot;
+        end
+      else
+        status 400
+        body &quot;Account ID does not exist.&quot;
+      end
+    else
+      redirect &quot;/login&quot;
+    end
+  end
+
+  post &#39;/perfil&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>App::post#/perfil has a flog score of 36</span>          </div>  </li></ol>
+    if session[:logged_in]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests 'session[:logged_in]' at least 9 times</span>              <span>Locations:</span>                  <a href="server.html#L83" class="js-smell-location">0</a>                  <a href="server.html#L134" class="js-smell-location">1</a>                  <a href="server.html#L173" class="js-smell-location">2</a>                  <a href="server.html#L203" class="js-smell-location">3</a>                  <a href="server.html#L231" class="js-smell-location">4</a>                  <a href="server.html#L256" class="js-smell-location">5</a>                  <a href="server.html#L316" class="js-smell-location">6</a>                  <a href="server.html#L355" class="js-smell-location">7</a>                  <a href="server.html#L429" class="js-smell-location">8</a>                  </div>  </li></ol>
+      account_id = session[:account_id]
+      new_username = params[:nickname]
+      new_password = params[:password]
+  
+      account = Account.find(account_id)
+  
+      if account
+        if new_username &amp;&amp; !new_username.strip.empty?
+          account.update(nickname: new_username) 
+        end
+  
+        if new_password &amp;&amp; !new_password.strip.empty?
+          account.update(password: new_password) 
+        end
+  
+        if account.save
+          redirect &#39;/perfil?success=true&#39;
+        else
+          redirect &#39;/perfil?error=update_failed&#39;
+        end
+      else
+        redirect &#39;/perfil?error=account_not_found&#39;
+      end
+    else
+      redirect &#39;/home&#39;
+    end
+  end
+  
+  get &#39;/final_exam/:test_letter/:question_number&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>App::get#/final_exam/:test_letter/:question_number has a flog score of 45</span>          </div>  </li></ol>
+    if session[:logged_in]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests 'session[:logged_in]' at least 9 times</span>              <span>Locations:</span>                  <a href="server.html#L83" class="js-smell-location">0</a>                  <a href="server.html#L134" class="js-smell-location">1</a>                  <a href="server.html#L173" class="js-smell-location">2</a>                  <a href="server.html#L203" class="js-smell-location">3</a>                  <a href="server.html#L231" class="js-smell-location">4</a>                  <a href="server.html#L256" class="js-smell-location">5</a>                  <a href="server.html#L316" class="js-smell-location">6</a>                  <a href="server.html#L355" class="js-smell-location">7</a>                  <a href="server.html#L429" class="js-smell-location">8</a>                  </div>  </li></ol>
+      account_id = session[:account_id]
+  
+      completed_trivia_count = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
+        
+      if completed_trivia_count &gt;= 3
+        test_letter = params[:test_letter]
+        question_number = params[:question_number].to_i
+        @question = Question.find_by(number: question_number, test_letter: test_letter)
+  
+        if @question<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests '@question' at least 4 times</span>              <span>Locations:</span>                  <a href="server.html#L213" class="js-smell-location">0</a>                  <a href="server.html#L266" class="js-smell-location">1</a>                  <a href="server.html#L341" class="js-smell-location">2</a>                  <a href="server.html#L364" class="js-smell-location">3</a>                  </div>  </li></ol>
+          @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
+          @difficulty = test_letter
+  
+          erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty }
+        else
+          redirect &quot;/difficult/#{URI.encode(session[:selected_game])}&quot; 
+        end
+      else
+        redirect &quot;/difficult/#{URI.encode(session[:selected_game])}?error=complete_all_trivias&quot;  
+      end
+    else
+      redirect &#39;/home&#39;
+    end
+  end
+  
+
+  post &#39;/start_final_exam&#39; do
+    if session[:logged_in]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests 'session[:logged_in]' at least 9 times</span>              <span>Locations:</span>                  <a href="server.html#L83" class="js-smell-location">0</a>                  <a href="server.html#L134" class="js-smell-location">1</a>                  <a href="server.html#L173" class="js-smell-location">2</a>                  <a href="server.html#L203" class="js-smell-location">3</a>                  <a href="server.html#L231" class="js-smell-location">4</a>                  <a href="server.html#L256" class="js-smell-location">5</a>                  <a href="server.html#L316" class="js-smell-location">6</a>                  <a href="server.html#L355" class="js-smell-location">7</a>                  <a href="server.html#L429" class="js-smell-location">8</a>                  </div>  </li></ol>
+      account_id = session[:account_id]
+      test_letter = params[:test_letter] || &#39;F&#39;
+      
+      # Check if there is an error message
+      error_message = &#39;Debe completar todas las trivias antes de acceder al examen final.&#39; if params[:error] == &#39;complete_all_trivias&#39;
+  
+      @test = Test.find_by(letter: test_letter)
+  
+      if @test
+        account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
+        account_test.update(correct_answers: 0, test_completed: false)
+        
+        redirect &quot;/final_exam/#{test_letter}/1&quot;
+      else
+        redirect &#39;/home&#39;
+      end
+    else
+      redirect &#39;/home&#39;
+    end
+  end
+  
+  
+  
+  post &#39;/submit_final_exam_answer&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>VeryHighComplexity</b></a>        </span>      </div>      <span>App::post#/submit_final_exam_answer has a flog score of 81</span>          </div>  </li></ol>
+    if session[:logged_in]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests 'session[:logged_in]' at least 9 times</span>              <span>Locations:</span>                  <a href="server.html#L83" class="js-smell-location">0</a>                  <a href="server.html#L134" class="js-smell-location">1</a>                  <a href="server.html#L173" class="js-smell-location">2</a>                  <a href="server.html#L203" class="js-smell-location">3</a>                  <a href="server.html#L231" class="js-smell-location">4</a>                  <a href="server.html#L256" class="js-smell-location">5</a>                  <a href="server.html#L316" class="js-smell-location">6</a>                  <a href="server.html#L355" class="js-smell-location">7</a>                  <a href="server.html#L429" class="js-smell-location">8</a>                  </div>  </li></ol>
+      account_id = session[:account_id]
+      question_number = params[:question_number].to_i
+      test_letter = params[:test_letter]
+      selected_option = params[:selected_option]
+  
+      @question = Question.find_by(number: question_number, test_letter: test_letter)
+      @test = Test.find_by(letter: test_letter)
+      account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
+  
+      if @question<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests '@question' at least 4 times</span>              <span>Locations:</span>                  <a href="server.html#L213" class="js-smell-location">0</a>                  <a href="server.html#L266" class="js-smell-location">1</a>                  <a href="server.html#L341" class="js-smell-location">2</a>                  <a href="server.html#L364" class="js-smell-location">3</a>                  </div>  </li></ol>
+        if selected_option
+          selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
+  
+          if selected_answer
+            correct = selected_answer.correct
+  
+            account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
+            account_answer.update(answer_id: selected_answer.id, correct: correct)
+          
+            if correct
+              account_test.increment(:correct_answers)
+            end
+            account_test.save
+  
+            next_question_number = question_number + 1
+            next_question = Question.find_by(number: next_question_number, test_letter: test_letter)
+  
+            if next_question
+              redirect &quot;/final_exam/#{test_letter}/#{next_question_number}&quot;
+            else
+              account_test.update(test_completed: true)
+  
+              total_questions = Question.where(test_letter: test_letter).count
+              correct_answers_count = account_test.correct_answers
+              correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
+  
+              erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage, correct_answers_count: correct_answers_count, total_questions: total_questions }
+            end
+          else
+            redirect &quot;/final_exam/#{test_letter}/#{question_number}?error=invalid_option&quot;
+          end
+        else
+          @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flay/" target="_blank"><b>DuplicateCode</b></a>        </span>      </div>      <span>Similar code found in 3 nodes</span>              <span>Locations:</span>                  <a href="server.html#L299" class="js-smell-location">0</a>                  <a href="server.html#L399" class="js-smell-location">1</a>                  <a href="server.html#L410" class="js-smell-location">2</a>                  </div>  </li></ol>
+          @difficulty = test_letter
+  
+          erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: &#39;Debes seleccionar una opción antes de continuar.&#39; }
+        end
+      else
+        redirect &quot;/difficult/#{session[:selected_game]}&quot;
+      end
+    else
+      redirect &#39;/home&#39;
+    end
+  end
+  
+    
+  
+
+  get &#39;/difficult/:game&#39; do
+    if session[:logged_in]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests 'session[:logged_in]' at least 9 times</span>              <span>Locations:</span>                  <a href="server.html#L83" class="js-smell-location">0</a>                  <a href="server.html#L134" class="js-smell-location">1</a>                  <a href="server.html#L173" class="js-smell-location">2</a>                  <a href="server.html#L203" class="js-smell-location">3</a>                  <a href="server.html#L231" class="js-smell-location">4</a>                  <a href="server.html#L256" class="js-smell-location">5</a>                  <a href="server.html#L316" class="js-smell-location">6</a>                  <a href="server.html#L355" class="js-smell-location">7</a>                  <a href="server.html#L429" class="js-smell-location">8</a>                  </div>  </li></ol>
+      # Determine the selected game and check conditions
+      selected_game = params[:game]
+      @completed_trivias = AccountTrivia.where(account_id: session[:account_id], trivias_completed: true).count
+      
+      # Check if there is an error message to display
+      error_message = nil
+      if params[:error] == &#39;complete_all_trivias&#39;
+        error_message = &#39;Debe completar todas las trivias antes de acceder al examen final.&#39;
+      end
+  
+      erb :difficult, locals: { selected_game: selected_game, completed_trivias: @completed_trivias, error_message: error_message }
+    else
+      redirect &#39;/home&#39;
+    end
+  end
+  
+
+  get &#39;/:game/:test_letter/:question_number&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>App::get#/:game/:test_letter/:question_number has a flog score of 28</span>          </div>  </li></ol>
+    if logged_in?
+      test_letter = params[:test_letter]
+      question_number = params[:question_number].to_i
+
+      @question = Question.find_by(number: question_number, test_letter: test_letter)
+
+      if @question<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests '@question' at least 4 times</span>              <span>Locations:</span>                  <a href="server.html#L213" class="js-smell-location">0</a>                  <a href="server.html#L266" class="js-smell-location">1</a>                  <a href="server.html#L341" class="js-smell-location">2</a>                  <a href="server.html#L364" class="js-smell-location">3</a>                  </div>  </li></ol>
+        @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
+        @difficulty = params[:test_letter] 
+
+        erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty }
+      else
+        redirect &quot;/difficult/#{session[:selected_game]}&quot;
+      end
+    else
+      redirect &quot;/login&quot;
+    end
+  end
+
+  post &#39;/submit_trivia_answer&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>VeryHighComplexity</b></a>        </span>      </div>      <span>App::post#/submit_trivia_answer has a flog score of 74</span>          </div>  </li></ol>
+    if session[:logged_in]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests 'session[:logged_in]' at least 9 times</span>              <span>Locations:</span>                  <a href="server.html#L83" class="js-smell-location">0</a>                  <a href="server.html#L134" class="js-smell-location">1</a>                  <a href="server.html#L173" class="js-smell-location">2</a>                  <a href="server.html#L203" class="js-smell-location">3</a>                  <a href="server.html#L231" class="js-smell-location">4</a>                  <a href="server.html#L256" class="js-smell-location">5</a>                  <a href="server.html#L316" class="js-smell-location">6</a>                  <a href="server.html#L355" class="js-smell-location">7</a>                  <a href="server.html#L429" class="js-smell-location">8</a>                  </div>  </li></ol>
+      account_id = session[:account_id]
+      question_number = params[:question_number].to_i
+      test_letter = params[:test_letter]
+      selected_option = params[:selected_option]
+  
+      @question = Question.find_by(number: question_number, test_letter: test_letter)
+      @test = Test.find_by(letter: test_letter)
+  
+      if @question<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests '@question' at least 4 times</span>              <span>Locations:</span>                  <a href="server.html#L213" class="js-smell-location">0</a>                  <a href="server.html#L266" class="js-smell-location">1</a>                  <a href="server.html#L341" class="js-smell-location">2</a>                  <a href="server.html#L364" class="js-smell-location">3</a>                  </div>  </li></ol>
+        if selected_option
+          selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
+  
+          if selected_answer
+            correct = selected_answer.correct
+  
+            account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
+            account_answer.update(answer_id: selected_answer.id, correct: correct)
+
+            trivia = Trivia.find_by(number: question_number, test_letter: test_letter)
+  
+            next_question_number = question_number + 1
+            if question_number == 5
+              account_trivia = AccountTrivia.find_or_create_by(account_id: account_id, trivias_id: trivia.id, trivias_completed: true)
+  
+              erb :result, locals: {
+                correct: correct,
+                description: trivia.description,
+                question_number: question_number,
+                test_letter: test_letter,
+                trivia_completed: true,
+                exam_final: false
+              }
+            else
+              erb :result, locals: {
+                correct: correct,
+                description: trivia.description,
+                question_number: question_number,
+                test_letter: test_letter,
+                trivia_completed: false,
+                exam_final: false
+              }
+            end
+          else
+            @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flay/" target="_blank"><b>DuplicateCode</b></a>        </span>      </div>      <span>Similar code found in 3 nodes</span>              <span>Locations:</span>                  <a href="server.html#L299" class="js-smell-location">0</a>                  <a href="server.html#L399" class="js-smell-location">1</a>                  <a href="server.html#L410" class="js-smell-location">2</a>                  </div>  </li></ol>
+            @difficulty = test_letter
+  
+            erb :trivia, locals: {
+              question: @question,
+              answers: @answers,
+              difficulty: @difficulty,
+              error: &#39;La opción seleccionada no es válida. Por favor, selecciona otra opción.&#39;
+            }
+          end
+        else
+          @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flay/" target="_blank"><b>DuplicateCode</b></a>        </span>      </div>      <span>Similar code found in 3 nodes</span>              <span>Locations:</span>                  <a href="server.html#L299" class="js-smell-location">0</a>                  <a href="server.html#L399" class="js-smell-location">1</a>                  <a href="server.html#L410" class="js-smell-location">2</a>                  </div>  </li></ol>
+          @difficulty = test_letter
+  
+          erb :trivia, locals: {
+            question: @question,
+            answers: @answers,
+            difficulty: @difficulty,
+            error: &#39;Debes seleccionar una opción antes de continuar.&#39;
+          }
+        end
+      else
+        redirect &quot;/difficult/#{session[:selected_game]}&quot;
+      end
+    else
+      redirect &quot;/home&quot;
+    end
+  end
+    
+  get &#39;/result_exam&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>App::get#/result_exam has a flog score of 32</span>          </div>  </li></ol>
+    if session[:logged_in]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Repeated-Conditional.md" target="_blank"><b>RepeatedConditional</b></a>        </span>      </div>      <span>App tests 'session[:logged_in]' at least 9 times</span>              <span>Locations:</span>                  <a href="server.html#L83" class="js-smell-location">0</a>                  <a href="server.html#L134" class="js-smell-location">1</a>                  <a href="server.html#L173" class="js-smell-location">2</a>                  <a href="server.html#L203" class="js-smell-location">3</a>                  <a href="server.html#L231" class="js-smell-location">4</a>                  <a href="server.html#L256" class="js-smell-location">5</a>                  <a href="server.html#L316" class="js-smell-location">6</a>                  <a href="server.html#L355" class="js-smell-location">7</a>                  <a href="server.html#L429" class="js-smell-location">8</a>                  </div>  </li></ol>
+      account_id = session[:account_id]
+      test_letter = params[:test_letter]
+  
+      @test = Test.find_by(letter: test_letter)
+      correct_answers = AccountTest.find_by(account_id: account_id, test_id: @test.id)
+  
+      if correct_answers
+        total_questions = 5
+        correct_answers_count = correct_answers.correct_answers 
+        correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
+
+        erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage }
+
+      else
+        redirect &quot;/difficult/#{session[:selected_game]}&quot;
+      end
+    else
+      redirect &#39;/home&#39;
+    end
+  end
+  
+
+  get &#39;/logout&#39; do
+    session.clear
+    redirect &#39;/&#39;
+  end
+
+  post &#39;/logout&#39; do
+    session.clear
+    redirect &#39;/&#39;
+  end
+end
+</code>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScripts -->
+    <script src="assets/vendor/javascripts/jquery.min.js"></script>
+    <script src="assets/vendor/javascripts/jquery.tablesorter.min.js"></script>
+    <script src="assets/vendor/javascripts/jquery.scrollTo.min.js"></script>
+    <script src="assets/vendor/javascripts/jquery.timeago.js"></script>
+    <script src="assets/vendor/javascripts/highcharts.src-4.0.1.js"></script>
+    <script src="assets/vendor/javascripts/prettify.js"></script>
+    <script src="assets/vendor/javascripts/bootstrap.min.js"></script>
+    <script src="assets/javascripts/application.js"></script>
+    <script src="assets/vendor/javascripts/jquery.filtertable.min.js"></script>
+  </body>
+</html>

@@ -1,30 +1,36 @@
 @import url('common.css');
 
-body {
-    font-family: system-ui;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-    background-image: url('fondo5.jpg');
-    background-size: 34% auto; /* Ajusta el tamaño de la imagen para que ocupe 1/4 del ancho */
-    background-repeat: repeat-x; /* Repite la imagen solo en la dirección horizontal */
-    background-position: top center; /* Centra la imagen en la parte superior */
+/* Variables para el modo claro */
+:root {
+    --bg-color: white;
+    --text-color: #000;
+    --button-bg: rgb(3, 89, 146);
+    --button-hover-bg: #007BFF;
+    --modal-bg: rgba(0, 0, 0, 0.4);
+    --modal-content-bg: #fefefe;
+    --submit-btn-bg: #218838;
+    --submit-btn-hover-bg: #28a745;
 }
 
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    flex-direction: column;
+/* Variables para el modo oscuro */
+.dark-mode {
+    --bg-color: #181818;
+    --text-color: #f0f0f0;
+    --button-bg: #444;
+    --button-hover-bg: #888;
+    --modal-bg: rgba(255, 255, 255, 0.1);
+    --modal-content-bg: #333;
+    --submit-btn-bg: #006400;
+    --submit-btn-hover-bg: #00b300;
 }
 
+/* Aplicando las variables */
 .wrapper {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background-color: white;
+    background-color: var(--bg-color);
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -36,14 +42,13 @@ main {
     top: 20px;
     left: 38px;
     font-size: 40px;
-    color: #000;
+    color: var(--text-color);
 }
 
 .wrapper img {
     width: 180px;
     height: 180px;
 }
-
 
 .usuario {
     position: absolute;
@@ -54,7 +59,7 @@ main {
 .usuario h2 {
     margin: 0 0 10px 0;
     font-size: 20px;
-    color: #000;
+    color: var(--text-color);
 }
 
 .cambiarNU, .cambiarCon {
@@ -62,7 +67,7 @@ main {
     margin-top: 25px;
     margin-left: 38px;
     padding: 4px 8px;
-    background-color: rgb(3, 89, 146);
+    background-color: var(--button-bg);
     color: white;
     border: none;
     border-radius: 10px;
@@ -71,7 +76,24 @@ main {
 
 .cambiarNU:hover, .cambiarCon:hover {
     transform: scale(1.05);
-    background-color: #007BFF;
+    background-color: var(--button-hover-bg);
+}
+
+.cambiar-modo {
+    display: block;
+    margin-top: 25px;
+    margin-left: -103px;
+    padding: 4px 8px;
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.cambiar-modo:hover {
+    transform: scale(1.05);
+    background-color: var(--button-hover-bg);
 }
 
 .modal {
@@ -83,13 +105,12 @@ main {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+    background-color: var(--modal-bg);
     padding-top: 60px;
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: var(--modal-content-bg);
     margin: 5% auto;
     padding: 20px;
     border: 1px solid #888;
@@ -105,7 +126,7 @@ main {
 }
 
 .close:hover, .close:focus {
-    color: black;
+    color: var(--text-color);
     text-decoration: none;
     cursor: pointer;
 }
@@ -116,22 +137,25 @@ main {
 
 .modal-content label {
     font-size: 20px;
+    color: var(--text-color);
 }
 
 .modal-content input {
     font-size: 20px;
+    color: var(--text-color);
 }
 
 .modal-content h2 {
     font-size: 30px;
     text-align: center;
     margin-bottom: 30px;
+    color: var(--text-color);
 }
 
 .modal-content button[type="submit"] {
     margin-left: 10px;
     margin-top: 20px;
-    background-color: #218838;
+    background-color: var(--button-bg);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -142,5 +166,5 @@ main {
 
 .modal-content button[type="submit"]:hover {
     transform: scale(1.05);
-  background-color: #28a745;
+    background-color: var(--button-hover-bg);
 }

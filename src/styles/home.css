@@ -6,28 +6,33 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: system-ui;
-  background-color: #f4f4f4;
-  color: #333;
-  background-image: url('fondo5.jpg');
-  background-size: 34% auto; /* Ajusta el tamaño de la imagen para que ocupe 1/4 del ancho */
-  background-repeat: repeat-x; /* Repite la imagen solo en la dirección horizontal */
-  background-position: top center; /* Centra la imagen en la parte superior */
-} 
+:root {
+  --bg-color: white;
+  --text-color: #000;
+  --button-bg: rgb(3, 89, 146);
+  --button-hover-bg: #007BFF;
+  --modal-bg: rgba(0, 0, 0, 0.4);
+  --modal-content-bg: #fefefe;
+  --submit-btn-bg: #218838;
+  --submit-btn-hover-bg: #28a745;
+}
 
-main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  flex-direction: column;
+/* Variables para el modo oscuro */
+.dark-mode {
+  --bg-color: #181818;
+  --text-color: #f0f0f0;
+  --button-bg: #444;
+  --button-hover-bg: #888;
+  --modal-bg: rgba(255, 255, 255, 0.1);
+  --modal-content-bg: #333;
+  --submit-btn-bg: #006400;
+  --submit-btn-hover-bg: #00b300;
 }
 
 .wrapper {
   width: 80%;
   max-width: 800px;
-  background-color: #fff;
+  background-color: var(--bg-color);
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -36,6 +41,7 @@ main {
 h2 {
   font-size: 22px;
   margin-bottom: 10px;
+  color: var(--text-color);
 }
 
 .tarjeta {
@@ -85,7 +91,7 @@ h2 {
 }
 
 .tarjeta .footer button {
-  background-color: #218838;
+  background-color: var(--submit-btn-bg);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -96,7 +102,7 @@ h2 {
 
 .tarjeta .footer button:hover {
   transform: scale(1.05);
-  background-color: #28a745;
+  background-color: var(--submit-btn-hover-bg);
 }
 
 a {
@@ -111,14 +117,14 @@ a {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--modal-bg);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .modal-content {
-  background-color: #f9f9f9;
+  background-color: var(--modal-content-bg);
   padding: 20px;
   border-radius: 8px;
   width: 400px;
@@ -127,7 +133,7 @@ a {
 }
 
 .close {
-  color: #333;
+  color: var(--text-color);
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -135,7 +141,7 @@ a {
 }
 
 .close:hover {
-  color: #555;
+  color: var(--text-color);
 }
 
 .game-list {

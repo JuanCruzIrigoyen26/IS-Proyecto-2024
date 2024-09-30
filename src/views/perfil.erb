@@ -32,6 +32,7 @@
                 <button class="cambiarNU" onclick="openModal('nicknameModal')">Cambiar nickname</button>
                 <h2>Contraseña</h2>
                 <button class="cambiarCon" onclick="openModal('passwordModal')">Cambiar contraseña</button>
+                <button id="boton-modo" class="cambiar-modo">Cambiar modo</button>
             </div>
         </section>
     </main>
@@ -74,6 +75,31 @@
                 event.target.style.display = "none";
             }
         }
+    </script>
+    <!-- JavaScript para alternar entre modo claro y modo oscuro con LocalStorage -->
+    <script>
+        const toggleModeButton = document.getElementById('boton-modo');
+        // Función para alternar entre los modos y guardar la preferencia en LocalStorage
+        function toggleMode() {
+            document.body.classList.toggle('dark-mode');
+            // Guardar la preferencia en LocalStorage
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        // Escuchar el evento de clic en el botón para cambiar el modo
+        toggleModeButton.addEventListener('click', toggleMode);
+        // Aplicar el modo correcto al cargar la página según lo guardado en LocalStorage
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        }
+        // Llamar a la función para aplicar el tema guardado cuando se cargue la página
+        window.onload = applySavedTheme;
     </script>
 </body>
 </html>

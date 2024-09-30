@@ -1,47 +1,50 @@
 @import url('common.css');
 
-body {
-    font-family: system-ui;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-    background-image: url('fondo5.jpg');
-    background-size: 34% auto; /* Ajusta el tamaño de la imagen para que ocupe 1/4 del ancho */
-    background-repeat: repeat-x; /* Repite la imagen solo en la dirección horizontal */
-    background-position: top center; /* Centra la imagen en la parte superior */
+/* Variables para el modo claro */
+:root {
+    --bg-color: white;
+    --text-color: #000;
+    --button-bg: rgb(3, 89, 146);
+    --button-hover-bg: #007BFF;
+    --modal-bg: rgba(0, 0, 0, 0.4);
+    --modal-content-bg: #fefefe;
 }
 
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    flex-direction: column;
+/* Variables para el modo oscuro */
+.dark-mode {
+    --bg-color: #181818;
+    --text-color: #f0f0f0;
+    --button-bg: #444;
+    --button-hover-bg: #888;
+    --modal-bg: rgba(255, 255, 255, 0.1);
+    --modal-content-bg: #333;
 }
 
 .wrapper {
     width: 80%;
     max-width: 800px;
-    background-color: #fff;
+    background-color: var(--bg-color);
     padding: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px var(--box-shadow);
     border-radius: 8px;
     text-align: center;
-  }
+}
 
 h1 {
     font-size: 40px;
     margin-bottom: 50px;
+    color: var(--text-color);
 }
 
 p {
     font-size: 25px;
     margin-bottom: 50px;
+    color: var(--text-color);
 }
 
 button {
-    background-color: #218838;
-    color: #fff;
+    background-color: var(--button-bg);
+    color: var(--text-color);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -51,11 +54,10 @@ button {
 
 button:hover {
     transform: scale(1.05);
-    background-color: #28a745;
+    background-color: var(--button-hover-bg);
 }
 
-.wrapper img{
+.wrapper img {
     width: 680px;
     height: 380px;
-  
-  }
+}

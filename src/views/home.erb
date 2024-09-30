@@ -132,6 +132,17 @@ function adjustProgressBar(gameName) {
     }
   }
   </script>
+  <script>
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Llamar a la función para aplicar el tema guardado cuando se cargue la página
+        window.onload = applySavedTheme;
+    </script>
 </body>
 </html>
 

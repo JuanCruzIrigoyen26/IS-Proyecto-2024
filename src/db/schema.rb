@@ -101,7 +101,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_212120) do
     t.integer "game_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["letter"], name: "index_tests_on_letter", unique: true
+    t.index ["letter"], name: "index_tests_on_letter"
   end
 
   create_table "trivias", force: :cascade do |t|

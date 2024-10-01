@@ -20,7 +20,7 @@ game_2 = Game.find_or_create_by!(number: 2) do |game|
 game_3 = Game.find_or_create_by!(number: 3) do |game|
     game.name = "League Of Legends"
     game.genre = "MOBA"
-    # game.image_path = ''
+    game.image_path = 'Lol.jpeg'
   end
   
   # Crear un test
@@ -154,7 +154,7 @@ answer_f14 = Answer.create(number: 2, description: "Llevar siempre un AWP cuando
 answer_f15 = Answer.create(number: 3, description: "Infiltrarse en zonas frecuentadas por el enemigo", correct: false, question_number: question_f5.number, test_letter: test_f.letter, game_number: game_1.number)
 
 
-test_sf = Test.find_or_create_by!(letter: "S") do |test|
+test_sf = Test.create(letter: "A") do |test|
   test.description = "Conceptos de Principiante"
   test.cant_questions = 5
   test.game_number = game_2.number
@@ -188,7 +188,7 @@ answer_d14 = Answer.create(number: 2, description: "Un Super movimiento invulner
 answer_d15 = Answer.create(number: 3, description: "Un estilo de personaje ", correct: true, question_number: question_d5.number, test_letter: test_sf.letter, game_number: game_2.number)
 
 # Test T
-test_t = Test.create(letter: "T", description: "Conceptos de Casual", cant_questions: 5, game_number: game_2.number)
+test_t = Test.create(letter: "B", description: "Conceptos de Casual", cant_questions: 5, game_number: game_2.number)
   
 trivia_t1 = Trivia.create(number: 1, title: "Crossup", description: "El término Crossup viene de la palabra Cruzar. Es la acción de golpear a tu rival por el lado contrario al que están bloqueando. Como en la mayoría de juegos de pelea bloqueas caminando para atrás, un Crossup te obliga a cambiar la dirección hacia el lado opuesto del ataque de forma muy rápida. Una situación de Crossup común es en salto con ángulo complicado de reconocer en el lugar que caeremos y podremos golpear al rival en el lado opuesto donde esta mirando. También existen otros movimientos donde cruzan al rival de manera natural, por ejemplo en Street Fighter 6 el personaje Terry tiene un movimiento Target Combo que permite saltar al lado opuesto y sino usarlo a su favor para engañar al rival. Esta situación también podemos usarla para engañar al rival y hacer que cometa un error como puede ser tirar un Antiaéreo preventivo que fallé, lo que se llama Fake Crossup.", test_letter: test_t.letter, mode: "casual", game_number: game_2.number)
 trivia_t2 = Trivia.create(number: 2, title: "Mixup", description: "Un Mixup se realiza cuando variamos nuestra ofensiva entre ataques normales que golpeen en zonas bajas y altas del personaje del rival o agarres. Esta manera de atacar se utiliza para complicar la defensa del rival y buscar una entrada para quitar vida o si es posible llevarlo a Combo. Entre los personajes de Street Fighter 6 que tienden a ser jugados con esta forma de ofensiva se encuentran: Rashid, Jamie, Cammy, Juri, Dee Jay o Chun-Li", test_letter: test_t.letter, mode: "casual", game_number: game_2.number)
@@ -221,7 +221,7 @@ answer_t15 = Answer.create(number: 3, description: "Para seguir con la presión 
 
 
 #Test U
-test_u = Test.create(letter: "U", description: "Conceptos de Profesional", cant_questions: 5, game_number: game_2.number)
+test_u = Test.create(letter: "C", description: "Conceptos de Profesional", cant_questions: 5, game_number: game_2.number)
 
   
 trivia_u1 = Trivia.create(number: 1, title: "Setup", description: "Un Setup se realiza cuando el rival esta en Knockdown y dependiendo nuestro personaje, podemos usar mecánicas para efectuar Mixups mucho más fuertes en Wake Up. En Street Fighter 6 varios personajes pueden generar este tipo de situaciones usando movimientos, entre ellos están: JP (Utilizando Departure/Departure OD), Blanka (Utilizando Blanka-chan Bomb), Rashid (Utilizando Ysaar), A.K.I (Utilizando Nightshade Pulse o Orchid Spring), Ed (Utilizando Psycho Spark o Psycho Cannon) y Kimberly (Utilizando Shuriken Bomb)", test_letter: test_u.letter, mode: "professional", game_number: game_2.number)
@@ -253,7 +253,7 @@ answer_u14 = Answer.create(number: 2, description: "Con Drive Rush", correct: fa
 answer_u15 = Answer.create(number: 3, description: "Con ataques especiales", correct: true, question_number: question_u5.number, test_letter: test_u.letter, game_number: game_2.number)
 
 #Test Y
-test_y = Test.create(letter: "Y", description: "Examen Final de Conceptos Competitivos", cant_questions: 5, game_number:game_2.number)
+test_y = Test.create(letter: "F", description: "Examen Final de Conceptos Competitivos", cant_questions: 5, game_number:game_2.number)
 
 
 trivia_y1 = Trivia.create(number: 1, title: "Buffer", description: "Un Buffer o hacer un golpe con Buffering se refiere a tirar un ataque Whiffeando/al aire y cancelarlo con especiales que unicamente saldrán si nuestro golpe impacta. Esto nos permite Pokear golpes y cancelarlos con especiales que nos lo permitan para hacer más daño y hasta dejar al rival en Knockdown, dando así una opción segura para jugar en el Neutro. Aunque parezca sencillo, hay que tener en cuenta que si el rival bloquea nuestro primer ataque y el especial, nos quedaremos sin forma de defendernos. En Street Fighter 6 esto puede aplicarse a la mayoría de personajes y con combinaciones inmensas, por lo que te invitamos a probar en el Training Room diferentes formas de aplicar esta técnica en el juego.", test_letter: test_y.letter, mode: "FinalExam", game_number: game_2.number)
@@ -285,7 +285,7 @@ answer_y14 = Answer.create(number: 2, description: "Super Arts", correct: false,
 answer_y15 = Answer.create(number: 3, description: "Agarres/grabs", correct: true, question_number: question_y5.number, test_letter: test_y.letter, game_number: game_2.number)
 
 
-test_l = Test.find_or_create_by!(letter: "L") do |test|
+test_l = Test.create(letter: "A") do |test|
   test.description = "Conceptos de Principiante"
   test.cant_questions = 5
   test.game_number = game_3.number
@@ -320,7 +320,7 @@ answer_l14 = Answer.create(number: 2, description: "Centrado en los objetivos", 
 answer_l15 = Answer.create(number: 3, description: "Agresivo", correct: true, question_number: question_l5.number, test_letter: test_l.letter, game_number: game_3.number)
 
 #Test K
-test_k = Test.create(letter: "K", description: "Conceptos de Casual", cant_questions: 5, game_number: game_3.number)
+test_k = Test.create(letter: "B", description: "Conceptos de Casual", cant_questions: 5, game_number: game_3.number)
 
 
 trivia_k1 = Trivia.create(number: 1, title: "Tower Dive", description: "Tower Dives (Bucear en Torre) es cuando varios jugadores persiguen a un jugador enemigo bajo la protección de su torre, ignorando el daño que inflige, mientras intentan hacer malabares con el aggro de la torreta y matar al oponente a la vez. Esto es algo que no debería intentarse a menos que el enemigo tenga muy pocos puntos de vida, que tu equipo y tú estéis bien coordinados o que seáis tan fuertes que podáis ignorar el daño de la torreta.", test_letter: test_k.letter, mode: "casual", game_number: game_3.number)
@@ -352,7 +352,7 @@ answer_k14 = Answer.create(number: 2, description: "Dejar las torres y hacer obj
 answer_k15 = Answer.create(number: 3, description: "Dejar sus bases y intentar terminar la partida ", correct: true, question_number: question_k5.number, test_letter: test_k.letter, game_number: game_3.number)
 
 #Test J
-test_j = Test.create(letter: "J", description: "Conceptos de Profesional", cant_questions: 5, game_number: game_3.number)
+test_j = Test.create(letter: "C", description: "Conceptos de Profesional", cant_questions: 5, game_number: game_3.number)
 
 
 trivia_j1 = Trivia.create(number: 1, title: "Lane Freeze", description: "Es cuando un laner ralentiza el empuje de una oleada de minion influyendo en qué minions atacan a qué minions. Esto requiere atacar estratégicamente a los minions en último lugar (atacarlos solo en el último segundo para conseguir oro), de modo que puedas mantener al laner enemigo atrapado en una posición. Esto sirve tanto para poner al laner enemigo en posición de una posible emboscada aliada como para mantenerlo fuera del alcance de los XP y el oro de los minions asesinos.", test_letter: test_j.letter, mode: "professional", game_number: game_3.number)
@@ -384,7 +384,7 @@ answer_j14 = Answer.create(number: 2, description: "Camino seguido por el equipo
 answer_j15 = Answer.create(number: 3, description: "Camino seguido por un campeón", correct: true, question_number: question_j5.number, test_letter: test_j.letter, game_number: game_3.number)
 
 #Test H
-test_h = Test.create(letter: "H", description: "Examen Final de Conceptos Competitivos", cant_questions: 5, game_number: game_3.number)
+test_h = Test.create(letter: "F", description: "Examen Final de Conceptos Competitivos", cant_questions: 5, game_number: game_3.number)
 
 
 trivia_h1 = Trivia.create(number: 1, title: "Lane Freeze", description: "Es cuando un laner ralentiza el empuje de una oleada de minion influyendo en qué minions atacan a qué minions. Esto requiere atacar estratégicamente a los minions en último lugar (atacarlos solo en el último segundo para conseguir oro), de modo que puedas mantener al laner enemigo atrapado en una posición. Esto sirve tanto para poner al laner enemigo en posición de una posible emboscada aliada como para mantenerlo fuera del alcance de los XP y el oro de los minions asesinos.", test_letter: test_h.letter, mode: "FinalExam", game_number: game_3.number)

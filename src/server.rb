@@ -54,7 +54,8 @@ class App < Sinatra::Application
 
   GAME_URL_MAPPING = {
   'Counter Strike 2' => 'csgo',
-  'Street Fighter 6' => 'sf6'
+  'Street Fighter 6' => 'sf6',
+  'League Of Legends' => 'lol'
 
   }
 
@@ -204,41 +205,74 @@ class App < Sinatra::Application
     if session[:logged_in]
       account_id = session[:account_id]
       selected_game = Game.find_by(name: session[:selected_game])
+  
+      # Verificar si se encuentra el juego
+      if selected_game.nil?
+        puts "Game not found for session[:selected_game]: #{session[:selected_game]}"
+        status 400
+        return "Game Not Found"
+      end
+  
+      game_name = GAME_URL_MAPPING[selected_game.name]
       game_number = selected_game.number
+      puts "Nombre del juego bien puto =#{game_name}"
   
-      completed_trivia_count = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
-        
-      if completed_trivia_count >= 3
-        test_letter = params[:test_letter]
-        question_number = params[:question_number].to_i
-        @question = Question.find_by(number: question_number, test_letter: test_letter, game_number: game_number)
+      test_letter = params[:test_letter]
+      question_number = params[:question_number].to_i
   
-        if @question
-          @answers = Answer.where(question_number: @question.number, test_letter: test_letter, game_number: game_number).shuffle
-          @difficulty = test_letter
+      # Buscar la pregunta asociada con el juego, el test y el número de pregunta
+      @question = Question.find_by(number: question_number, test_letter: test_letter, game_number: game_number)
   
-          erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty }
-        else
-          redirect "/difficult/#{URI.encode(session[:selected_game])}" 
-        end
+      if @question
+        # Si se encuentra la pregunta, obtenemos las respuestas y renderizamos la vista del examen
+        @answers = Answer.where(question_number: @question.number, test_letter: test_letter, game_number: game_number).shuffle
+        @difficulty = test_letter
+  
+        erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty }
       else
-        redirect "/difficult/#{URI.encode(session[:selected_game])}?error=complete_all_trivias"  
+        # Si no se encuentra la pregunta, redirige de vuelta a la página de selección de dificultad
+        redirect "/difficult/#{URI.encode(session[:selected_game])}?error=question_not_found"
       end
     else
+      # Redirige a home si el usuario no está logueado
       redirect '/home'
     end
   end
   
 
+  require 'erb'
+
   post '/start_final_exam' do
     if session[:logged_in]
       account_id = session[:account_id]
-      test_letter = params[:test_letter] || 'F'
-      
-      # Check if there is an error message
-      error_message = 'Debe completar todas las trivias antes de acceder al examen final.' if params[:error] == 'complete_all_trivias'
+      selected_game = Game.find_by(name: session[:selected_game])
+      game_name = GAME_URL_MAPPING[selected_game.name]
+      game_number = selected_game.number
+      puts "Nombre del juego =#{game_name}" 
+    
+      if game_name.nil?
+        # Mostrar mensaje de error si el juego no se encuentra
+        puts "Game not found for game_number: #{game_number}"
+        status 400
+        body "Game not found"
+        return
+      else
+        puts "Game found: #{selected_game.name}"
+      end
   
-      @test = Test.find_by(letter: test_letter)
+      test_letter = params[:test_letter] || 'F'
+  
+      # Verificar si ha completado las trivias requeridas
+      completed_trivias_count = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
+      required_trivias = 3
+  
+      if completed_trivias_count < required_trivias
+        # Redirigir a la pantalla de selección de dificultad con un mensaje de error
+        redirect "/difficult/#{game_name}?error=complete_all_trivias"
+        return
+      end
+  
+      @test = Test.find_by(letter: test_letter, game_number: game_number)
   
       if @test
         account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
@@ -255,21 +289,28 @@ class App < Sinatra::Application
   
   
   
+  
+  
+  
   post '/submit_final_exam_answer' do
     if session[:logged_in]
       account_id = session[:account_id]
       question_number = params[:question_number].to_i
       test_letter = params[:test_letter]
       selected_option = params[:selected_option]
+
+      selected_game = Game.find_by(name: session[:selected_game])
+      game_name = GAME_URL_MAPPING[selected_game.name] 
+      game_number = selected_game.number
   
-      @question = Question.find_by(number: question_number, test_letter: test_letter)
-      @test = Test.find_by(letter: test_letter)
+      @question = Question.find_by(number: question_number, test_letter: test_letter, game_number: game_number)
+      @test = Test.find_by(letter: test_letter, game_number: game_number)
       account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
       account_game = AccountGame.find_or_initialize_by(account_id: account_id, game: @test.game)  # Modificado
   
       if @question
         if selected_option
-          selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter)
+          selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter, game_number: game_number)
   
           if selected_answer
             correct = selected_answer.correct
@@ -283,7 +324,7 @@ class App < Sinatra::Application
             account_test.save
   
             next_question_number = question_number + 1
-            next_question = Question.find_by(number: next_question_number, test_letter: test_letter)
+            next_question = Question.find_by(number: next_question_number, test_letter: test_letter, game_number: game_number)
   
             if next_question
               redirect "/final_exam/#{test_letter}/#{next_question_number}"
@@ -291,13 +332,13 @@ class App < Sinatra::Application
               # Examen finalizado
               account_test.update(test_completed: true)
   
-              total_questions = Question.where(test_letter: test_letter).count
+              total_questions = Question.where(test_letter: test_letter, game_number: game_number).count
               correct_answers_count = account_test.correct_answers
               correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
 
               knowledge_increment = (correct_answers_percentage / 10).to_i  
               new_account_knowledge = [account_game.account_knowledge + knowledge_increment, 100].min  # Máximo de 100
-  
+              
               account_game.update(account_knowledge: new_account_knowledge)
   
               erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage, correct_answers_count: correct_answers_count, total_questions: total_questions }
@@ -306,13 +347,13 @@ class App < Sinatra::Application
             redirect "/final_exam/#{test_letter}/#{question_number}?error=invalid_option"
           end
         else
-          @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
+          @answers = Answer.where(question_number: @question.number, test_letter: test_letter, game_number:  game_number).shuffle
           @difficulty = test_letter
   
           erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'Debes seleccionar una opción antes de continuar.' }
         end
       else
-        redirect "/difficult/#{session[:selected_game]}"
+        redirect "/difficult/#{game_name}"
       end
     else
       redirect '/home'
@@ -328,7 +369,8 @@ class App < Sinatra::Application
       
       game_mapping = {
         'csgo' => 1,
-        'sf6' => 2
+        'sf6' => 2,
+        'lol' => 3
       }
       selected_game_number = game_mapping[params[:game_alias]]
   
@@ -358,12 +400,13 @@ class App < Sinatra::Application
 
   get '/:game/:test_letter/:question_number' do
     if logged_in?
-      game_number = params[:game].to_i
-      game = Game.find_by(number: game_number) # Buscamos el juego por número
+      game_number = params[:game].to_i     
+      game = Game.find_by(number: game_number)
   
       unless game
         status 400
-        body "Game not found."
+        puts "Game not found."
+        redirect "/difficult/#{game_number}"
         return
       end
   
@@ -384,6 +427,8 @@ class App < Sinatra::Application
       redirect "/login"
     end
   end
+  
+  
   
   
 
@@ -437,7 +482,7 @@ class App < Sinatra::Application
                 test_letter: test_letter,
                 trivia_completed: false,
                 exam_final: false,
-                next_question_path: next_question_path, # Pasar la ruta a la vista
+                next_question_path: next_question_path, 
                 selected_game: selected_game
               }
             end
@@ -471,17 +516,19 @@ class App < Sinatra::Application
     end
   end
   
-  
-  
-  
-  
-    
+
+   
   get '/result_exam' do
     if session[:logged_in]
       account_id = session[:account_id]
       test_letter = params[:test_letter]
+      selected_game = Game.find_by(name: session[:selected_game])
+      game_name = GAME_URL_MAPPING[selected_game.name] 
+      puts "Este es#{game_name}"
+      game_number = selected_game.number
+
   
-      @test = Test.find_by(letter: test_letter)
+      @test = Test.find_by(letter: test_letter, game_number: game_number)
       correct_answers = AccountTest.find_by(account_id: account_id, test_id: @test.id)
   
       if correct_answers
@@ -492,12 +539,51 @@ class App < Sinatra::Application
         erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage }
 
       else
-        redirect "/difficult/#{session[:selected_game]}"
+        redirect "/difficult/#{game_name}"
       end
     else
       redirect '/home'
     end
   end
+
+  get '/progress/:game_name' do
+    if session[:logged_in]
+      account_id = session[:account_id]
+      selected_game = Game.find_by(name: session[:selected_game])
+      game_name = GAME_URL_MAPPING[selected_game.name]
+      game_number = selected_game.number
+ 
+      
+      if game_name.nil?
+        status 404
+        body "Game not found."
+        return
+      end
+      
+      # Obtén el progreso desde AccountGame
+      account_game = AccountGame.find_by(account_id: account_id, game_id: selected_game.id)
+      
+      if account_game.nil?
+        status 404
+        body "AccountGame not found."
+        return
+      end
+  
+
+      completed_trivias = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
+      exam_completed = account_game.test_completed ? 25 : 0
+  
+      total_progress = (completed_trivias * 25) + exam_completed
+  
+      content_type :json
+      { progress: total_progress }.to_json
+    else
+      status 401
+      body "User not logged in."
+    end
+  end
+  
+  
   
 
   get '/logout' do

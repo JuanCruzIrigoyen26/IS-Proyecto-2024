@@ -6,33 +6,28 @@
   box-sizing: border-box;
 }
 
-:root {
-  --bg-color: white;
-  --text-color: #000;
-  --button-bg: rgb(3, 89, 146);
-  --button-hover-bg: #007BFF;
-  --modal-bg: rgba(0, 0, 0, 0.4);
-  --modal-content-bg: #fefefe;
-  --submit-btn-bg: #218838;
-  --submit-btn-hover-bg: #28a745;
-}
+body {
+  font-family: system-ui;
+  background-color: #f4f4f4;
+  color: #333;
+  background-image: url('fondo5.jpg');
+  background-size: 34% auto; /* Ajusta el tamaño de la imagen para que ocupe 1/4 del ancho */
+  background-repeat: repeat-x; /* Repite la imagen solo en la dirección horizontal */
+  background-position: top center; /* Centra la imagen en la parte superior */
+} 
 
-/* Variables para el modo oscuro */
-.dark-mode {
-  --bg-color: #181818;
-  --text-color: #f0f0f0;
-  --button-bg: #444;
-  --button-hover-bg: #888;
-  --modal-bg: rgba(255, 255, 255, 0.1);
-  --modal-content-bg: #333;
-  --submit-btn-bg: #006400;
-  --submit-btn-hover-bg: #00b300;
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  flex-direction: column;
 }
 
 .wrapper {
   width: 80%;
   max-width: 800px;
-  background-color: var(--bg-color);
+  background-color: #fff;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -41,7 +36,6 @@
 h2 {
   font-size: 22px;
   margin-bottom: 10px;
-  color: var(--text-color);
 }
 
 .tarjeta {
@@ -59,10 +53,10 @@ h2 {
 
 .tarjeta .imagen img {
   width: 100%;
-  height: 450px; /* Altura fija para todas las imágenes */
+  height: 450px; 
   display: block;
   border-radius: 10px 10px 0 0;
-  object-fit: cover; /* Asegura que la imagen mantenga proporción y cubra el espacio */
+  object-fit: cover; 
 }
 
 .tarjeta .imagen h2 {
@@ -91,7 +85,7 @@ h2 {
 }
 
 .tarjeta .footer button {
-  background-color: var(--submit-btn-bg);
+  background-color: #218838;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -102,7 +96,7 @@ h2 {
 
 .tarjeta .footer button:hover {
   transform: scale(1.05);
-  background-color: var(--submit-btn-hover-bg);
+  background-color: #28a745;
 }
 
 a {
@@ -117,14 +111,14 @@ a {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--modal-bg);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .modal-content {
-  background-color: var(--modal-content-bg);
+  background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
   width: 400px;
@@ -133,7 +127,7 @@ a {
 }
 
 .close {
-  color: var(--text-color);
+  color: #333;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -141,7 +135,7 @@ a {
 }
 
 .close:hover {
-  color: var(--text-color);
+  color: #555;
 }
 
 .game-list {
@@ -173,17 +167,23 @@ div.progress {
   background-color: #1e1e1e;
 }
 
-div.track {
+.progress {
   width: 100%;
-  height: 21px;
-  position: relative;
+  background-color: #f3f3f3;
+  border-radius: 10px;
 }
 
-div.bar {
-  height: 15px;
-  background-color: #ff4d00;
-  border-radius: 2px;
-  box-shadow: 0px 0px 5px #ff4800;
-  position: relative;
-  transition: width 0.5s;
+.track {
+  width: 100%;
+  height: 30px;
+  background-color: #ddd;
+  border-radius: 10px;
+}
+
+.bar {
+  width: 0; /* El ancho se ajustará dinámicamente */
+  height: 30px;
+  background-color: #4caf50;
+  border-radius: 10px;
+  transition: width 0.5s ease;
 }

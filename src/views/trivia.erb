@@ -26,10 +26,13 @@
     <main>
         <section class="wrapper">
             <h2>Trivia</h2>
-            <form action="/submit_trivia_answer" method="post">
+            <form id="triviaForm" action="/submit_trivia_answer" method="post" onsubmit="return validateForm()">
                 <div class="question-box">
                     <div class="question">
                         <b><%= @question.description %></b>
+                    </div>
+                    <div id="warningMessage" style="color: red; display: none;">
+                        <p><b>Debe seleccionar una opción para responder a la pregunta.</b></p>
                     </div>
                     <input name="question_number" value="<%= @question.number %>" hidden>
                     <input name="test_letter" value="<%= @question.test_letter %>" hidden>
@@ -61,3 +64,4 @@
     </script>
 </body>
 </html>
+

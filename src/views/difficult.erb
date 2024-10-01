@@ -26,11 +26,21 @@
     <main>
         <section class="wrapper">
             <h2>Seleccione una dificultad para <%= session[:selected_game] %></h2>
+
+            <!-- Mostrar mensaje si se completó una trivia -->
             <% if params[:completed_trivia] %>
             <div class="completion-message">
                 <p>¡Has completado la trivia de dificultad <%= params[:completed_trivia] %>!</p>
             </div>
             <% end %>
+
+            <!-- Mostrar mensaje de error si no se han completado todas las trivias -->
+            <% if params[:error] == 'complete_all_trivias' %>
+            <div class="error-message" style="color: red;">
+                <p>Debe completar las 3 trivias para hacer el examen final.</p>
+            </div>
+            <% end %>
+
             <div class="difficulty-buttons">
                 <!-- Ruta para Principiante -->
                 <form action="/<%= selected_game.number %>/A/1" method="get">
@@ -54,36 +64,22 @@
                     </button>
                 </a>
             </div>
+
             <form action="/start_final_exam" method="post">
                 <h2>¿Crees que sabes lo suficiente? ¡Demuéstralo aquí!</h2>    
+
                 <% if error_message %>
-                <div class="error-message">
+                <div class="error-message" style="color: red;">
                     <p><%= error_message %></p>
                 </div>
                 <% end %>
+
                 <button type="submit" class="difficulty-button">Examen Final</button>
             </form>
             </div>
         </section>
     </main>
-    <script>
-        function selectDifficulty(difficulty) {
-        var test_letter;
-        if (difficulty === 'A') {
-            test_letter = 'test_a';
-        } else if (difficulty === 'B') {
-            test_letter = 'test_b';
-        } else if (difficulty === 'C') {
-         test_letter = 'test_c';
-        } else if (difficulty === 'F') {
-            test_letter = 'test_f';
-        }
 
-        var form = document.getElementById('triviaForm');
-        form.action = '/trivia/' + test_letter + '/1';
-        form.submit();
-        }
-    </script>
     <script>
         function applySavedTheme() {
             const savedTheme = localStorage.getItem('theme');

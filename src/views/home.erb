@@ -63,26 +63,37 @@
 
   <script>
 
-  function getKnowledgeForGame(gameName) {
-  // Esto debe ser reemplazado por una llamada al backend que retorne el valor real
-  const gameKnowledge = {
-    'Juego1': 8,
-    'Juego2': 5,
-    'Juego3': 3
-  };
-  return gameKnowledge[gameName] || 0;
+  // Obtener progreso del juego desde el backend
+  async function getKnowledgeForGame(gameName) {
+    try {
+      const response = await fetch(`/progress/${encodeURIComponent(gameName)}`);
+      if (!response.ok) {
+        throw new Error('Error fetching game progress');
+      }
+      const data = await response.json();
+      return data.progress || 0;
+    } catch (error) {
+      console.error('Error:', error);
+      return 0;
+    }
+  }
+
+  // Ajustar la barra de progreso
+async function adjustProgressBar(gameName) {
+  const knowledgeValue = await getKnowledgeForGame(gameName);
+  const bar = document.getElementById('knowledge-bar');
+  
+  // Actualiza el ancho de la barra de progreso
+  bar.style.width = knowledgeValue + '%';
+
+  // Muestra la barra si no está visible
+  const barContainer = document.getElementById('knowledge-bar-container');
+  if (knowledgeValue > 0) {
+    barContainer.style.display = 'block'; // Mostrar la barra solo si hay progreso
+  }
 }
 
-// Ajustar la barra de progreso
-function adjustProgressBar(gameName) {
-  const knowledgeValue = getKnowledgeForGame(gameName);
-  const bar = document.getElementById('knowledge-bar');
-  bar.style.width = (knowledgeValue * 10) + '%';
-  
-  // Mostrar la barra si no está visible
-  const barContainer = document.getElementById('knowledge-bar-container');
-  barContainer.style.display = 'block';
-}
+
 
     
   document.addEventListener("DOMContentLoaded", function() {
@@ -107,6 +118,8 @@ function adjustProgressBar(gameName) {
     document.getElementById('gameModal').style.display = 'none';
   }
 
+
+
   // Seleccionar un nuevo juego y actualizar la tarjeta
   function selectGame(gameName, gameImagePath) {
     // Actualiza el nombre y la imagen del juego en la tarjeta
@@ -120,9 +133,13 @@ function adjustProgressBar(gameName) {
     // Muestra el botón de jugar (footer)
     document.getElementById('game-footer').style.display = 'block';
 
+     adjustProgressBar(gameName);
+
     // Cierra el modal
     closeModal();
   }
+
+
 
   // Cerrar el modal si se hace clic fuera del contenido
   window.onclick = function(event) {
@@ -142,7 +159,7 @@ function adjustProgressBar(gameName) {
 
         // Llamar a la función para aplicar el tema guardado cuando se cargue la página
         window.onload = applySavedTheme;
-    </script>
+  </script>
 </body>
 </html>
 

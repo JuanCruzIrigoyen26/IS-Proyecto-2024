@@ -62,7 +62,7 @@ class App < Sinatra::Application
 
   get '/login' do
     error_message = params[:error]
-    erb :login, locals: { error_message: error_message }
+    erb :sign, locals: { error_message: error_message }
   end
 
   get '/' do
@@ -78,7 +78,7 @@ class App < Sinatra::Application
   end
 
   get '/signup' do
-    erb :signup
+    erb :sign
   end
 
   get '/home' do

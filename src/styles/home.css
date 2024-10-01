@@ -1,5 +1,28 @@
 @import url('common.css');
 
+:root {
+  --bg-color: white;
+  --text-color: #000;
+  --button-bg: rgb(3, 89, 146);
+  --button-hover-bg: #007BFF;
+  --modal-bg: rgba(0, 0, 0, 0.4);
+  --modal-content-bg: #fefefe;
+  --submit-btn-bg: #218838;
+  --submit-btn-hover-bg: #28a745;
+}
+
+/* Variables para el modo oscuro */
+.dark-mode {
+  --bg-color: #181818;
+  --text-color: #f0f0f0;
+  --button-bg: #444;
+  --button-hover-bg: #888;
+  --modal-bg: rgba(255, 255, 255, 0.1);
+  --modal-content-bg: #333;
+  --submit-btn-bg: #006400;
+  --submit-btn-hover-bg: #00b300;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -27,13 +50,14 @@ main {
 .wrapper {
   width: 80%;
   max-width: 800px;
-  background-color: #fff;
+  background-color: var(--bg-color);
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
 h2 {
+  color: white;
   font-size: 22px;
   margin-bottom: 10px;
 }
@@ -85,7 +109,7 @@ h2 {
 }
 
 .tarjeta .footer button {
-  background-color: #218838;
+  background-color: var(--submit-btn-bg);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -96,7 +120,7 @@ h2 {
 
 .tarjeta .footer button:hover {
   transform: scale(1.05);
-  background-color: #28a745;
+  background-color: var(--submit-btn-hover-bg);
 }
 
 a {
@@ -111,14 +135,14 @@ a {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--modal-bg);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .modal-content {
-  background-color: #f9f9f9;
+  background-color: var(--modal-content-bg);
   padding: 20px;
   border-radius: 8px;
   width: 400px;

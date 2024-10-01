@@ -40,7 +40,7 @@
                 <p>Obtuviste <%= correct_answers_percentage %>%. Puedes intentarlo nuevamente.</p>
                 <img src="<%= url('desaprobado.jpg') %>" class="result-image" alt="Imagen de no aprobación">
             <% end %>
-            <form action="/difficult/<%= session[:selected_game] %>" method="get">
+            <form action="/difficult/<%= GAME_URL_MAPPING[selected_game.name] %>" method="get">
                 <button type="submit">Volver</button>
             </form>
         </section>

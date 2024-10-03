@@ -14,8 +14,8 @@
 .dark-mode {
     --bg-color: #181818;
     --text-color: #f0f0f0;
-    --button-bg: #444;
-    --button-hover-bg: #888;
+    --button-bg: rgb(3, 89, 146);
+    --button-hover-bg: #007BFF;
     --modal-bg: rgba(255, 255, 255, 0.1);
     --modal-content-bg: #333;
 }

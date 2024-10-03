@@ -35,10 +35,8 @@
                     <input name="test_letter" value="<%= @question.test_letter %>" hidden>
                     <% @answers.each do |answer| %>
                         <label class="option-button">
-                            <img src="<%= url('ak1.png') %>" alt="Imagen izquierda" class="option-image">
                             <input type="radio" name="selected_option" value="<%= answer.number %>">
                             <b><%= answer.description %></b>
-                            <img src="<%= url('ak2.png') %>" alt="Imagen derecha" class="option-image">
                         </label>
                     <% end %>
                     <div class="answer-button" id="answerButton">
@@ -48,5 +46,16 @@
             </form>
         </section>    
     </main>
+    <script>
+        function applySavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Llamar a la función para aplicar el tema guardado cuando se cargue la página
+        window.onload = applySavedTheme;
+    </script>
 </body>
 </html>

@@ -569,7 +569,7 @@ class App < Sinatra::Application
 
 
       completed_trivias = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
-      exam_completed = account_game.test_completed ? 25 : 0
+      exam_completed = account_game.account_knowledge ? 25 : 0
 
       total_progress = (completed_trivias * 25) + exam_completed
 

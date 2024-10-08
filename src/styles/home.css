@@ -179,9 +179,9 @@ div.progress {
   background-color: #ddd;
   border-radius: 10px;
 }
-
+/*
 .bar {
-  width: 0; /* El ancho se ajustará dinámicamente */
+  width: 0; /* El ancho se ajustará dinámicamente 
   height: 30px;
   background-color: #4caf50;
   border-radius: 10px;

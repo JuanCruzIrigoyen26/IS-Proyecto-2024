@@ -145,6 +145,7 @@ h2 {
 /* Cambia el estilo cuando está seleccionado */
 .option-button input[type="radio"]:checked + b {
   background-color: var(--button-hover-bg);
+  transform: scale(1.05);
   color: white;
 }
 

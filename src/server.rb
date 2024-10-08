@@ -215,7 +215,7 @@ class App < Sinatra::Application
 
       game_name = GAME_URL_MAPPING[selected_game.name]
       game_number = selected_game.number
-      puts "Nombre del juego bien puto =#{game_name}"
+      puts "Nombre del juego =#{game_name}"
 
       test_letter = params[:test_letter]
       question_number = params[:question_number].to_i
@@ -239,8 +239,6 @@ class App < Sinatra::Application
     end
   end
 
-
-  require 'erb'
 
   post '/start_final_exam' do
     if session[:logged_in]

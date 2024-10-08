@@ -61,6 +61,26 @@
 
         // Llamar a la función para aplicar el tema guardado cuando se cargue la página
         window.onload = applySavedTheme;
+
+                document.querySelector('form').addEventListener('submit', function (event) {
+        // Obtener todas las opciones de radio
+        const options = document.querySelectorAll('input[name="selected_option"]');
+        let selected = false;
+
+        // Verificar si alguna opción está seleccionada
+        options.forEach(option => {
+        if (option.checked) {
+            selected = true;
+        }
+        });
+
+        // Si no hay ninguna opción seleccionada, mostrar el mensaje de advertencia y evitar el envío
+        if (!selected) {
+        event.preventDefault(); // Evitar que el formulario se envíe
+        const warningMessage = document.getElementById('warningMessage');
+        warningMessage.style.display = 'block'; // Mostrar el mensaje de advertencia
+        }
+        });
     </script>
 </body>
 </html>

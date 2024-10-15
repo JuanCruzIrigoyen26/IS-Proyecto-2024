@@ -65,6 +65,64 @@
                 </a>
             </div>
 
+            <!-- Mostrar los botones si el usuario es administrador -->
+            <% if is_admin %>
+            <button onclick="openCreateQuestionModal()">Crear nueva pregunta</button>
+            <button onclick="listIncorrectQuestions()">Listar preguntas contestadas incorrectamente</button>
+            <button onclick="listCorrectQuestions()">Listar preguntas contestadas correctamente</button>
+            <!-- Modal para crear nueva pregunta -->
+                <div id="createQuestionModal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeCreateQuestionModal()">&times;</span>
+                        <h2>Crear nueva pregunta</h2>
+                        <form action="/create_question" method="post">
+                            <!-- Campo para el número de la pregunta -->
+                            <input type="number" name="question_number" placeholder="Número de la pregunta" required>
+                            
+                            <!-- Campo para la descripción de la pregunta -->
+                            <input type="text" name="question_description" placeholder="Escribe la descripción de la pregunta" required>
+                            
+                            <!-- Campo para la trivia -->
+                            <h3>Trivia</h3>
+                            <input type="text" name="trivia_title" placeholder="Título de la trivia" required>
+                            <textarea name="trivia_description" placeholder="Descripción de la trivia" required></textarea>
+                            
+                            <!-- Respuestas -->
+                            <h3>Respuestas</h3>
+                            <input type="text" name="correct_answer" placeholder="Escribe la respuesta correcta" required>
+                            <input type="text" name="incorrect_answer_1" placeholder="Escribe una respuesta incorrecta" required>
+                            <input type="text" name="incorrect_answer_2" placeholder="Escribe otra respuesta incorrecta" required>
+
+                            <!-- Campo para el test_letter y el game_number (asignados dinámicamente) -->
+                            <input type="hidden" name="game_number" value="<%= selected_game.number %>">
+                            
+                            <!-- Botón para guardar la pregunta -->
+                            <button type="submit">Guardar Pregunta</button>
+                        </form>
+                    </div>
+                </div>
+                <script>
+                    function openCreateQuestionModal() {
+                        document.getElementById('createQuestionModal').style.display = 'block';
+                    }
+
+                    function closeCreateQuestionModal() {
+                        document.getElementById('createQuestionModal').style.display = 'none';
+                    }
+
+                    function listIncorrectQuestions() {
+                        // Redireccionar a la ruta para listar preguntas incorrectas
+                        window.location.href = "/list_incorrect_questions";
+                    }s
+
+                    function listCorrectQuestions() {
+                        // Redireccionar a la ruta para listar preguntas correctas
+                        window.location.href = "/list_correct_questions";
+                    }
+                </script>
+            </div>
+            <% end %>
+
             <form action="/start_final_exam" method="post">
                 <h2>¿Crees que sabes lo suficiente? ¡Demuéstralo aquí!</h2>    
 
@@ -75,6 +133,7 @@
                 <% end %>
 
                 <button type="submit" class="difficulty-button">Examen Final</button>
+
             </form>
             </div>
         </section>

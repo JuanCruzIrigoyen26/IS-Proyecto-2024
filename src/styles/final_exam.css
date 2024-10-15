@@ -160,6 +160,13 @@ nav ul li a {
 }
 
 .answer-button button:hover {
+<<<<<<< Updated upstream
     transform: scale(1.05);
     background-color: var(--submit-btn-hover-bg);
 }
+=======
+    background-color: #45a049;
+}
+
+
+>>>>>>> Stashed changes

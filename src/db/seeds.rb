@@ -3,6 +3,15 @@ AccountAnswer = Class.new(ActiveRecord::Base)
 AccountTrivia = Class.new(ActiveRecord::Base)
 AccountGame = Class.new(ActiveRecord::Base)
 
+admin = Account.find_or_create_by!(admin: 1) do |admin|
+    admin.email = "admin@gmail.com"
+    admin.name = "admin"
+    admin.nickname = 'admin'
+    admin.password = 'admin123'
+    admin.progress = 100
+    admin.admin = 1
+  end
+
 
 # Game 1
 game_1 = Game.find_or_create_by!(number: 1) do |game|

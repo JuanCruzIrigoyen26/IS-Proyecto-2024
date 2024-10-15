@@ -364,35 +364,98 @@ class App < Sinatra::Application
 
   get '/difficult/:game_alias' do
     if session[:logged_in]
-
       game_mapping = {
         'csgo' => 1,
         'sf6' => 2,
         'lol' => 3
       }
       selected_game_number = game_mapping[params[:game_alias]]
-
+  
       if selected_game_number.nil?
         status 400
         body "Game not found."
         return
       end
-
+  
       game = Game.find_by(number: selected_game_number)
-
+  
       session[:selected_game] = game.name
       @completed_trivias = AccountTrivia.where(account_id: session[:account_id], trivias_completed: true).count
-
-      error_message = nil
-      if params[:error] == 'complete_all_trivias'
-        error_message = 'Debe completar todas las trivias antes de acceder al examen final.'
-      end
-
-      erb :difficult, locals: { selected_game: game, completed_trivias: @completed_trivias, error_message: error_message }
+      error_message = params[:error] == 'complete_all_trivias' ? 'Debe completar todas las trivias antes de acceder al examen final.' : nil
+      
+      @is_admin = Account.find(session[:account_id]).admin == 1
+  
+      erb :difficult, locals: { selected_game: game, completed_trivias: @completed_trivias, error_message: error_message, is_admin: @is_admin }
     else
       redirect '/home'
     end
   end
+  
+  post '/create_question' do
+    
+    if session[:logged_in] && Account.find(session[:account_id]).admin == 1
+      @is_admin = Account.find(session[:account_id]).admin == 1
+  
+      # Extraer los datos enviados desde el formulario
+      question_number = params[:question_number]
+      question_description = params[:question_description]
+      test_letter = params[:test_letter]
+      game_number = params[:game_number]
+  
+      # Datos de la trivia
+      trivia_title = params[:trivia_title]
+      trivia_description = params[:trivia_description]
+  
+      # Respuestas correctas e incorrectas
+      correct_answer = params[:correct_answer]
+      incorrect_answers = [params[:incorrect_answer_1], params[:incorrect_answer_2], params[:incorrect_answer_3]]
+  
+      # Crear la nueva pregunta
+      new_question = Question.create(
+        number: question_number,
+        description: question_description,
+        test_letter: test_letter,
+        game_number: game_number
+      )
+  
+      # Crear la trivia asociada
+      Trivia.create(
+        number: question_number,
+        title: trivia_title,
+        description: trivia_description,
+        test_letter: test_letter,
+        game_number: game_number
+      )
+  
+      # Crear la respuesta correcta
+      Answer.create(
+        content: correct_answer,
+        correct: true,
+        question_id: new_question.id,
+        test_letter: test_letter,
+        game_number: game_number
+      )
+  
+      # Crear las respuestas incorrectas
+      incorrect_answers.each do |answer|
+        Answer.create(
+          content: answer,
+          correct: false,
+          question_id: new_question.id,
+          test_letter: test_letter,
+          game_number: game_number
+        )
+      end
+  
+      # Redireccionar después de crear la pregunta
+      redirect '/difficult/' + session[:selected_game]
+    else
+      # Respuesta no autorizada si el usuario no es administrador
+      status 401
+      body "Unauthorized"
+    end
+  end
+  
 
 
 
@@ -580,9 +643,6 @@ class App < Sinatra::Application
       body "User not logged in."
     end
   end
-
-
-
 
   get '/logout' do
     session.clear

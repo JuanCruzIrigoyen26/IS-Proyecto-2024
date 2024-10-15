@@ -74,3 +74,99 @@ button:hover {
     transform: scale(1.05);
     background-color: #ff00aa;
 }
+
+/* Estilos para los botones de administrador */
+.admin-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.admin-buttons button {
+    margin: 10px 0;
+    padding: 15px 30px;
+    background-color: #5A67D8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 250px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.admin-buttons button:hover {
+    transform: scale(1.05);
+    background-color: #4C51BF;
+}
+
+/* Estilos para el modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--modal-bg); /* Fondo con transparencia */
+    backdrop-filter: blur(5px); /* Difumina el fondo */
+}
+
+.modal-content {
+    background-color: var(--modal-content-bg);
+    margin: 15% auto; /* Centrado en la pantalla */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease-in-out; /* Animación suave de entrada */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilo del botón para cerrar el modal */
+.modal-content .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-content .close:hover,
+.modal-content .close:focus {
+    color: #000;
+}
+
+/* Estilos de los inputs y el formulario dentro del modal */
+.modal-content form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.modal-content form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #38B2AC;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content form button:hover {
+    background-color: #319795;
+}

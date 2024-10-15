@@ -173,17 +173,36 @@ div.progress {
   border-radius: 10px;
 }
 
+#progress-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#progress-wrapper h2 {
+  margin-right: 20px; /* Para crear espacio entre el título y la barra */
+}
+
+#knowledge-bar-container {
+  width: 100%; /* Ajusta el ancho de la barra según sea necesario */
+  max-width: 300px; /* Puedes ajustar el tamaño máximo de la barra */
+}
+
 .track {
-  width: 100%;
-  height: 30px;
   background-color: #ddd;
+  height: 20px;
   border-radius: 10px;
 }
 /*
 .bar {
+<<<<<<< Updated upstream
   width: 0; /* El ancho se ajustará dinámicamente 
   height: 30px;
+=======
+>>>>>>> Stashed changes
   background-color: #4caf50;
+  height: 20px;
   border-radius: 10px;
   transition: width 0.5s ease;
 }

@@ -73,13 +73,13 @@ game_3 = Game.find_or_create_by!(number: 3) do |game|
   trivia_b1 = Trivia.create(number: 1, title: "Wallbang", description: "Un Wallbang o también en Español 'Shutear' se realiza cuando un jugador dispara a través de paredes. Dependiendo el arma que lleve en sus manos, las balas traspasaran o no ciertas estructuras o paredes, ya sea por sus proporciones o por el material de la estructura. Por ejemplo: Una Glock-18 puede llegar a atravesar paredes o estructuras de madera, pero no atravesará un muro grueso de ladrillos o cemento, en cambio un AWP puede atravesar ambos.", test_letter: test_b.letter, mode: "casual", game_number: game_1.number)
   trivia_b2 = Trivia.create(number: 2, title: "One way", description: "Un One Way es un humo (Smoke) el cual tira un jugador de forma tal que sólo su equipo puede ver del otro lado, mientras el equipo contrario no puede ver lo que hay del otro lado del humo. En muchas ocasiones puede suceder que si un jugador tira mal un humo, el equipo contrario se aprovecha del error y termina ganando la ronda gracias a esa acción.", test_letter: test_b.letter, mode: "casual", game_number: game_1.number)
   trivia_b3 = Trivia.create(number: 3, title: "Eco", description: "Se dice que un equipo hace un Eco cuando decide no gastar mucho dinero en esa ronda. Existen diversos factores para decidir si realizar un Eco o no, como el equipo contrario o las rondas ganadas o perdidas que se llevan. Un Eco consiste en no gastar en armamento o gastar el mínimo posible para luego en la ronda siguiente poder tener la cantidad de dinero necesaria para comprar todo el armamento y utilidad.", test_letter: test_b.letter, mode: "casual", game_number: game_1.number)
-  trivia_b4 = Trivia.create(number: 4, title: "Cuchillo", description: "En CS2 se juega una ronda inicial para ver qué equipo comienza en cada lado (CT o TT) en la cual todos los jugadores sólo pueden usar el cuchillo para eliminar a los jugadores contrarios. A la ronda cuchillo también se la llama simplemente cuchillo. También puede suceder que algún jugador en la ronda normal llegue a acercarse tanto a un enemigo que decida sacar el cuchillo para eliminarlo.", test_letter: test_b.letter, mode: "casual", game_number: game_1.number)
+  trivia_b4 = Trivia.create(number: 4, title: "Ronda cuchillo", description: "En CS2 se juega una ronda inicial para ver qué equipo comienza en cada lado (CT o TT) en la cual todos los jugadores sólo pueden usar el cuchillo para eliminar a los jugadores contrarios. A la ronda cuchillo también se la llama simplemente cuchillo. También puede suceder que algún jugador en la ronda normal llegue a acercarse tanto a un enemigo que decida sacar el cuchillo para eliminarlo.", test_letter: test_b.letter, mode: "casual", game_number: game_1.number)
   trivia_b5 = Trivia.create(number: 5, title: "AWP", description: "Un AWP es el rifle de francotirador más utilizado en el ámbito competitivo de CS2. Es el arma más cara del juego (4750$) y es conocida por matar de un solo disparo si el enemigo no tiene casco. La cadencia de tiro del arma es la más baja del juego, pero si el jugador es preciso en sus disparos puede matar a todo el equipo contrario. Sin embargo, su precio elevado y sus limitaciones la hacen un arma difícil de utilizar en todas las rondas.", test_letter: test_b.letter, mode: "casual", game_number: game_1.number)
   
   question_b1 = Question.create(number: 1, description: "¿Que es un Wallbang?", test_letter: test_b.letter, game_number: game_1.number)
   question_b2 = Question.create(number: 2, description: "¿Para qué se utiliza un One Way?", test_letter: test_b.letter, game_number: game_1.number)
   question_b3 = Question.create(number: 3, description: "¿En qué consiste un Eco?", test_letter: test_b.letter, game_number: game_1.number)
-  question_b4 = Question.create(number: 4, description: "¿Qué significa cuchillo en CS2?", test_letter: test_b.letter, game_number: game_1.number)
+  question_b4 = Question.create(number: 4, description: "¿Qué significa ronda cuchillo en CS2?", test_letter: test_b.letter, game_number: game_1.number)
   question_b5 = Question.create(number: 5, description: "¿Cual es el arma más cara del juego?", test_letter: test_b.letter, game_number: game_1.number)
   
   answer_b1 = Answer.create(number: 1, description: "Una técnica para ver al enemigo a través de la pared", correct: false, question_number: question_b1.number, test_letter: test_b.letter, game_number: game_1.number)
@@ -294,7 +294,7 @@ answer_y14 = Answer.create(number: 2, description: "Super Arts", correct: false,
 answer_y15 = Answer.create(number: 3, description: "Agarres/grabs", correct: true, question_number: question_y5.number, test_letter: test_y.letter, game_number: game_2.number)
 
 
-test_l = Test.create(letter: "A") do |test|
+test_l = Test.create(letter: "L") do |test|
   test.description = "Conceptos de Principiante"
   test.cant_questions = 5
   test.game_number = game_3.number

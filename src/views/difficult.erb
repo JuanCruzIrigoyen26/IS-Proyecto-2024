@@ -58,7 +58,9 @@
                 </form>
 
                 <!-- Guía teórica dinámica basada en el número del juego -->
-                <a href="<%= selected_game.number == 1 ? 'https://steamcommunity.com/sharedfiles/filedetails/?id=3268297370' : 'https://otro_link_para_street_fighter' %>" target="_blank">
+                <a href="<%= selected_game.number == 1 ? 'https://steamcommunity.com/sharedfiles/filedetails/?id=3268297370' : 
+                    selected_game.number == 2 ? 'https://steamcommunity.com/sharedfiles/filedetails/?id=3348891471' :
+                    selected_game.number == 3 ? 'https://steamcommunity.com/sharedfiles/filedetails/?id=3348936069' : '#' %>" target="_blank">
                     <button type="button">
                         Guía Teórica
                     </button>

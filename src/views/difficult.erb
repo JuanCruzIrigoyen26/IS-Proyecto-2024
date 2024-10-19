@@ -79,27 +79,39 @@
                         <h2>Crear nueva pregunta</h2>
                         <form action="/create_question" method="post">
                             <!-- Campo para el número de la pregunta -->
-                            <input type="number" name="question_number" placeholder="Número de la pregunta" required>
-                            
-                            <!-- Campo para la descripción de la pregunta -->
-                            <input type="text" name="question_description" placeholder="Escribe la descripción de la pregunta" required>
+                            <h3>Dificultad</h3>
+                            <div class="difficulty-selection">
+                            <label>
+                                <input type="radio" name="test_letter" value="A" required>
+                                Principiante
+                            </label>
+                            <label>
+                                <input type="radio" name="test_letter" value="B">
+                                Casual
+                            </label>
+                            <label>
+                                <input type="radio" name="test_letter" value="C">
+                                Profesional
+                            </label>
+                            </div>
                             
                             <!-- Campo para la trivia -->
                             <h3>Trivia</h3>
                             <input type="text" name="trivia_title" placeholder="Título de la trivia" required>
-                            <textarea name="trivia_description" placeholder="Descripción de la trivia" required></textarea>
+                            <input type="text" name="trivia_description" placeholder="Descripción de la trivia" required>
                             
-                            <!-- Respuestas -->
+                            <!-- Campo para la descripción de la pregunta -->
+                            <h3>Pregunta</h3>
+                            <input type="text" name="question_description" placeholder="Escribe la descripción de la pregunta" required>
+                            
+                           <!-- Respuestas -->
                             <h3>Respuestas</h3>
                             <input type="text" name="correct_answer" placeholder="Escribe la respuesta correcta" required>
                             <input type="text" name="incorrect_answer_1" placeholder="Escribe una respuesta incorrecta" required>
                             <input type="text" name="incorrect_answer_2" placeholder="Escribe otra respuesta incorrecta" required>
-
-                            <!-- Campo para el test_letter y el game_number (asignados dinámicamente) -->
-                            <input type="hidden" name="game_number" value="<%= selected_game.number %>">
                             
                             <!-- Botón para guardar la pregunta -->
-                            <button type="submit">Guardar Pregunta</button>
+                            <button type="submit">Guardar nueva pregunta</button>
                         </form>
                     </div>
                 </div>

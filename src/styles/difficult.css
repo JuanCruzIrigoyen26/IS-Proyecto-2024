@@ -170,3 +170,48 @@ button:hover {
 .modal-content form button:hover {
     background-color: #319795;
 }
+
+
+/* Estilos específicos para la selección de dificultad */
+.difficulty-selection {
+    margin: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f7fafc; /* Color de fondo suave */
+    border: 1px solid #e2e8f0; /* Borde ligero */
+    border-radius: 5px;
+}
+
+.difficulty-selection label {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.difficulty-selection label:hover {
+    background-color: #edf2f7; /* Color de fondo al pasar el ratón */
+}
+
+.difficulty-selection input[type="radio"] {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+/* Adaptaciones responsivas */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%;
+    }
+
+    .difficulty-selection {
+        flex-direction: column;
+    }
+
+    .difficulty-selection label {
+        padding: 5px;
+    }
+}

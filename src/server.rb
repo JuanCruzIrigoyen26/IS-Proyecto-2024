@@ -392,25 +392,29 @@ class App < Sinatra::Application
   end
   
   post '/create_question' do
-    
+
     if session[:logged_in] && Account.find(session[:account_id]).admin == 1
       @is_admin = Account.find(session[:account_id]).admin == 1
-  
-      # Extraer los datos enviados desde el formulario
-      question_number = params[:question_number]
-      question_description = params[:question_description]
+
       test_letter = params[:test_letter]
-      game_number = params[:game_number]
+      selected_game = Game.find_by(name: session[:selected_game])
+      game_name = GAME_URL_MAPPING[selected_game.name]
+      game_number = selected_game.number
   
+      quantity_questions = Question.where(test_letter: test_letter, game_number: game_number).count
+      question_number = quantity_questions + 1
+      question_description = params[:question_description]
+
       # Datos de la trivia
       trivia_title = params[:trivia_title]
       trivia_description = params[:trivia_description]
   
-      # Respuestas correctas e incorrectas
+      
       correct_answer = params[:correct_answer]
-      incorrect_answers = [params[:incorrect_answer_1], params[:incorrect_answer_2], params[:incorrect_answer_3]]
+      incorrect_answer_1 = params[:incorrect_answer_1]
+      incorrect_answer_2 = params[:incorrect_answer_2]
   
-      # Crear la nueva pregunta
+      
       new_question = Question.create(
         number: question_number,
         description: question_description,
@@ -429,26 +433,35 @@ class App < Sinatra::Application
   
       # Crear la respuesta correcta
       Answer.create(
-        content: correct_answer,
+        number: 1,
         correct: true,
-        question_id: new_question.id,
+        description: correct_answer,
+        question_number: question_number,
+        test_letter: test_letter,
+        game_number: game_number
+      )
+
+      Answer.create(
+        number: 2,
+        correct: false,
+        description: incorrect_answer_1,
+        question_number: question_number,
         test_letter: test_letter,
         game_number: game_number
       )
   
-      # Crear las respuestas incorrectas
-      incorrect_answers.each do |answer|
-        Answer.create(
-          content: answer,
-          correct: false,
-          question_id: new_question.id,
-          test_letter: test_letter,
-          game_number: game_number
-        )
-      end
+      Answer.create(
+        number: 3,
+        correct: false,
+        description: incorrect_answer_2,
+        question_number: question_number,
+        test_letter: test_letter,
+        game_number: game_number
+      )
+  
   
       # Redireccionar después de crear la pregunta
-      redirect '/difficult/' + session[:selected_game]
+      redirect '/difficult/' + game_name
     else
       # Respuesta no autorizada si el usuario no es administrador
       status 401

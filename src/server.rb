@@ -421,7 +421,9 @@ class App < Sinatra::Application
         test_letter: test_letter,
         game_number: game_number
       )
-  
+    
+
+ 
       # Crear la trivia asociada
       Trivia.create(
         number: question_number,
@@ -468,6 +470,67 @@ class App < Sinatra::Application
       body "Unauthorized"
     end
   end
+
+  get '/incorrect_questions' do
+    if session[:logged_in] && Account.find(session[:account_id]).admin == 1
+      @is_admin = true
+  
+      # Hacemos un join con 'account_answers', agrupamos por la pregunta, y contamos las respuestas incorrectas
+      incorrect_questions = Question.joins(:account_answers)
+                                    .where(account_answers: { correct: false })  # Filtrar por respuestas incorrectas
+                                    .group('questions.description')  # Agrupar por la descripción de la pregunta
+                                    .select('questions.description, COUNT(account_answers.id) as incorrect_count')  # Seleccionar descripción y conteo
+                                    .distinct
+      
+      # Transformamos los resultados en un formato JSON, incluyendo la descripción y el conteo
+      incorrect_questions_json = incorrect_questions.map do |question|
+        {
+          description: question.description,
+          incorrect_count: question.incorrect_count
+        }
+      end
+  
+      puts incorrect_questions_json.to_json  # Mostrar en la consola el JSON que se va a enviar
+  
+      content_type :json
+      incorrect_questions_json.to_json  # Devolver las preguntas en formato JSON
+    else
+      status 403 # Prohibido
+      { error: "Acceso no autorizado" }.to_json
+    end
+  end
+  
+
+
+      get '/correct_questions' do
+        if session[:logged_in] && Account.find(session[:account_id]).admin == 1
+          @is_admin = true
+      
+          # Hacemos un join con 'account_answers', agrupamos por la pregunta, y contamos las respuestas correctas
+          correct_questions = Question.joins(:account_answers)
+                                      .where(account_answers: { correct: true })
+                                      .group('questions.description')  # Agrupar por la descripción de la pregunta
+                                      .select('questions.description, COUNT(account_answers.id) as correct_count')  # Seleccionar descripción y conteo
+                                      .distinct
+          
+          # Transformamos los resultados en un formato JSON, incluyendo la descripción y el conteo
+          correct_questions_json = correct_questions.map do |question|
+            {
+              description: question.description,
+              correct_count: question.correct_count
+            }
+          end
+      
+          puts correct_questions_json.to_json  # Mostrar en la consola el JSON que se va a enviar
+      
+          content_type :json
+          correct_questions_json.to_json  # Devolver las preguntas en formato JSON
+        else
+          status 403 # Prohibido
+          { error: "Acceso no autorizado" }.to_json
+        end
+      end
+      
   
 
 

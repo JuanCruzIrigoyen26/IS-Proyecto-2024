@@ -148,45 +148,7 @@ button:hover {
     transform: scale(1.05);
     background-color: var(--button-hover-bg);
 }
-/*
-.difficulty-selection {
-    margin: 15px 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: var(--modal-content-bg);
-    color: black;
-}
 
-input[type="radio"] {
-    display: none;
-}
-
-
-input[type="radio"]:checked + label {
-    background-color: var(--button-hover-bg);
-    color: white;
-    transform: scale(1.05);
-}
-
-
-.difficulty-selection label:hover {
-    transform: scale(1.05);
-    background-color: var(--button-hover-bg);
-    color: white;
-}
-
-.difficulty-selection label {
-    flex: 1;
-    text-align: center;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 10px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    background-color: var(--button-bg);
-    margin-left: 10px;
-}
-*/
 .difficulty-selection {
     margin: 15px 0;
     display: flex;

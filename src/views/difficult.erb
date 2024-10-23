@@ -69,8 +69,8 @@
             
             <!-- Mostrar los botones si el usuario es administrador -->
             <% if is_admin %>
-                <button onclick="openCreateQuestionModal()">Crear nueva pregunta</button>
                 <button onclick="listIncorrectQuestions()">Listar preguntas contestadas incorrectamente</button>
+                <button onclick="openCreateQuestionModal()">Crear nueva pregunta</button>
                 <button onclick="listCorrectQuestions()">Listar preguntas contestadas correctamente</button>
                 
                 <!-- Modal para crear nueva pregunta -->
@@ -80,7 +80,7 @@
                         <h2>Crear nueva pregunta</h2>
                         <form action="/create_question" method="post">
                             <h3>Dificultad</h3>
-                            <div class="difficulty-selection">
+                            <!--<div class="difficulty-selection">
                                 <label>
                                     <input type="radio" name="test_letter" value="A" required>
                                     Principiante
@@ -93,7 +93,18 @@
                                     <input type="radio" name="test_letter" value="C">
                                     Profesional
                                 </label>
+                            </div>-->
+                            <div class="difficulty-selection">
+                                <input type="radio" id="principiante" name="difficulty" value="A">
+                                <label for="principiante">Principiante</label>
+
+                                <input type="radio" id="casual" name="difficulty" value="B">
+                                <label for="casual">Casual</label>
+
+                                <input type="radio" id="profesional" name="difficulty" value="C">
+                                <label for="profesional">Profesional</label>
                             </div>
+
                             <h3>Trivia</h3>
                             <input type="text" name="trivia_title" placeholder="Título de la trivia" required>
                             <input type="text" name="trivia_description" placeholder="Descripción de la trivia" required>

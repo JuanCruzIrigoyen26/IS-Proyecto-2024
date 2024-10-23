@@ -68,37 +68,13 @@ button {
     cursor: pointer;
     font-size: 18px;
     width: 200px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 button:hover {
     transform: scale(1.05);
     background-color: #ff00aa;
-}
-
-/* Estilos para los botones de administrador */
-.admin-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.admin-buttons button {
-    margin: 10px 0;
-    padding: 15px 30px;
-    background-color: #5A67D8;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    width: 250px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.admin-buttons button:hover {
-    transform: scale(1.05);
-    background-color: #4C51BF;
 }
 
 /* Estilos para el modal */
@@ -113,6 +89,7 @@ button:hover {
     overflow: auto;
     background-color: var(--modal-bg); /* Fondo con transparencia */
     backdrop-filter: blur(5px); /* Difumina el fondo */
+    color: var(--text-color);
 }
 
 .modal-content {
@@ -159,7 +136,7 @@ button:hover {
 .modal-content form button {
     width: 100%;
     padding: 10px;
-    background-color: #38B2AC;
+    background-color: var(--button-bg);
     color: white;
     border: none;
     border-radius: 5px;
@@ -168,19 +145,35 @@ button:hover {
 }
 
 .modal-content form button:hover {
-    background-color: #319795;
+    transform: scale(1.05);
+    background-color: var(--button-hover-bg);
 }
-
-
-/* Estilos específicos para la selección de dificultad */
+/*
 .difficulty-selection {
     margin: 15px 0;
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background-color: #f7fafc; /* Color de fondo suave */
-    border: 1px solid #e2e8f0; /* Borde ligero */
-    border-radius: 5px;
+    background-color: var(--modal-content-bg);
+    color: black;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+
+input[type="radio"]:checked + label {
+    background-color: var(--button-hover-bg);
+    color: white;
+    transform: scale(1.05);
+}
+
+
+.difficulty-selection label:hover {
+    transform: scale(1.05);
+    background-color: var(--button-hover-bg);
+    color: white;
 }
 
 .difficulty-selection label {
@@ -189,16 +182,49 @@ button:hover {
     cursor: pointer;
     font-weight: bold;
     padding: 10px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    background-color: var(--button-bg);
+    margin-left: 10px;
+}
+*/
+.difficulty-selection {
+    margin: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: var(--modal-content-bg);
+    color: black
 }
 
+input[type="radio"] {
+    display: none; /* Ocultamos el radio original */
+}
+
+/* Efecto visual cuando están seleccionados */
+input[type="radio"]:checked + label {
+    background-color: var(--button-hover-bg); /* Mismo color que el hover */
+    color: white;
+    transform: scale(1.05); /* Mismo efecto de escala que el hover */
+}
+
+/* Efecto hover */
 .difficulty-selection label:hover {
-    background-color: #edf2f7; /* Color de fondo al pasar el ratón */
+    transform: scale(1.05);
+    background-color: var(--button-hover-bg); /* Color de fondo al pasar el ratón */
+    color: white;
 }
 
-.difficulty-selection input[type="radio"] {
-    margin-right: 5px;
+/* Estilo por defecto de los labels */
+.difficulty-selection label {
+    flex: 1;
+    text-align: center;
     cursor: pointer;
+    font-weight: bold;
+    padding: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    background-color: var(--button-bg); /* Color de fondo por defecto */
+    margin-left: 10px;
+    border-radius: 5px;
 }
 
 /* Adaptaciones responsivas */

@@ -1,17 +1,21 @@
- class AccountTrivia < ActiveRecord::Base
-    self.table_name = 'account_trivias'
-    
-    validates :trivias_completed, inclusion: { in: [true, false] }
+# frozen_string_literal: true
 
-    belongs_to :account
-    belongs_to :trivias
-    belongs_to :game
+# AccountTrivia represents the relationship between an account and a trivia,
+# tracking trivia games completed by a user and progress within these games.
+class AccountTrivia < ActiveRecord::Base
+  self.table_name = 'account_trivias'
 
-    after_commit :update_progress_account
+  validates :trivias_completed, inclusion: { in: [true, false] }
 
-    private
+  belongs_to :account
+  belongs_to :trivias
+  belongs_to :game
 
-    def update_progress_account
-        account.update_progress
-    end
- end
+  after_commit :update_progress_account
+
+  private
+
+  def update_progress_account
+    account.update_progress
+  end
+end

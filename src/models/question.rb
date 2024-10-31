@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Question < ActiveRecord::Base
   validates :number, presence: true
   validates :description, presence: true
@@ -8,5 +10,3 @@ class Question < ActiveRecord::Base
   belongs_to :test, foreign_key: 'test_letter'
   belongs_to :game, foreign_key: 'game_number'
 end
-
-  

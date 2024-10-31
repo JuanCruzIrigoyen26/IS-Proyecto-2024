@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# This migration creates the answers table with necessary columns and indexes.
 class CreateAnswer < ActiveRecord::Migration[7.0]
   def change
     create_table :answers do |t|

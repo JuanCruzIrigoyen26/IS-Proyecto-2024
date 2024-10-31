@@ -1,10 +1,10 @@
+# frozen_string_literal: true
+
 ENV['APP_ENV'] = 'test'
-require File.expand_path('../../models/init', __FILE__)
+require File.expand_path('../models/init', __dir__)
 require 'rspec'
 require 'rack/test'
 require 'spec_helper'
-
-
 
 describe Account do
   describe 'validations' do
@@ -44,7 +44,8 @@ describe Account do
     it 'should be invalid (email blame)' do
       account1 = Account.new(name: 'Juan', email: 'juanito@gmail.com', password: 'Juanito32', nickname: 'juanito')
       account1.save
-      account2 = Account.new(name: account1.name, email: account1.email, password: account1.password, nickname: account1.nickname)
+      account2 = Account.new(name: account1.name, email: account1.email, password: account1.password,
+                             nickname: account1.nickname)
       expect(account2.save).to be_truthy
     end
   end

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# This migration creates the games table with necessary columns and indexes.
 class CreateGame < ActiveRecord::Migration[7.0]
   def change
     create_table :games do |t|
@@ -8,6 +11,6 @@ class CreateGame < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-    add_index :games, :number, unique:true
+    add_index :games, :number, unique: true
   end
 end

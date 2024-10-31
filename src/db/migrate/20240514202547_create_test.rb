@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# This migration creates the tests table with necessary columns and indexes.
 class CreateTest < ActiveRecord::Migration[7.0]
   def change
     create_table :tests do |t|

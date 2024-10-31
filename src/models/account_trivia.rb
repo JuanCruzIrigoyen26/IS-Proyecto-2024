@@ -1,17 +1,19 @@
- class AccountTrivia < ActiveRecord::Base
-    self.table_name = 'account_trivias'
-    
-    validates :trivias_completed, inclusion: { in: [true, false] }
+# frozen_string_literal: true
 
-    belongs_to :account
-    belongs_to :trivias
-    belongs_to :game
+class AccountTrivia < ActiveRecord::Base
+  self.table_name = 'account_trivias'
 
-    after_commit :update_progress_account
+  validates :trivias_completed, inclusion: { in: [true, false] }
 
-    private
+  belongs_to :account
+  belongs_to :trivias
+  belongs_to :game
 
-    def update_progress_account
-        account.update_progress
-    end
- end
+  after_commit :update_progress_account
+
+  private
+
+  def update_progress_account
+    account.update_progress
+  end
+end

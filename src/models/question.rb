@@ -1,3 +1,8 @@
+# frozen_string_literal: true
+
+# The Question class represents a question in the system.
+# Each question is associated with multiple possible answers
+# and can be part of a test or trivia.
 class Question < ActiveRecord::Base
   validates :number, presence: true
   validates :description, presence: true
@@ -8,5 +13,3 @@ class Question < ActiveRecord::Base
   belongs_to :test, foreign_key: 'test_letter'
   belongs_to :game, foreign_key: 'game_number'
 end
-
-  

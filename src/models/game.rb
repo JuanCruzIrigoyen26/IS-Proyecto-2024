@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-
 # The Game class represents a game within the system.
 # Each game can be associated with multiple user accounts.
+
 class Game < ActiveRecord::Base
   validates :number, presence: true
   validates :name, presence: true

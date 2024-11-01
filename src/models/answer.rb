@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-
 # The Answer class represents a possible answer to a question.
 # It is part of a collection of options that a user may select.
+
 class Answer < ActiveRecord::Base
   validates :number, presence: true
   validates :description, presence: true

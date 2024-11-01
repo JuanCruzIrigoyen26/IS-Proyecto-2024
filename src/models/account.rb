@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+# The Account class represents a user in the system.
+# It includes validations for required attributes and associations
+# with games, tests, trivia, and answers. The class also contains
+# logic for updating a user's progress.
 
-# The Account class represents a user account, which includes validations for various attributes
-# and associations to games, tests, trivias, and answers. It also manages progress updates
-# based on completed tests and trivia.
 class Account < ActiveRecord::Base
   validates :name, presence: true, format: { with: /\A[a-zA-Z]+\z/, message: 'only allows letters' }
   validates :email, presence: true,

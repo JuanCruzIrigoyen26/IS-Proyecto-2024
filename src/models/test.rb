@@ -1,6 +1,6 @@
 # frozen_string_literal: true
-
-# Test represents a test in the system, containing questions and associated with
+# The Test class represents a test within the system.
+# It can contain multiple questions and is associated with
 # multiple user accounts to track user progress and completion.
 class Test < ActiveRecord::Base
   validates :letter, presence: true

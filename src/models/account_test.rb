@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+# The AccountTest class represents the relationship between an
+# account and a test. It is used to track tests completed by a
+# user and their progress on these tests.
 
-# AccountTest represents the relationship between an account and a test,
-# tracking tests completed by a user and their progress.
 class AccountTest < ActiveRecord::Base
   validates :test_completed, inclusion: { in: [true, false] }
   validates :correct_answers, presence: true

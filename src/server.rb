@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra/base'
 require 'bundler/setup'
 require 'logger'
@@ -17,14 +19,14 @@ require_relative 'models/account_game'
 require_relative 'models/account_answer'
 
 class App < Sinatra::Application
-  def initialize(app = nil)
+  def initialize(_app = nil)
     super()
   end
 
   configure :production, :development do
     enable :logging
 
-    logger = Logger.new(STDOUT)
+    logger = Logger.new($stdout)
     logger.level = Logger::DEBUG if development?
     set :logger, logger
   end
@@ -53,12 +55,11 @@ class App < Sinatra::Application
   end
 
   GAME_URL_MAPPING = {
-  'Counter Strike 2' => 'csgo',
-  'Street Fighter 6' => 'sf6',
-  'League Of Legends' => 'lol'
+    'Counter Strike 2' => 'csgo',
+    'Street Fighter 6' => 'sf6',
+    'League Of Legends' => 'lol'
 
-  }
-
+  }.freeze
 
   get '/login' do
     error_message = params[:error]
@@ -90,7 +91,6 @@ class App < Sinatra::Application
     end
   end
 
-
   post '/login' do
     nickname = params[:nickname]
     password = params[:password]
@@ -112,13 +112,9 @@ class App < Sinatra::Application
     name = params[:name]
     nickname = params[:nickname]
 
-    if Account.exists?(email: email)
-      redirect '/signup?error=Email-already-exists'
-    end
+    redirect '/signup?error=Email-already-exists' if Account.exists?(email: email)
 
-    if Account.exists?(nickname: nickname)
-      redirect '/signup?error=Nickname-already-exists'
-    end
+    redirect '/signup?error=Nickname-already-exists' if Account.exists?(nickname: nickname)
 
     account = Account.new(email: email, password: password, name: name, nickname: nickname, progress: 0)
 
@@ -127,8 +123,8 @@ class App < Sinatra::Application
       session[:account_id] = account.id
       redirect '/login'
     else
-      puts "Error al guardar la cuenta: #{account.errors.full_messages.join(", ")}"
-      erb :signup, locals: { error_message: "Error al crear cuenta" }
+      puts "Error al guardar la cuenta: #{account.errors.full_messages.join(', ')}"
+      erb :signup, locals: { error_message: 'Error al crear cuenta' }
     end
   end
 
@@ -139,7 +135,7 @@ class App < Sinatra::Application
 
       unless account_id
         status 400
-        body "Account ID is missing in session."
+        body 'Account ID is missing in session.'
         return
       end
 
@@ -147,7 +143,7 @@ class App < Sinatra::Application
 
       if selected_game.nil?
         status 400
-        body "Game not found."
+        body 'Game not found.'
         return
       end
 
@@ -160,14 +156,14 @@ class App < Sinatra::Application
           redirect "/difficult/#{game_url_name}"
         else
           status 400
-          body "Unable to save AccountGame."
+          body 'Unable to save AccountGame.'
         end
       else
         status 400
-        body "Account ID does not exist."
+        body 'Account ID does not exist.'
       end
     else
-      redirect "/login"
+      redirect '/login'
     end
   end
 
@@ -180,13 +176,9 @@ class App < Sinatra::Application
       account = Account.find(account_id)
 
       if account
-        if new_username && !new_username.strip.empty?
-          account.update(nickname: new_username)
-        end
+        account.update(nickname: new_username) if new_username && !new_username.strip.empty?
 
-        if new_password && !new_password.strip.empty?
-          account.update(password: new_password)
-        end
+        account.update(password: new_password) if new_password && !new_password.strip.empty?
 
         if account.save
           redirect '/perfil?success=true'
@@ -203,14 +195,14 @@ class App < Sinatra::Application
 
   get '/final_exam/:test_letter/:question_number' do
     if session[:logged_in]
-      account_id = session[:account_id]
+      session[:account_id]
       selected_game = Game.find_by(name: session[:selected_game])
 
       # Verificar si se encuentra el juego
       if selected_game.nil?
         puts "Game not found for session[:selected_game]: #{session[:selected_game]}"
         status 400
-        return "Game Not Found"
+        return 'Game Not Found'
       end
 
       game_name = GAME_URL_MAPPING[selected_game.name]
@@ -225,7 +217,8 @@ class App < Sinatra::Application
 
       if @question
         # Si se encuentra la pregunta, obtenemos las respuestas y renderizamos la vista del examen
-        @answers = Answer.where(question_number: @question.number, test_letter: test_letter, game_number: game_number).shuffle
+        @answers = Answer.where(question_number: @question.number, test_letter: test_letter,
+                                game_number: game_number).shuffle
         @difficulty = test_letter
 
         erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty }
@@ -239,7 +232,6 @@ class App < Sinatra::Application
     end
   end
 
-
   post '/start_final_exam' do
     if session[:logged_in]
       account_id = session[:account_id]
@@ -252,7 +244,7 @@ class App < Sinatra::Application
         # Mostrar mensaje de error si el juego no se encuentra
         puts "Game not found for game_number: #{game_number}"
         status 400
-        body "Game not found"
+        body 'Game not found'
         return
       else
         puts "Game found: #{selected_game.name}"
@@ -285,11 +277,6 @@ class App < Sinatra::Application
     end
   end
 
-
-
-
-
-
   post '/submit_final_exam_answer' do
     if session[:logged_in]
       account_id = session[:account_id]
@@ -304,11 +291,12 @@ class App < Sinatra::Application
       @question = Question.find_by(number: question_number, test_letter: test_letter, game_number: game_number)
       @test = Test.find_by(letter: test_letter, game_number: game_number)
       account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
-      account_game = AccountGame.find_or_initialize_by(account_id: account_id, game: @test.game)  # Modificado
+      account_game = AccountGame.find_or_initialize_by(account_id: account_id, game: @test.game) # Modificado
 
       if @question
         if selected_option
-          selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter, game_number: game_number)
+          selected_answer = Answer.find_by(number: selected_option, question_number: question_number,
+                                           test_letter: test_letter, game_number: game_number)
 
           if selected_answer
             correct = selected_answer.correct
@@ -316,13 +304,12 @@ class App < Sinatra::Application
             account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
             account_answer.update(answer_id: selected_answer.id, correct: correct)
 
-            if correct
-              account_test.increment(:correct_answers)
-            end
+            account_test.increment(:correct_answers) if correct
             account_test.save
 
             next_question_number = question_number + 1
-            next_question = Question.find_by(number: next_question_number, test_letter: test_letter, game_number: game_number)
+            next_question = Question.find_by(number: next_question_number, test_letter: test_letter,
+                                             game_number: game_number)
 
             if next_question
               redirect "/final_exam/#{test_letter}/#{next_question_number}"
@@ -335,20 +322,25 @@ class App < Sinatra::Application
               correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
 
               knowledge_increment = (correct_answers_percentage / 10).to_i
-              new_account_knowledge = [account_game.account_knowledge + knowledge_increment, 100].min  # Máximo de 100
+              new_account_knowledge = [account_game.account_knowledge + knowledge_increment, 100].min # Máximo de 100
 
               account_game.update(account_knowledge: new_account_knowledge)
 
-              erb :result_exam, locals: { correct_answers_percentage: correct_answers_percentage, correct_answers_count: correct_answers_count, total_questions: total_questions, selected_game: selected_game}
+              erb :result_exam,
+                  locals: { correct_answers_percentage: correct_answers_percentage, correct_answers_count: correct_answers_count,
+                            total_questions: total_questions, selected_game: selected_game }
             end
           else
             redirect "/final_exam/#{test_letter}/#{question_number}?error=invalid_option"
           end
         else
-          @answers = Answer.where(question_number: @question.number, test_letter: test_letter, game_number:  game_number).shuffle
+          @answers = Answer.where(question_number: @question.number, test_letter: test_letter,
+                                  game_number: game_number).shuffle
           @difficulty = test_letter
 
-          erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty, error: 'Debes seleccionar una opción antes de continuar.' }
+          erb :final_exam,
+              locals: { question: @question, answers: @answers, difficulty: @difficulty,
+                        error: 'Debes seleccionar una opción antes de continuar.' }
         end
       else
         redirect "/difficult/#{game_name}"
@@ -358,10 +350,6 @@ class App < Sinatra::Application
     end
   end
 
-
-
-
-
   get '/difficult/:game_alias' do
     if session[:logged_in]
       game_mapping = {
@@ -370,29 +358,30 @@ class App < Sinatra::Application
         'lol' => 3
       }
       selected_game_number = game_mapping[params[:game_alias]]
-  
+
       if selected_game_number.nil?
         status 400
-        body "Game not found."
+        body 'Game not found.'
         return
       end
-  
+
       game = Game.find_by(number: selected_game_number)
-  
+
       session[:selected_game] = game.name
       @completed_trivias = AccountTrivia.where(account_id: session[:account_id], trivias_completed: true).count
       error_message = params[:error] == 'complete_all_trivias' ? 'Debe completar todas las trivias antes de acceder al examen final.' : nil
-      
+
       @is_admin = Account.find(session[:account_id]).admin == 1
-  
-      erb :difficult, locals: { selected_game: game, completed_trivias: @completed_trivias, error_message: error_message, is_admin: @is_admin }
+
+      erb :difficult,
+          locals: { selected_game: game, completed_trivias: @completed_trivias, error_message: error_message,
+                    is_admin: @is_admin }
     else
       redirect '/home'
     end
   end
-  
-  post '/create_question' do
 
+  post '/create_question' do
     if session[:logged_in] && Account.find(session[:account_id]).admin == 1
       @is_admin = Account.find(session[:account_id]).admin == 1
 
@@ -400,7 +389,7 @@ class App < Sinatra::Application
       selected_game = Game.find_by(name: session[:selected_game])
       game_name = GAME_URL_MAPPING[selected_game.name]
       game_number = selected_game.number
-  
+
       quantity_questions = Question.where(test_letter: test_letter, game_number: game_number).count
       question_number = quantity_questions + 1
       question_description = params[:question_description]
@@ -408,22 +397,18 @@ class App < Sinatra::Application
       # Datos de la trivia
       trivia_title = params[:trivia_title]
       trivia_description = params[:trivia_description]
-  
-      
+
       correct_answer = params[:correct_answer]
       incorrect_answer_1 = params[:incorrect_answer_1]
       incorrect_answer_2 = params[:incorrect_answer_2]
-  
-      
-      new_question = Question.create(
+
+      Question.create(
         number: question_number,
         description: question_description,
         test_letter: test_letter,
         game_number: game_number
       )
-    
 
- 
       # Crear la trivia asociada
       Trivia.create(
         number: question_number,
@@ -432,7 +417,7 @@ class App < Sinatra::Application
         test_letter: test_letter,
         game_number: game_number
       )
-  
+
       # Crear la respuesta correcta
       Answer.create(
         number: 1,
@@ -451,7 +436,7 @@ class App < Sinatra::Application
         test_letter: test_letter,
         game_number: game_number
       )
-  
+
       Answer.create(
         number: 3,
         correct: false,
@@ -460,28 +445,27 @@ class App < Sinatra::Application
         test_letter: test_letter,
         game_number: game_number
       )
-  
-  
+
       # Redireccionar después de crear la pregunta
-      redirect '/difficult/' + game_name
+      redirect "/difficult/#{game_name}"
     else
       # Respuesta no autorizada si el usuario no es administrador
       status 401
-      body "Unauthorized"
+      body 'Unauthorized'
     end
   end
 
   get '/incorrect_questions' do
     if session[:logged_in] && Account.find(session[:account_id]).admin == 1
       @is_admin = true
-  
+
       # Hacemos un join con 'account_answers', agrupamos por la pregunta, y contamos las respuestas incorrectas
       incorrect_questions = Question.joins(:account_answers)
-                                    .where(account_answers: { correct: false })  # Filtrar por respuestas incorrectas
-                                    .group('questions.description')  # Agrupar por la descripción de la pregunta
-                                    .select('questions.description, COUNT(account_answers.id) as incorrect_count')  # Seleccionar descripción y conteo
+                                    .where(account_answers: { correct: false }) # Filtrar por respuestas incorrectas
+                                    .group('questions.description') # Agrupar por la descripción de la pregunta
+                                    .select('questions.description, COUNT(account_answers.id) as incorrect_count') # Seleccionar descripción y conteo
                                     .distinct
-      
+
       # Transformamos los resultados en un formato JSON, incluyendo la descripción y el conteo
       incorrect_questions_json = incorrect_questions.map do |question|
         {
@@ -489,51 +473,45 @@ class App < Sinatra::Application
           incorrect_count: question.incorrect_count
         }
       end
-  
-      puts incorrect_questions_json.to_json  # Mostrar en la consola el JSON que se va a enviar
-  
+
+      puts incorrect_questions_json.to_json # Mostrar en la consola el JSON que se va a enviar
+
       content_type :json
-      incorrect_questions_json.to_json  # Devolver las preguntas en formato JSON
+      incorrect_questions_json.to_json # Devolver las preguntas en formato JSON
     else
       status 403 # Prohibido
-      { error: "Acceso no autorizado" }.to_json
+      { error: 'Acceso no autorizado' }.to_json
     end
   end
-  
 
+  get '/correct_questions' do
+    if session[:logged_in] && Account.find(session[:account_id]).admin == 1
+      @is_admin = true
 
-      get '/correct_questions' do
-        if session[:logged_in] && Account.find(session[:account_id]).admin == 1
-          @is_admin = true
-      
-          # Hacemos un join con 'account_answers', agrupamos por la pregunta, y contamos las respuestas correctas
-          correct_questions = Question.joins(:account_answers)
-                                      .where(account_answers: { correct: true })
-                                      .group('questions.description')  # Agrupar por la descripción de la pregunta
-                                      .select('questions.description, COUNT(account_answers.id) as correct_count')  # Seleccionar descripción y conteo
-                                      .distinct
-          
-          # Transformamos los resultados en un formato JSON, incluyendo la descripción y el conteo
-          correct_questions_json = correct_questions.map do |question|
-            {
-              description: question.description,
-              correct_count: question.correct_count
-            }
-          end
-      
-          puts correct_questions_json.to_json  # Mostrar en la consola el JSON que se va a enviar
-      
-          content_type :json
-          correct_questions_json.to_json  # Devolver las preguntas en formato JSON
-        else
-          status 403 # Prohibido
-          { error: "Acceso no autorizado" }.to_json
-        end
+      # Hacemos un join con 'account_answers', agrupamos por la pregunta, y contamos las respuestas correctas
+      correct_questions = Question.joins(:account_answers)
+                                  .where(account_answers: { correct: true })
+                                  .group('questions.description') # Agrupar por la descripción de la pregunta
+                                  .select('questions.description, COUNT(account_answers.id) as correct_count') # Seleccionar descripción y conteo
+                                  .distinct
+
+      # Transformamos los resultados en un formato JSON, incluyendo la descripción y el conteo
+      correct_questions_json = correct_questions.map do |question|
+        {
+          description: question.description,
+          correct_count: question.correct_count
+        }
       end
-      
-  
 
+      puts correct_questions_json.to_json # Mostrar en la consola el JSON que se va a enviar
 
+      content_type :json
+      correct_questions_json.to_json # Devolver las preguntas en formato JSON
+    else
+      status 403 # Prohibido
+      { error: 'Acceso no autorizado' }.to_json
+    end
+  end
 
   get '/:game/:test_letter/:question_number' do
     if logged_in?
@@ -542,7 +520,7 @@ class App < Sinatra::Application
 
       unless game
         status 400
-        puts "Game not found."
+        puts 'Game not found.'
         redirect "/difficult/#{game_number}"
         return
       end
@@ -553,7 +531,8 @@ class App < Sinatra::Application
       @question = Question.find_by(number: question_number, test_letter: test_letter, game_number: game.number)
 
       if @question
-        @answers = Answer.where(question_number: @question.number, test_letter: test_letter, game_number: game.number).shuffle
+        @answers = Answer.where(question_number: @question.number, test_letter: test_letter,
+                                game_number: game.number).shuffle
         @difficulty = test_letter
 
         erb :trivia, locals: { question: @question, answers: @answers, difficulty: @difficulty }
@@ -561,14 +540,9 @@ class App < Sinatra::Application
         redirect "/difficult/#{game.number}"
       end
     else
-      redirect "/login"
+      redirect '/login'
     end
   end
-
-
-
-
-
 
   post '/submit_trivia_answer' do
     if session[:logged_in]
@@ -579,13 +553,13 @@ class App < Sinatra::Application
       selected_game = Game.find_by(name: session[:selected_game])
       game_name = GAME_URL_MAPPING[selected_game.name]
 
-
       @question = Question.find_by(number: question_number, test_letter: test_letter)
       @test = Test.find_by(letter: test_letter)
 
       if @question
         if selected_option
-          selected_answer = Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter, game_number: selected_game.number)
+          selected_answer = Answer.find_by(number: selected_option, question_number: question_number,
+                                           test_letter: test_letter, game_number: selected_game.number)
 
           if selected_answer
             correct = selected_answer.correct
@@ -593,11 +567,13 @@ class App < Sinatra::Application
             account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
             account_answer.update(answer_id: selected_answer.id, correct: correct)
 
-            trivia = Trivia.find_by(number: question_number, test_letter: test_letter, game_number: selected_game.number)
+            trivia = Trivia.find_by(number: question_number, test_letter: test_letter,
+                                    game_number: selected_game.number)
 
             next_question_number = question_number + 1
             if question_number == 5
-              account_trivia = AccountTrivia.find_or_create_by(account_id: account_id, trivias_id: trivia.id, trivias_completed: true)
+              AccountTrivia.find_or_create_by(account_id: account_id, trivias_id: trivia.id,
+                                              trivias_completed: true)
 
               erb :result, locals: {
                 correct: correct,
@@ -649,11 +625,9 @@ class App < Sinatra::Application
         redirect "/difficult/#{game_name}"
       end
     else
-      redirect "/home"
+      redirect '/home'
     end
   end
-
-
 
   get '/result_exam' do
     if session[:logged_in]
@@ -663,7 +637,6 @@ class App < Sinatra::Application
       game_name = GAME_URL_MAPPING[selected_game.name]
       puts "Este es#{game_name}"
       game_number = selected_game.number
-
 
       @test = Test.find_by(letter: test_letter, game_number: game_number)
       correct_answers = AccountTest.find_by(account_id: account_id, test_id: @test.id)
@@ -688,12 +661,11 @@ class App < Sinatra::Application
       account_id = session[:account_id]
       selected_game = Game.find_by(name: session[:selected_game])
       game_name = GAME_URL_MAPPING[selected_game.name]
-      game_number = selected_game.number
-
+      selected_game.number
 
       if game_name.nil?
         status 404
-        body "Game not found."
+        body 'Game not found.'
         return
       end
 
@@ -702,10 +674,9 @@ class App < Sinatra::Application
 
       if account_game.nil?
         status 404
-        body "AccountGame not found."
+        body 'AccountGame not found.'
         return
       end
-
 
       completed_trivias = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
       exam_completed = account_game.account_knowledge ? 25 : 0
@@ -716,7 +687,7 @@ class App < Sinatra::Application
       { progress: total_progress }.to_json
     else
       status 401
-      body "User not logged in."
+      body 'User not logged in.'
     end
   end
 

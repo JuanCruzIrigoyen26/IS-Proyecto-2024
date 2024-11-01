@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The Trivia class represents a trivia game within the system.
+# It consists of questions and tracks user participation
+# and progress on the trivia.
 class Trivia < ActiveRecord::Base
   self.table_name = 'trivias'
 

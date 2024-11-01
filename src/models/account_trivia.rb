@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The AccountTrivia class represents the relationship between
+# an account and a trivia. It tracks the trivia games completed
+# by a user and their progress within these games.
 class AccountTrivia < ActiveRecord::Base
   self.table_name = 'account_trivias'
 

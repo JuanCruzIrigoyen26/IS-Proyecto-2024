@@ -18,6 +18,8 @@ require_relative 'models/account_test'
 require_relative 'models/account_game'
 require_relative 'models/account_answer'
 
+# App is a Sinatra application that handles all the routing and
+# application logic for the trivia game.
 class App < Sinatra::Application
   def initialize(_app = nil)
     super()
@@ -130,41 +132,53 @@ class App < Sinatra::Application
 
   post '/home' do
     if session[:logged_in]
-      selected_game_name = params[:game]
-      account_id = session[:account_id]
-
-      unless account_id
-        status 400
-        body 'Account ID is missing in session.'
-        return
-      end
-
-      selected_game = Game.find_by(name: selected_game_name)
-
-      if selected_game.nil?
-        status 400
-        body 'Game not found.'
-        return
-      end
-
-      session[:selected_game] = selected_game.name
-
-      if Account.exists?(id: account_id)
-        account_game = AccountGame.find_or_create_by(account_id: account_id, game_id: selected_game.id)
-        if account_game.save
-          game_url_name = GAME_URL_MAPPING[selected_game.name] || selected_game.name
-          redirect "/difficult/#{game_url_name}"
-        else
-          status 400
-          body 'Unable to save AccountGame.'
-        end
-      else
-        status 400
-        body 'Account ID does not exist.'
-      end
+      handle_home_request
     else
       redirect '/login'
     end
+  end
+
+  def handle_home_request
+    account_id = session[:account_id]
+    return respond_with_error(400, 'Account ID is missing in session.') unless account_id
+
+    selected_game = find_selected_game(params[:game])
+    return respond_with_error(400, 'Game not found.') if selected_game.nil?
+
+    session[:selected_game] = selected_game.name
+
+    if account_exists?(account_id)
+      handle_account_game(account_id, selected_game)
+    else
+      respond_with_error(400, 'Account ID does not exist.')
+    end
+  end
+
+  def find_selected_game(game_name)
+    Game.find_by(name: game_name)
+  end
+
+  def account_exists?(account_id)
+    Account.exists?(id: account_id)
+  end
+
+  def handle_account_game(account_id, selected_game)
+    account_game = AccountGame.find_or_create_by(account_id: account_id, game_id: selected_game.id)
+    if account_game.save
+      redirect_to_game(selected_game)
+    else
+      respond_with_error(400, 'Unable to save AccountGame.')
+    end
+  end
+
+  def redirect_to_game(selected_game)
+    game_url_name = GAME_URL_MAPPING[selected_game.name] || selected_game.name
+    redirect "/difficult/#{game_url_name}"
+  end
+
+  def respond_with_error(status_code, message)
+    status status_code
+    body message
   end
 
   post '/perfil' do
@@ -224,7 +238,7 @@ class App < Sinatra::Application
         erb :final_exam, locals: { question: @question, answers: @answers, difficulty: @difficulty }
       else
         # Si no se encuentra la pregunta, redirige de vuelta a la página de selección de dificultad
-        redirect "/difficult/#{URI.encode(session[:selected_game])}?error=question_not_found"
+        redirect "/difficult/#{game_name}?error=question_not_found"
       end
     else
       # Redirige a home si el usuario no está logueado
@@ -234,120 +248,200 @@ class App < Sinatra::Application
 
   post '/start_final_exam' do
     if session[:logged_in]
-      account_id = session[:account_id]
-      selected_game = Game.find_by(name: session[:selected_game])
-      game_name = GAME_URL_MAPPING[selected_game.name]
-      game_number = selected_game.number
-      puts "Nombre del juego =#{game_name}"
-
-      if game_name.nil?
-        # Mostrar mensaje de error si el juego no se encuentra
-        puts "Game not found for game_number: #{game_number}"
-        status 400
-        body 'Game not found'
-        return
-      else
-        puts "Game found: #{selected_game.name}"
-      end
-
-      test_letter = params[:test_letter] || 'F'
-
-      # Verificar si ha completado las trivias requeridas
-      completed_trivias_count = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
-      required_trivias = 3
-
-      if completed_trivias_count < required_trivias
-        # Redirigir a la pantalla de selección de dificultad con un mensaje de error
-        redirect "/difficult/#{game_name}?error=complete_all_trivias"
-        return
-      end
-
-      @test = Test.find_by(letter: test_letter, game_number: game_number)
-
-      if @test
-        account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
-        account_test.update(correct_answers: 0, test_completed: false)
-
-        redirect "/final_exam/#{test_letter}/1"
-      else
-        redirect '/home'
-      end
+      handle_final_exam_start
     else
       redirect '/home'
     end
   end
 
-  post '/submit_final_exam_answer' do
-    if session[:logged_in]
-      account_id = session[:account_id]
-      question_number = params[:question_number].to_i
-      test_letter = params[:test_letter]
-      selected_option = params[:selected_option]
+  def handle_final_exam_start
+    account_id = session[:account_id]
+    selected_game = find_selected_game(session[:selected_game])
 
-      selected_game = Game.find_by(name: session[:selected_game])
-      game_name = GAME_URL_MAPPING[selected_game.name]
-      game_number = selected_game.number
+    if selected_game.nil?
+      log_and_respond_with_error('Game not found for selected game', 400, 'Game not found')
+      return
+    end
 
-      @question = Question.find_by(number: question_number, test_letter: test_letter, game_number: game_number)
-      @test = Test.find_by(letter: test_letter, game_number: game_number)
-      account_test = AccountTest.find_or_initialize_by(account_id: account_id, test: @test)
-      account_game = AccountGame.find_or_initialize_by(account_id: account_id, game: @test.game) # Modificado
+    test_letter = params[:test_letter] || 'F'
 
-      if @question
-        if selected_option
-          selected_answer = Answer.find_by(number: selected_option, question_number: question_number,
-                                           test_letter: test_letter, game_number: game_number)
+    if required_trivias_completed?(account_id)
+      initialize_account_test(account_id, selected_game, test_letter)
+    else
+      redirect_with_error(selected_game, 'complete_all_trivias')
+    end
+  end
 
-          if selected_answer
-            correct = selected_answer.correct
+  def log_and_respond_with_error(log_message, status_code, response_message)
+    puts log_message
+    status status_code
+    body response_message
+  end
 
-            account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
-            account_answer.update(answer_id: selected_answer.id, correct: correct)
+  def required_trivias_completed?(account_id)
+    completed_trivias_count = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
+    completed_trivias_count >= 3
+  end
 
-            account_test.increment(:correct_answers) if correct
-            account_test.save
+  def initialize_account_test(account_id, selected_game, test_letter)
+    @test = Test.find_by(letter: test_letter, game_number: selected_game.number)
 
-            next_question_number = question_number + 1
-            next_question = Question.find_by(number: next_question_number, test_letter: test_letter,
-                                             game_number: game_number)
-
-            if next_question
-              redirect "/final_exam/#{test_letter}/#{next_question_number}"
-            else
-              # Examen finalizado
-              account_test.update(test_completed: true)
-
-              total_questions = Question.where(test_letter: test_letter, game_number: game_number).count
-              correct_answers_count = account_test.correct_answers
-              correct_answers_percentage = (correct_answers_count.to_f / total_questions * 100).round(2)
-
-              knowledge_increment = (correct_answers_percentage / 10).to_i
-              new_account_knowledge = [account_game.account_knowledge + knowledge_increment, 100].min # Máximo de 100
-
-              account_game.update(account_knowledge: new_account_knowledge)
-
-              erb :result_exam,
-                  locals: { correct_answers_percentage: correct_answers_percentage, correct_answers_count: correct_answers_count,
-                            total_questions: total_questions, selected_game: selected_game }
-            end
-          else
-            redirect "/final_exam/#{test_letter}/#{question_number}?error=invalid_option"
-          end
-        else
-          @answers = Answer.where(question_number: @question.number, test_letter: test_letter,
-                                  game_number: game_number).shuffle
-          @difficulty = test_letter
-
-          erb :final_exam,
-              locals: { question: @question, answers: @answers, difficulty: @difficulty,
-                        error: 'Debes seleccionar una opción antes de continuar.' }
-        end
-      else
-        redirect "/difficult/#{game_name}"
-      end
+    if @test
+      AccountTest.find_or_initialize_by(account_id: account_id, test: @test).update(correct_answers: 0,
+                                                                                    test_completed: false)
+      redirect "/final_exam/#{test_letter}/1"
     else
       redirect '/home'
     end
+  end
+
+  def redirect_with_error(selected_game, error_code)
+    game_name = GAME_URL_MAPPING[selected_game.name] || selected_game.name
+    redirect "/difficult/#{game_name}?error=#{error_code}"
+  end
+
+  post '/submit_final_exam_answer' do
+    if session[:logged_in]
+      process_exam_submission
+    else
+      redirect '/home'
+    end
+  end
+
+  def process_exam_submission
+    account_id = session[:account_id]
+    selected_game = Game.find_by(name: session[:selected_game])
+    game_number = selected_game.number
+
+    @question = find_question(params[:question_number].to_i, params[:test_letter], game_number)
+    @test = find_test(params[:test_letter], game_number)
+
+    account_test = handle_test_record(account_id, @test)
+    account_game = handle_game_record(account_id, @test)
+
+    handle_question_submission(account_id, params[:selected_option], params[:question_number].to_i,
+                               params[:test_letter], game_number, account_test, account_game)
+  end
+
+  private
+
+  def find_question(question_number, test_letter, game_number)
+    Question.find_by(number: question_number, test_letter: test_letter, game_number: game_number)
+  end
+
+  def find_test(test_letter, game_number)
+    Test.find_by(letter: test_letter, game_number: game_number)
+  end
+
+  def handle_test_record(account_id, test)
+    AccountTest.find_or_initialize_by(account_id: account_id, test: test)
+  end
+
+  def handle_game_record(account_id, test)
+    AccountGame.find_or_initialize_by(account_id: account_id, game: test.game)
+  end
+
+  def handle_question_submission(account_id, selected_option, question_number, test_letter, game_number, account_test,
+                                 account_game)
+    if @question
+      if selected_option
+        handle_answer_submission(account_id, selected_option, question_number, test_letter, game_number, account_test,
+                                 account_game)
+      else
+        display_final_exam_error
+      end
+    else
+      redirect_to_game_difficulty
+    end
+  end
+
+  def handle_answer_submission(account_id, selected_option, question_number, test_letter, game_number, account_test,
+                               account_game)
+    selected_answer = find_selected_answer(selected_option, question_number, test_letter, game_number)
+
+    if selected_answer
+      update_account_answer(account_id, selected_answer)
+      update_account_test(account_test, selected_answer)
+      redirect_to_next_question(question_number, test_letter, game_number, account_test, account_game)
+    else
+      redirect_invalid_option(question_number, test_letter)
+    end
+  end
+
+  def find_selected_answer(selected_option, question_number, test_letter, game_number)
+    Answer.find_by(number: selected_option, question_number: question_number, test_letter: test_letter,
+                   game_number: game_number)
+  end
+
+  def update_account_answer(account_id, selected_answer)
+    account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
+    account_answer.update(answer_id: selected_answer.id, correct: selected_answer.correct)
+  end
+
+  def update_account_test(account_test, selected_answer)
+    account_test.increment(:correct_answers) if selected_answer.correct
+    account_test.save
+  end
+
+  def redirect_to_next_question(question_number, test_letter, game_number, account_test, account_game)
+    next_question_number = question_number + 1
+    next_question = Question.find_by(number: next_question_number, test_letter: test_letter, game_number: game_number)
+
+    if next_question
+      redirect "/final_exam/#{test_letter}/#{next_question_number}"
+    else
+      finalize_exam(account_test, account_game)
+    end
+  end
+
+  def redirect_invalid_option(question_number, test_letter)
+    redirect "/final_exam/#{test_letter}/#{question_number}?error=invalid_option"
+  end
+
+  def finalize_exam(account_test, account_game)
+    account_test.update(test_completed: true)
+
+    total_questions = Question.where(test_letter: account_test.test.letter, game_number: account_game.game.number).count
+    correct_answers_count = account_test.correct_answers
+    correct_answers_percentage = calculate_correct_answers_percentage(correct_answers_count, total_questions)
+
+    knowledge_increment = calculate_knowledge_increment(correct_answers_percentage)
+    new_account_knowledge = [account_game.account_knowledge + knowledge_increment, 100].min
+
+    account_game.update(account_knowledge: new_account_knowledge)
+
+    display_exam_results(correct_answers_percentage, correct_answers_count, total_questions, account_game)
+  end
+
+  def calculate_correct_answers_percentage(correct_answers_count, total_questions)
+    (correct_answers_count.to_f / total_questions * 100).round(2) # Ahora es correcto
+  end
+
+  def calculate_knowledge_increment(correct_answers_percentage)
+    (correct_answers_percentage / 10).to_i
+  end
+
+  def display_exam_results(correct_answers_percentage, correct_answers_count, total_questions, account_game)
+    erb :result_exam,
+        locals: { correct_answers_percentage: correct_answers_percentage,
+                  correct_answers_count: correct_answers_count,
+                  total_questions: total_questions,
+                  selected_game: account_game.game }
+  end
+
+  def display_final_exam_error
+    @answers = Answer.where(question_number: @question.number, test_letter: test_letter,
+                            game_number: game_number).shuffle
+    @difficulty = test_letter
+
+    erb :final_exam,
+        locals: { question: @question, answers: @answers, difficulty: @difficulty,
+                  error: 'Debes seleccionar una opción antes de continuar.' }
+  end
+
+  def redirect_to_game_difficulty
+    game_name = GAME_URL_MAPPING[selected_game.name]
+    redirect "/difficult/#{game_name}"
   end
 
   get '/difficult/:game_alias' do
@@ -369,7 +463,7 @@ class App < Sinatra::Application
 
       session[:selected_game] = game.name
       @completed_trivias = AccountTrivia.where(account_id: session[:account_id], trivias_completed: true).count
-      error_message = params[:error] == 'complete_all_trivias' ? 'Debe completar todas las trivias antes de acceder al examen final.' : nil
+      error_message = params[:error] == 'complete_all_trivias' ? 'Completa 3 trivias para hacer el examen final' : nil
 
       @is_admin = Account.find(session[:account_id]).admin == 1
 
@@ -382,77 +476,83 @@ class App < Sinatra::Application
   end
 
   post '/create_question' do
-    if session[:logged_in] && Account.find(session[:account_id]).admin == 1
-      @is_admin = Account.find(session[:account_id]).admin == 1
-
-      test_letter = params[:test_letter]
-      selected_game = Game.find_by(name: session[:selected_game])
-      game_name = GAME_URL_MAPPING[selected_game.name]
-      game_number = selected_game.number
-
-      quantity_questions = Question.where(test_letter: test_letter, game_number: game_number).count
-      question_number = quantity_questions + 1
-      question_description = params[:question_description]
-
-      # Datos de la trivia
-      trivia_title = params[:trivia_title]
-      trivia_description = params[:trivia_description]
-
-      correct_answer = params[:correct_answer]
-      incorrect_answer_1 = params[:incorrect_answer_1]
-      incorrect_answer_2 = params[:incorrect_answer_2]
-
-      Question.create(
-        number: question_number,
-        description: question_description,
-        test_letter: test_letter,
-        game_number: game_number
-      )
-
-      # Crear la trivia asociada
-      Trivia.create(
-        number: question_number,
-        title: trivia_title,
-        description: trivia_description,
-        test_letter: test_letter,
-        game_number: game_number
-      )
-
-      # Crear la respuesta correcta
-      Answer.create(
-        number: 1,
-        correct: true,
-        description: correct_answer,
-        question_number: question_number,
-        test_letter: test_letter,
-        game_number: game_number
-      )
-
-      Answer.create(
-        number: 2,
-        correct: false,
-        description: incorrect_answer_1,
-        question_number: question_number,
-        test_letter: test_letter,
-        game_number: game_number
-      )
-
-      Answer.create(
-        number: 3,
-        correct: false,
-        description: incorrect_answer_2,
-        question_number: question_number,
-        test_letter: test_letter,
-        game_number: game_number
-      )
-
-      # Redireccionar después de crear la pregunta
-      redirect "/difficult/#{game_name}"
+    if session[:logged_in] && admin?
+      create_question_and_trivia
+      redirect "/difficult/#{game_name_for(session[:selected_game])}"
     else
-      # Respuesta no autorizada si el usuario no es administrador
-      status 401
-      body 'Unauthorized'
+      unauthorized_response
     end
+  end
+
+  def admin?
+    Account.find(session[:account_id]).admin == 1
+  end
+
+  def create_question_and_trivia
+    selected_game = find_game(session[:selected_game])
+    test_letter = params[:test_letter]
+    question_number = next_question_number(test_letter, selected_game.number)
+
+    create_question(question_number, test_letter, selected_game.number)
+    create_trivia(question_number, test_letter, selected_game.number)
+    create_answers(question_number, test_letter, selected_game.number)
+  end
+
+  def next_question_number(test_letter, game_number)
+    Question.where(test_letter: test_letter, game_number: game_number).count + 1
+  end
+
+  def create_question(number, test_letter, game_number)
+    Question.create(
+      number: number,
+      description: params[:question_description],
+      test_letter: test_letter,
+      game_number: game_number
+    )
+  end
+
+  def create_trivia(number, test_letter, game_number)
+    Trivia.create(
+      number: number,
+      title: params[:trivia_title],
+      description: params[:trivia_description],
+      test_letter: test_letter,
+      game_number: game_number
+    )
+  end
+
+  def create_answers(question_number, test_letter, game_number)
+    correct_answer = params[:correct_answer]
+    params[:incorrectanswer1]
+    params[:incorrectanswer2]
+
+    Answer.create(
+      number: 1, correct: true, description: correct_answer,
+      question_number: question_number, test_letter: test_letter, game_number: game_number
+    )
+
+    Answer.create(
+      number: 2, correct: false, description: params[:incorrectanswer1],
+      question_number: question_number, test_letter: test_letter, game_number: game_number
+    )
+
+    Answer.create(
+      number: 3, correct: false, description: params[:incorrectanswer2],
+      question_number: question_number, test_letter: test_letter, game_number: game_number
+    )
+  end
+
+  def unauthorized_response
+    status 401
+    body 'Unauthorized'
+  end
+
+  def find_game(game_name)
+    Game.find_by(name: game_name)
+  end
+
+  def game_name_for(game_name)
+    GAME_URL_MAPPING[game_name] || game_name
   end
 
   get '/incorrect_questions' do
@@ -537,88 +637,101 @@ class App < Sinatra::Application
   end
 
   post '/submit_trivia_answer' do
-    if session[:logged_in]
-      account_id = session[:account_id]
-      question_number = params[:question_number].to_i
-      test_letter = params[:test_letter]
-      selected_option = params[:selected_option]
-      selected_game = Game.find_by(name: session[:selected_game])
-      game_name = GAME_URL_MAPPING[selected_game.name]
+    redirect '/home' and return unless session[:logged_in]
 
-      @question = Question.find_by(number: question_number, test_letter: test_letter)
-      @test = Test.find_by(letter: test_letter)
+    account_id = session[:account_id]
+    question_number = params[:question_number].to_i
+    test_letter = params[:test_letter]
+    selected_option = params[:selected_option]
+    selected_game = Game.find_by(name: session[:selected_game])
+    game_name = GAME_URL_MAPPING[selected_game.name]
 
-      if @question
-        if selected_option
-          selected_answer = Answer.find_by(number: selected_option, question_number: question_number,
-                                           test_letter: test_letter, game_number: selected_game.number)
+    @question = Question.find_by(number: question_number, test_letter: test_letter)
+    @test = Test.find_by(letter: test_letter)
 
-          if selected_answer
-            correct = selected_answer.correct
+    redirect "/difficult/#{game_name}" and return unless @question
 
-            account_answer = AccountAnswer.find_or_initialize_by(account_id: account_id, question_id: @question.id)
-            account_answer.update(answer_id: selected_answer.id, correct: correct)
-
-            trivia = Trivia.find_by(number: question_number, test_letter: test_letter,
-                                    game_number: selected_game.number)
-
-            next_question_number = question_number + 1
-            if question_number == 5
-              AccountTrivia.find_or_create_by(account_id: account_id, trivias_id: trivia.id,
-                                              trivias_completed: true)
-
-              erb :result, locals: {
-                correct: correct,
-                description: trivia.description,
-                question_number: question_number,
-                test_letter: test_letter,
-                trivia_completed: true,
-                exam_final: false,
-                selected_game: selected_game
-              }
-            else
-
-              next_question_path = "/#{selected_game.number}/#{test_letter}/#{next_question_number}"
-
-              erb :result, locals: {
-                correct: correct,
-                description: trivia.description,
-                question_number: question_number,
-                test_letter: test_letter,
-                trivia_completed: false,
-                exam_final: false,
-                next_question_path: next_question_path,
-                selected_game: selected_game
-              }
-            end
-          else
-            @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
-            @difficulty = test_letter
-
-            erb :trivia, locals: {
-              question: @question,
-              answers: @answers,
-              difficulty: @difficulty,
-              error: 'La opción seleccionada no es válida. Por favor, selecciona otra opción.'
-            }
-          end
-        else
-          @answers = Answer.where(question_number: @question.number, test_letter: test_letter).shuffle
-          @difficulty = test_letter
-
-          erb :trivia, locals: {
-            question: @question,
-            answers: @answers,
-            difficulty: @difficulty,
-            error: 'Debes seleccionar una opción antes de continuar.'
-          }
-        end
-      else
-        redirect "/difficult/#{game_name}"
-      end
+    if selected_option
+      process_selected_option(
+        account_id, question_number, test_letter, selected_option, selected_game
+      )
     else
-      redirect '/home'
+      render_trivia_with_error('Debes seleccionar una opción antes de continuar.')
     end
+  end
+
+  def process_selected_option(account_id, question_number, test_letter, selected_option, selected_game)
+    selected_answer = Answer.find_by(
+      number: selected_option, question_number: question_number,
+      test_letter: test_letter, game_number: selected_game.number
+    )
+
+    if selected_answer
+      handle_answer(account_id, question_number, test_letter, selected_answer, selected_game)
+    else
+      render_trivia_with_error('La opción seleccionada no es válida. Por favor, selecciona otra opción.')
+    end
+  end
+
+  def handle_answer(account_id, question_number, test_letter, selected_answer, selected_game)
+    correct = selected_answer.correct
+    trivia = Trivia.find_by(
+      number: question_number, test_letter: test_letter, game_number: selected_game.number
+    )
+
+    account_answer = AccountAnswer.find_or_initialize_by(
+      account_id: account_id, question_id: @question.id
+    )
+    account_answer.update(answer_id: selected_answer.id, correct: correct)
+
+    question_limit = Question.where(test_letter: test_letter, game_number: selected_game.number).count
+
+    if question_number == question_limit
+      complete_trivia(account_id, trivia, correct, test_letter, question_number, selected_game)
+    else
+      next_question_path = "/#{selected_game.number}/#{test_letter}/#{question_number + 1}"
+      render_result(correct, trivia.description, question_number, test_letter, next_question_path, selected_game)
+    end
+  end
+
+  def complete_trivia(account_id, trivia, correct, test_letter, question_number, selected_game)
+    AccountTrivia.find_or_create_by(
+      account_id: account_id, trivias_id: trivia.id, trivias_completed: true
+    )
+
+    erb :result, locals: {
+      correct: correct,
+      description: trivia.description,
+      question_number: question_number,
+      test_letter: test_letter,
+      trivia_completed: true,
+      exam_final: false,
+      selected_game: selected_game
+    }
+  end
+
+  def render_result(correct, description, question_number, test_letter, next_question_path, selected_game)
+    erb :result, locals: {
+      correct: correct,
+      description: description,
+      question_number: question_number,
+      test_letter: test_letter,
+      trivia_completed: false,
+      exam_final: false,
+      next_question_path: next_question_path,
+      selected_game: selected_game
+    }
+  end
+
+  def render_trivia_with_error(error_message)
+    @answers = Answer.where(question_number: @question.number, test_letter: params[:test_letter]).shuffle
+    @difficulty = params[:test_letter]
+    erb :trivia, locals: {
+      question: @question,
+      answers: @answers,
+      difficulty: @difficulty,
+      error: error_message
+    }
   end
 
   get '/result_exam' do
@@ -661,7 +774,6 @@ class App < Sinatra::Application
         return
       end
 
-      # Obtén el progreso desde AccountGame
       account_game = AccountGame.find_by(account_id: account_id, game_id: selected_game.id)
 
       if account_game.nil?

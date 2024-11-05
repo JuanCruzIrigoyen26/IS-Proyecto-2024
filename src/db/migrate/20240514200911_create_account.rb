@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# This migration creates the accounts table with necessary columns and indexes.
 class CreateAccount < ActiveRecord::Migration[7.0]
   def change
     create_table :accounts do |t|

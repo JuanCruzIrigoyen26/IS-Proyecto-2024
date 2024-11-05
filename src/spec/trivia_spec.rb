@@ -3,13 +3,20 @@
 require File.expand_path('../models/init', __dir__)
 
 describe Trivia do
-  context 'validations' do
-    it 'is valid with valid attributes' do
-      trivia = Trivia.new(number: 1, title: 'Introduction', description: 'Esto es una trivia valida', test_letter: 'A',
-                          mode: 'casual')
+  context 'with valid attributes' do
+    it 'is valid' do
+      trivia = Trivia.new(
+        number: 1,
+        title: 'Introduction',
+        description: 'Esto es una trivia valida',
+        test_letter: 'A',
+        mode: 'casual'
+      )
       expect(trivia).to be_valid
     end
+  end
 
+  context 'with missing attributes' do
     it 'is not valid without a number' do
       trivia = Trivia.new(number: nil)
       expect(trivia).not_to be_valid

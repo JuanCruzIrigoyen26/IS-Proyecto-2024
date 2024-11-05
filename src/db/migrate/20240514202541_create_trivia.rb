@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# This migration creates the trivias table with necessary columns and indexes.
 class CreateTrivia < ActiveRecord::Migration[7.0]
   def change
     create_table :trivias do |t|

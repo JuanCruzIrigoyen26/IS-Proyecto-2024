@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # The Test class represents a test within the system.
 # It can contain multiple questions and is associated with
 # multiple user accounts to track user progress and completion.

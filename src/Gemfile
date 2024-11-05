@@ -18,6 +18,7 @@ gem 'sqlite3'
 group :test, :development do
   gem 'rack-test'
   gem 'rspec'
+  gem 'rubocop'
 end
 
 gem 'simplecov'

@@ -1,14 +1,14 @@
 {
   "RSpec": {
     "coverage": {
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/spec/account_answer_spec.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/spec/account_answer_spec.rb": {
         "lines": [
-          1,
           null,
           null,
           1,
-          1,
           null,
+          1,
+          1,
           1,
           1,
           1,
@@ -17,8 +17,10 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/init.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/init.rb": {
         "lines": [
+          null,
+          null,
           1,
           null,
           1,
@@ -33,8 +35,25 @@
           1
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/account.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/account.rb": {
         "lines": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          1,
           1,
           1,
           1,
@@ -43,110 +62,49 @@
           1,
           null,
           1,
+          null,
           1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
+          0,
+          null,
           null,
           1,
           null,
           1,
-          2,
-          2,
-          2,
+          0,
           null,
-          2,
-          2,
-          2,
-          2,
           null,
-          2,
-          2,
-          2,
-          2,
+          1,
+          0,
+          0,
           null,
-          2,
-          2,
+          null,
+          1,
+          0,
+          0,
+          0,
+          0,
+          null,
+          null,
+          1,
+          0,
+          0,
+          0,
+          0,
           null,
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/trivia.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/trivia.rb": {
         "lines": [
-          1,
-          1,
-          null,
-          1,
-          1,
-          1,
-          1,
-          1,
-          null,
-          1,
-          1,
-          1,
           null,
           null,
           null,
           null,
-          null
-        ]
-      },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/test.rb": {
-        "lines": [
-          1,
-          1,
+          null,
           1,
           1,
           null,
           1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          null,
-          null,
-          null,
-          null
-        ]
-      },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/question.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          1,
-          null,
-          1,
-          1,
-          1,
-          null,
-          null,
-          null
-        ]
-      },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/answer.rb": {
-        "lines": [
-          1,
-          1,
-          1,
-          1,
-          1,
-          null,
-          1,
-          1,
-          1,
-          1,
-          null,
-          null
-        ]
-      },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/game.rb": {
-        "lines": [
           1,
           1,
           1,
@@ -159,10 +117,117 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/account_answer.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/test.rb": {
         "lines": [
+          null,
+          null,
+          null,
+          null,
+          null,
           1,
           1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/question.rb": {
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/answer.rb": {
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/game.rb": {
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/account_answer.rb": {
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          0,
+          null,
+          null
+        ]
+      },
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/account_test.rb": {
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
           1,
           1,
           1,
@@ -177,12 +242,33 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/account_test.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/account_game.rb": {
         "lines": [
+          null,
+          null,
+          null,
+          null,
+          null,
           1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/models/account_trivia.rb": {
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          null,
           1,
           1,
           null,
+          1,
+          null,
+          1,
           1,
           1,
           null,
@@ -196,43 +282,14 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/account_game.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/spec/account_game_spec.rb": {
         "lines": [
-          1,
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/models/account_trivia.rb": {
-        "lines": [
-          1,
-          1,
+          null,
           null,
           1,
           null,
           1,
           1,
-          null,
-          1,
-          null,
-          1,
-          null,
-          1,
-          0,
-          null,
-          null
-        ]
-      },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/spec/account_game_spec.rb": {
-        "lines": [
-          1,
-          null,
-          null,
-          1,
-          1,
-          null,
           1,
           1,
           1,
@@ -246,79 +303,14 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/spec/account_spec.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/spec/account_test_spec.rb": {
         "lines": [
-          1,
-          1,
-          1,
-          1,
-          1,
-          null,
-          null,
-          null,
-          1,
-          1,
-          1,
-          1,
-          null,
-          null,
-          null,
-          null,
           null,
           null,
           1,
           null,
           1,
           1,
-          null,
-          1,
-          null,
-          1,
-          null,
-          null,
-          1,
-          null,
-          1,
-          null,
-          1,
-          null,
-          null,
-          1,
-          null,
-          1,
-          null,
-          1,
-          null,
-          null,
-          1,
-          null,
-          1,
-          null,
-          1,
-          null,
-          null,
-          null,
-          1,
-          1,
-          null,
-          1,
-          null,
-          1,
-          1,
-          null,
-          1,
-          null,
-          null,
-          null
-        ]
-      },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/spec/account_test_spec.rb": {
-        "lines": [
-          1,
-          null,
-          1,
-          1,
-          null,
           1,
           1,
           1,
@@ -332,13 +324,14 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/spec/account_trivias_spec.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/spec/account_trivias_spec.rb": {
         "lines": [
+          null,
+          null,
           1,
           null,
           1,
           1,
-          null,
           1,
           1,
           1,
@@ -352,13 +345,73 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/spec/answer_spec.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/spec/account_validations_spec.rb": {
         "lines": [
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
           1,
           null,
           1,
           1,
+          5,
           null,
+          null,
+          1,
+          2,
+          null,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          1,
+          2,
+          null,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          2,
+          null,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          2,
+          null,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          2,
+          null,
+          1,
+          1,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/spec/answer_spec.rb": {
+        "lines": [
+          null,
+          null,
+          1,
+          null,
+          1,
+          1,
           1,
           1,
           1,
@@ -387,14 +440,14 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/spec/game_spec.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/spec/game_spec.rb": {
         "lines": [
-          1,
           null,
           null,
           1,
-          1,
           null,
+          1,
+          1,
           1,
           1,
           1,
@@ -418,13 +471,14 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/spec/question_spec.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/spec/question_spec.rb": {
         "lines": [
+          null,
+          null,
           1,
           null,
           1,
           1,
-          null,
           1,
           1,
           1,
@@ -448,13 +502,14 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/spec/test_spec.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/spec/test_spec.rb": {
         "lines": [
+          null,
+          null,
           1,
           null,
           1,
           1,
-          null,
           1,
           1,
           1,
@@ -478,18 +533,27 @@
           null
         ]
       },
-      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/ayds/AyDS-Proyecto-2024/src/spec/trivia_spec.rb": {
+      "/mnt/c/Users/mat5b/OneDrive/Escritorio/Computacion/AYDS/AyDS-Proyecto-2024/src/spec/trivia_spec.rb": {
         "lines": [
+          null,
+          null,
           1,
           null,
           1,
           1,
-          null,
-          1,
           1,
           1,
           null,
           null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null,
+          1,
           1,
           1,
           1,
@@ -519,6 +583,6 @@
         ]
       }
     },
-    "timestamp": 1724703468
+    "timestamp": 1730569452
   }
 }

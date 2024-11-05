@@ -34,13 +34,6 @@
             </div>
             <% end %>
 
-            <!-- Mostrar mensaje de error si no se han completado todas las trivias -->
-            <% if params[:error] == 'complete_all_trivias' %>
-            <div class="error-message" style="color: red;">
-                <p>Debe completar las 3 trivias para hacer el examen final.</p>
-            </div>
-            <% end %>
-
             <div class="difficulty-buttons">
                 <!-- Ruta para Principiante -->
                 <form action="/<%= selected_game.number %>/A/1" method="get">
@@ -95,8 +88,8 @@
                             <input type="text" name="question_description" placeholder="Escribe la descripción de la pregunta" required>
                             <h3>Respuestas</h3>
                             <input type="text" name="correct_answer" placeholder="Escribe la respuesta correcta" required>
-                            <input type="text" name="incorrect_answer_1" placeholder="Escribe una respuesta incorrecta" required>
-                            <input type="text" name="incorrect_answer_2" placeholder="Escribe otra respuesta incorrecta" required>
+                            <input type="text" name="incorrectanswer1" placeholder="Escribe una respuesta incorrecta" required>
+                            <input type="text" name="incorrectanswer2" placeholder="Escribe otra respuesta incorrecta" required>
                             <button type="submit">Guardar nueva pregunta</button>
                         </form>
                     </div>

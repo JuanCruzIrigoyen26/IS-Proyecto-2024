@@ -48,7 +48,7 @@ class Account < ActiveRecord::Base
 
   def completed_trivias_progress
     total_trivias = Trivia.distinct.count(:test_letter)
-    completed_trivias = account_trivias.where(trivias_completed: true).count
+    completed_trivias = AccountTrivia.where(trivias_completed: true).count
     trivias_progress = total_trivias.zero? ? 0 : level_progress / (2 * total_trivias)
     completed_trivias * trivias_progress
   end

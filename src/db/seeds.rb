@@ -1002,7 +1002,7 @@ Answer.create(number: 2, description: 'Super Arts', correct: false, question_num
 Answer.create(number: 3, description: 'Agarres/grabs', correct: true, question_number: question_y5.number,
               test_letter: test_y.letter, game_number: game2.number)
 
-test_l = Test.create(letter: 'L') do |test|
+test_l = Test.create(letter: 'A') do |test|
   test.description = 'Conceptos de Principiante'
   test.cant_questions = 5
   test.game_number = game3.number

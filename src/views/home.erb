@@ -62,7 +62,8 @@
 
   <script>
 
-  // Obtener progreso del juego desde el backend
+
+  // Obtener el progreso de un juego específico
   async function getKnowledgeForGame(gameName) {
     try {
       const response = await fetch(`/progress/${encodeURIComponent(gameName)}`);
@@ -70,73 +71,58 @@
         throw new Error('Error fetching game progress');
       }
       const data = await response.json();
-      return data.progress || 0;
+      return Math.min(data.progress, 100); // Asegura que no supere el 100%
     } catch (error) {
       console.error('Error:', error);
       return 0;
     }
   }
 
-  // Ajustar la barra de progreso
-async function adjustProgressBar(gameName) {
-  const knowledgeValue = await getKnowledgeForGame(gameName);
-  const bar = document.getElementById('knowledge-bar');
-  
-  // Actualiza el ancho de la barra de progreso
-  bar.style.width = knowledgeValue + '%';
+  // Ajusta la barra de progreso para el juego seleccionado
+  async function adjustProgressBar(gameName) {
+    const knowledgeValue = await getKnowledgeForGame(gameName);
+    const bar = document.getElementById('knowledge-bar');
+    const barContainer = document.getElementById('knowledge-bar-container');
 
-  // Muestra la barra si no está visible
-  const barContainer = document.getElementById('knowledge-bar-container');
-  if (knowledgeValue > 0) {
-    barContainer.style.display = 'block'; // Mostrar la barra solo si hay progreso
+    bar.style.width = `${knowledgeValue}%`; // Ajusta el ancho de la barra
+    barContainer.style.display = knowledgeValue > 0 ? 'block' : 'none'; // Muestra solo si el progreso es mayor a 0
   }
-}
 
 
-
-    
   document.addEventListener("DOMContentLoaded", function() {
-  // Cerrar el modal inmediatamente al cargar la página
-  document.getElementById('gameModal').style.display = 'none';
+    // Oculta el modal de selección de juego al cargar
+    document.getElementById('gameModal').style.display = 'none';
 
-  // Verifica si ya se ha seleccionado un juego previamente en la sesión
-  const gameSelected = sessionStorage.getItem('gameSelected');
-  if (!gameSelected) {
-    // Si no se ha seleccionado ningún juego, no mostrar el modal automáticamente
-    closeModal();
-  }
+    // Verifica si ya se seleccionó un juego
+    const gameSelected = sessionStorage.getItem('gameSelected');
+    if (!gameSelected) {
+      closeModal();
+    }
   });
 
-  // Abrir el modal cuando se hace clic en la imagen
+  // Abre el modal para seleccionar el juego
   function openModal() {
     document.getElementById('gameModal').style.display = 'flex';
   }
 
-  // Cerrar el modal
+  // Cierra el modal
   function closeModal() {
     document.getElementById('gameModal').style.display = 'none';
   }
 
+function selectGame(gameName, gameImagePath) {
+  document.getElementById('game-name').textContent = gameName;
+  document.getElementById('game-image').src = gameImagePath;
+  document.getElementById('game-image').alt = 'Imagen de ' + gameName;
+  document.querySelector('input[name="game"]').value = gameName;
+  document.getElementById('game-footer').style.display = 'block';
+
+  adjustProgressBar(gameName);
+
+  closeModal();
+}
 
 
-  // Seleccionar un nuevo juego y actualizar la tarjeta
-  function selectGame(gameName, gameImagePath) {
-    // Actualiza el nombre y la imagen del juego en la tarjeta
-    document.getElementById('game-name').textContent = gameName;
-    document.getElementById('game-image').src = gameImagePath;
-    document.getElementById('game-image').alt = 'Imagen de ' + gameName;
-
-    // Actualiza el valor del campo oculto en el formulario
-    document.querySelector('input[name="game"]').value = gameName;
-
-    // Muestra el botón de jugar (footer)
-    document.getElementById('game-footer').style.display = 'block';
-
-     adjustProgressBar(gameName);
-
-    // Cierra el modal
-    closeModal();
-  }
 
 
 
@@ -156,7 +142,6 @@ async function adjustProgressBar(gameName) {
             }
         }
 
-        // Llamar a la función para aplicar el tema guardado cuando se cargue la página
         window.onload = applySavedTheme;
   </script>
 </body>

@@ -80,10 +80,6 @@ class App < Sinatra::Application
     erb :perfil
   end
 
-  get '/signup' do
-    erb :sign
-  end
-
   get '/home' do
     if session[:logged_in]
       @games = Game.all
@@ -114,9 +110,9 @@ class App < Sinatra::Application
     name = params[:name]
     nickname = params[:nickname]
 
-    redirect '/signup?error=Email-already-exists' if Account.exists?(email: email)
+    redirect '/login?error=Email-already-exists' if Account.exists?(email: email)
 
-    redirect '/signup?error=Nickname-already-exists' if Account.exists?(nickname: nickname)
+    redirect '/login?error=Nickname-already-exists' if Account.exists?(nickname: nickname)
 
     account = Account.new(email: email, password: password, name: name, nickname: nickname, progress: 0)
 
@@ -126,7 +122,7 @@ class App < Sinatra::Application
       redirect '/login'
     else
       puts "Error al guardar la cuenta: #{account.errors.full_messages.join(', ')}"
-      erb :signup, locals: { error_message: 'Error al crear cuenta' }
+      erb :sign, locals: { error_message: 'Error al crear cuenta' }
     end
   end
 
@@ -406,7 +402,7 @@ class App < Sinatra::Application
     correct_answers_percentage = calculate_correct_answers_percentage(correct_answers_count, total_questions)
 
     knowledge_increment = calculate_knowledge_increment(correct_answers_percentage)
-    new_account_knowledge = [account_game.account_knowledge + knowledge_increment, 100].min
+    new_account_knowledge = knowledge_increment
 
     account_game.update(account_knowledge: new_account_knowledge)
 
@@ -414,7 +410,7 @@ class App < Sinatra::Application
   end
 
   def calculate_correct_answers_percentage(correct_answers_count, total_questions)
-    (correct_answers_count.to_f / total_questions * 100).round(2) # Ahora es correcto
+    (correct_answers_count.to_f / total_questions * 100).round(2)
   end
 
   def calculate_knowledge_increment(correct_answers_percentage)
@@ -764,29 +760,11 @@ class App < Sinatra::Application
   get '/progress/:game_name' do
     if session[:logged_in]
       account_id = session[:account_id]
-      selected_game = Game.find_by(name: session[:selected_game])
-      game_name = GAME_URL_MAPPING[selected_game.name]
-      selected_game.number
-
-      if game_name.nil?
-        status 404
-        body 'Game not found.'
-        return
-      end
+      selected_game = Game.find_by(name: params[:game_name]) # Encontrar el juego específico según el parámetro
+      return status 404 if selected_game.nil?
 
       account_game = AccountGame.find_by(account_id: account_id, game_id: selected_game.id)
-
-      if account_game.nil?
-        status 404
-        body 'AccountGame not found.'
-        return
-      end
-
-      completed_trivias = AccountTrivia.where(account_id: account_id, trivias_completed: true).count
-      exam_completed = account_game.account_knowledge ? 25 : 0
-
-      total_progress = (completed_trivias * 25) + exam_completed
-
+      total_progress = account_game ? account_game.account_knowledge * 10 : 0
       content_type :json
       { progress: total_progress }.to_json
     else

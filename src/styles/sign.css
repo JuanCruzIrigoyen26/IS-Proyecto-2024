@@ -165,8 +165,6 @@ main{
     }
 
 
-    /*Formularios*/
-
     .contenedor__login-register{
         top: -10px;
         left: -5px;
@@ -176,4 +174,11 @@ main{
     .contenedor__login-register form{
         position: relative;
     }
+}
+
+.error {
+    color: red;
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: block;
 }

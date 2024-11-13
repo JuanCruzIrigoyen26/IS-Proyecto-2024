@@ -30,9 +30,11 @@
                         <h2>Iniciar Sesión</h2>
                     <div class="form-group">
                         <input type="text" id="nickname" name="nickname" required placeholder="Nombre de Usuario">
+                        <span class="error" id="login-nickname-error"></span>
                     </div>
                     <div class="form-group">
                         <input type="password" id="password" name="password" required placeholder="Contraseña">
+                        <span class="error" id="login-nickname-error"></span>
                     </div>
                     <button type="submit">Iniciar Sesión</button>
                     </form>
@@ -41,17 +43,25 @@
                         <h2>Regístrarse</h2>
                         <div class="form-group">
                             <input type="email" id="email" name="email" required placeholder="Correo Electronico">
+                            <span class="error" id="register-email-error"></span>
                         </div>
                         <div class="form-group">
                             <input type="text" id="name" name="name" required placeholder="Nombre">
                         </div>
                         <div class="form-group"> 
                             <input type="text" id="nickname" name="nickname" required placeholder="Nombre de Usuario"> 
+                            <span class="error" id="register-nickname-error"></span>
                         </div>
                         <div class="form-group">
                             <input type="password" id="password" name="password" required placeholder="Contraseña">
+                            <span class="error" id="register-password-error"></span>
                         </div>
                         <button type="submit">Registrarse</button>
+                        <% if locals[:error_message] %>
+                            <div class="error" id="general-error" style="margin-top: 10px;">
+                                <%= locals[:error_message] %>
+                            </div>
+                        <% end %>
                     </form>
                 </div>
             </div>

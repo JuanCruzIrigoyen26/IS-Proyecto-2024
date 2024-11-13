@@ -167,12 +167,6 @@ div.progress {
   background-color: #1e1e1e;
 }
 
-.progress {
-  width: 100%;
-  background-color: #f3f3f3;
-  border-radius: 10px;
-}
-
 #progress-wrapper {
   display: flex;
   align-items: center;
@@ -184,25 +178,39 @@ div.progress {
   margin-right: 20px; /* Para crear espacio entre el título y la barra */
 }
 
-#knowledge-bar-container {
-  width: 100%; /* Ajusta el ancho de la barra según sea necesario */
-  max-width: 300px; /* Puedes ajustar el tamaño máximo de la barra */
-}
 
 .track {
   background-color: #ddd;
   height: 20px;
   border-radius: 10px;
 }
-/*
-.bar {
-<<<<<<< Updated upstream
-  width: 0; /* El ancho se ajustará dinámicamente 
-  height: 30px;
-=======
->>>>>>> Stashed changes
-  background-color: #4caf50;
+
+/* Contenedor de la barra de progreso */
+.progress {
+  width: 80%;
+  margin: 10px auto;
+  padding: 2px;
+  height: 21px;
+  border-radius: 5px;
+  border: solid 3px #4e4e4e;
+  background-color: #1e1e1e;
+}
+
+/* Fondo de la barra completa */
+#knowledge-bar-container {
+  width: 100%; 
+  max-width: 300px; 
+  background-color: #ddd;
   height: 20px;
   border-radius: 10px;
-  transition: width 0.5s ease;
+  overflow: hidden;
 }
+
+/* Barra de progreso */
+.bar {
+  background-color: #4caf50; /* Verde */
+  height: 100%;
+  border-radius: 10px 0 0 10px; /* Solo bordes redondeados en la izquierda */
+  transition: width 0.5s ease; /* Transición suave al cambiar el ancho */
+}
+
